@@ -1,3 +1,7 @@
+#include "employe.h"
+#include "mission.h"
+#include "centre.h"
+#include "kmean.h"
 
 #include <iostream>
 
@@ -36,8 +40,34 @@ int main(int argc, char **argv)
 
     // lecture des infos dans le fichier
 
+	Employe *list_employe; 
+	int nb_employe;
+	Centre *list_centre;
+	int nb_centre;
+	Mission *list_mission;
+	int nb_missions; 
+
+
+
+
+	// séparer les infos en 2 groupe (par compétence)
+
+	Employe *list_employe_lsf;
+	int nb_employe_lsf;
+	Mission *list_mission_lsf;
+	int nb_missions_lsf;
+
+	Employe *list_employe_lpc;
+	int nb_employe_lpc;
+	Mission *list_mission_lpc;
+	int nb_missions_lpc;
+
 
     // kmean 
+
+
+
+
 
 
     // algo genetique

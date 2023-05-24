@@ -1,26 +1,32 @@
-#include <string>
-using namespace std;
+#ifndef _MISSION_H
+#define _MISSION_H
 
-class mission {
+#include <string>
+#include "position.h"
+
+class Mission {
 private:
 
     int id; 
     int day; // valeur entre 1 et 7
     int hour_start; // valeur entre 0 et 23
     int hour_end; // valeur entre 0 et 23
-    string competence; 
-    string speciality; 
+    std::string competence; 
+    std::string speciality; 
 
+    Position position;
+
+    int kmean_group;
 
 public:
-    mission(/* args */);
-    ~mission();
+    Mission(int id, int day, int hour_start, int hour_end, std::string competence, std::string speciality, Position position);
+    ~Mission();
+
+
+    // SETTERS
+    void setKmeanGroup(int kmean_group);
+
 };
 
-mission::mission(/* args */)
-{
-}
 
-mission::~mission()
-{
-}
+#endif // _MISSION_H

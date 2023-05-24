@@ -31,12 +31,6 @@ public:
     Chromosome *selection_roulette();                 // sel�ction par roulette biais�e d'un individu de la population
     void remplacement_roulette(Chromosome *individu); // rempacement par roulette biais�e d'un individu de la population par un Chromosome donn�
 
-    Chromosome *selection_ranking(float taux_ranking);// sel�ction par ranking d'un individu de la population
-    void remplacement_ranking(Chromosome *individu, float taux_ranking); // rempacement par ranking d'un individu de la population par un Chromosome donn�
-
-    Chromosome* selection_aleatoire();                // s�lection et de remplacement al�toire
-    void remplacement_aleatoire(Chromosome* individu);// remplacement al�toire
-
     void ordonner();
     void reordonner();
     void afficher();

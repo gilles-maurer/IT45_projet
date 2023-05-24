@@ -1,22 +1,37 @@
+#ifndef _CENTRE_H
+#define _CENTRE_H
+
 #include <string>
-using namespace std;
+#include "position.h"
 
-
-class centre {
+class Centre {
 private:
 
     int id;
-    string name;
+    std::string name;
+
+    Position position;
+
+    int kmean_group;
 
 public:
-    centre(/* args */);
-    ~centre();
+    Centre(/* args */);
+    ~Centre();
+
+    // GETTERS
+    int getId();
+    std::string getName();
+    Position getPosition();
+    int getKmeanGroup();
+
+
+
+
+
+    // SETTERS
+    void setKmeanGroup(int kmean_group);
+
 };
 
-centre::centre(/* args */)
-{
-}
 
-centre::~centre()
-{
-}
+#endif // _CENTRE_H

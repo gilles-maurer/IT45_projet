@@ -1,25 +1,21 @@
-#include <string>
-using namespace std;
+#ifndef EMPLOYE_H
+#define EMPLOYE_H
 
-class employe {
+#include <string>
+#include "position.h"
+
+class Employe {
 private:
 
     int id; 
     int centre_id;
-    string competence;
-    string speciality;
-
+    std::string competence;
+    std::string speciality;
 
 public:
-    employe(/* args */);
-    ~employe();
+    Employe(/* args */);
+    ~Employe();
 };
 
 
-employe::employe(/* args */)
-{
-}
-
-employe::~employe()
-{
-}
+#endif // EMPLOYE_H
