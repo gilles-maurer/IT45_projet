@@ -15,7 +15,9 @@ private:
     Centre *centre;
     int nb_centres;
 
-    Position *average_position;
+    Group_kmean *groups;
+
+    bool is_optimised;
 
 public:
 
@@ -28,9 +30,13 @@ public:
 
 
     // METHODES
-    void make_group(); // fonction qui va attribuer un groupe à chaque mission et chaque centre
 
-    Position compute_average_position(Group_kmean group);
+    Group_kmean *optimiser(); // fonction qui va optimiser l'affectation des missions aux centres en 
+                            // fonction de la position des centres et des missions
+
+    Group_kmean *make_group(); // fonction qui va attribuer un groupe à chaque mission et chaque centre
+
+    bool are_group_list_equals(Group_kmean *groups1, Group_kmean *groups2);
     
 
 

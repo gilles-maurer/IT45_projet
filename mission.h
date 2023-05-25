@@ -20,7 +20,15 @@ private:
 
 public:
     Mission(int id, int day, int hour_start, int hour_end, std::string competence, std::string speciality, Position position);
+    
+    Mission();
+
     ~Mission();
+
+    // GETTERS
+    Position getPosition();
+
+    int getId();
 
 
     // SETTERS

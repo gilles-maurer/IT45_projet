@@ -26,7 +26,13 @@ public:
     void setX(float x);
     void setY(float y);
 
-    float distance(Position p, Position q);
+    float distance(Position p);
+
+    bool operator==(Position p);
+
+    Position operator+(Position p);
+
+    Position operator/(float f);
 
 };
 

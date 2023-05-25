@@ -1,7 +1,7 @@
 #include "employe.h"
 #include "mission.h"
 #include "centre.h"
-#include "kmean.h"
+#include "kmean/kmean.h"
 
 #include <iostream>
 

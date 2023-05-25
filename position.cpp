@@ -42,7 +42,22 @@ void Position::setY(float y)
     this->y = y;
 }
 
-float Position::distance(Position p, Position q)
+float Position::distance(Position p)
 {
-    return sqrt(pow(p.getX() - q.getX(), 2) + pow(p.getY() - q.getY(), 2));
+    return sqrt(pow(this->x - p.getX(), 2) + pow(this->y - p.getY(), 2));
+}
+
+bool Position::operator==(Position p)
+{
+    return (this->x == p.getX() && this->y == p.getY());
+}
+
+Position Position::operator+(Position p)
+{
+    return Position(this->x + p.getX(), this->y + p.getY());
+}
+
+Position Position::operator/(float f)
+{
+    return Position(this->x / f, this->y / f);
 }
