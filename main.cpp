@@ -1,7 +1,7 @@
 #include "employe.h"
 #include "mission.h"
 #include "centre.h"
-#include "kmean/kmean.h"
+// #include "kmean/kmean.h"
 #include "instances/data.h"
 
 #include <iostream>
@@ -17,9 +17,10 @@ int main(int argc, char **argv)
 	string file_name = "instances/30Missions-2centres/";
 
 
-	if (argc == 7)
+	if (argc == 2)
 	{
         // initialisation des parametres
+		file_name = argv[1];
 	}
 	else if (argc == 1)
 	{
@@ -39,25 +40,29 @@ int main(int argc, char **argv)
 	}
 
 
-    // lecture des infos dans le fichier
-
-	Employe *list_employe; 
-	int nb_employe;
-	Centre *list_centre;
-	int nb_centre;
-	Mission *list_mission;
-	int nb_missions; 
+    // lecture des infos dans le fichier 
 
 	Data data(file_name);
 
-	nb_employe = data.count_lines("Employees.csv");
-	nb_centre = data.count_lines("centres.csv");
-	nb_missions = data.count_lines("Missions.csv");
+	int nb_employes = data.count_lines("employees.csv");
+	int nb_centres = data.count_lines("centres.csv");
+	int nb_missions = data.count_lines("missions.csv");
 
-	list_employe = data.read_employes(nb_employe);
-	list_centre = data.read_centres(nb_centre);
-	list_mission = data.read_missions(nb_missions);
+	Employe *list_employe = data.read_employes(nb_employes);
+	Mission *list_mission = data.read_missions(nb_missions);
+	Centre *list_centre = data.read_centres(nb_centres);
 
+	float **distance = data.read_distance(nb_missions, nb_centres);
+
+	for (int i = 0; i < nb_centres; i++) { // on ajoute les distances aux centres
+		list_centre[i].setDistance(distance[i]);
+	}
+	for (int i = nb_centres; i < nb_missions; i++) { // on ajoute les distances aux missions
+		list_mission[i].setDistance(distance[i]);
+	}
+
+
+	// initialisation des parametres
 
 
 	// séparer les infos en 2 groupe (par compétence)
@@ -87,11 +92,11 @@ int main(int argc, char **argv)
 
 
     // affichage des resultats
-    cout << "La meilleure solution trouvee pour la compétence 1 est : ";
+    cout << "La meilleure solution trouvee pour la competence 1 est : " << endl;
     // afficher la meilleure solution
-    cout << "La meilleure solution trouvee pour la compétence 2 est : ";
+    cout << "La meilleure solution trouvee pour la competence 2 est : " << endl;
     // afficher la meilleure solution
-    cout << "La meilleure solution totale est : ";
+    cout << "La meilleure solution totale est : " << endl;
     // afficher la meilleure solution
 
 }

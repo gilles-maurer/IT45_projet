@@ -3,18 +3,26 @@
 
 #include <string>
 #include "position.h"
+#include "centre.h"
 
-class Employe {
+class Employe{
 private:
 
     int id; 
     int centre_id;
-    std::string competence;
+    std::string skill;
     std::string speciality;
 
 public:
-    Employe(/* args */);
+    Employe();
+
+    Employe(int id, int centre_id, std::string skill, std::string speciality);
+
     ~Employe();
+
+
+    // METHODES
+    void print();
 };
 
 

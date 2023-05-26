@@ -37,12 +37,13 @@ OBJ= \
 	centre.o \
 	employe.o \
 	position.o \
-	kmean/kmean.o \
-	kmean/group_kmean.o \
-	instances/data.o \
-	genetique/ag.o \
-	genetique/population.o \
-	genetique/chromosome.o
+	instances/data.o
+
+# kmean/kmean.o \
+	# kmean/group_kmean.o \
+	# genetique/ag.o \
+	# genetique/population.o \
+	# genetique/chromosome.o
 
 
 
@@ -88,7 +89,8 @@ algo_sessad : $(OBJ)
 # Taper 'make clean' provoque l'effacement de tous les .o, et des *~ laiss�s 
 # par emacs. Il n'y a pas de d�pendence pour cette cible.
 clean : 
-	rm *.o
+	rm *.o $(objects)
+	rm */*.o $(objects)
 
 # Taper 'make clear' fait un 'make clean' puis efface en plus l'ex�cutable.
 clear : 

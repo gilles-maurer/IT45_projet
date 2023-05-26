@@ -10,26 +10,29 @@ private:
     int id;
     std::string name;
 
-    Position position;
+    float *distance;
 
     int kmean_group;
 
 public:
-    Centre(/* args */);
+    Centre(); 
+    Centre(int id, std::string name);
+
     ~Centre();
 
     // GETTERS
     int getId();
     std::string getName();
-    Position getPosition();
     int getKmeanGroup();
-
-
-
-
 
     // SETTERS
     void setKmeanGroup(int kmean_group);
+
+    void setDistance(float *distance);
+
+    // METHODES
+    void print();
+
 
 };
 

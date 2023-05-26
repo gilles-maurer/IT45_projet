@@ -1,10 +1,23 @@
 #include "centre.h"
+#include <iostream>
 
 using namespace std;
 
-Centre::Centre(/* args */)
+Centre::Centre()
 {
+    this->id = -1;
+    this->name = "";
+
+    this->kmean_group = -1;
 }
+
+Centre::Centre(int id, string name)
+{
+    this->id = id;
+    this->name = name;
+
+    this->kmean_group = -1;
+}   
 
 Centre::~Centre()
 {
@@ -22,10 +35,6 @@ string Centre::getName()
     return this->name;
 }
 
-Position Centre::getPosition()
-{
-    return this->position;
-}
 
 int Centre::getKmeanGroup()
 {
@@ -36,4 +45,15 @@ int Centre::getKmeanGroup()
 void Centre::setKmeanGroup(int kmean_group)
 {
     this->kmean_group = kmean_group;
+}
+
+void Centre::setDistance(float *distance)
+{
+    this->distance = distance;
+}
+
+// METHODES
+void Centre::print()
+{
+    cout << "Centre " << this->id << " : " << this->name << endl;
 }

@@ -26,8 +26,11 @@ public:
     Employe *read_employes(int nb_employe);
     Centre *read_centres(int nb_centre);
 
+    float **read_distance(int nb_missions, int nb_centres);
 
-
+    int read_int_from_line(std::string &line);
+    float read_float_from_line(std::string &line);
+    std::string read_string_from_line(std::string &line);
 
 };
 
