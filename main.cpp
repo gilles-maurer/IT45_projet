@@ -3,6 +3,7 @@
 #include "centre.h"
 // #include "kmean/kmean.h"
 #include "instances/data.h"
+#include "genetique/population.h"
 
 #include <iostream>
 #include <string>
@@ -39,8 +40,23 @@ int main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 
+	Population individus = Population(10, 10);
+	individus.afficher();
+	individus.statistiques();
+	getchar();
 
+<<<<<<< Updated upstream
     // lecture des infos dans le fichier 
+=======
+    // lecture des infos dans le fichier
+	/**
+	Employe *list_employe; 
+	int nb_employe;
+	Centre *list_centre;
+	int nb_centre;
+	Mission *list_mission;
+	int nb_missions; 
+>>>>>>> Stashed changes
 
 	Data data(file_name);
 
@@ -75,7 +91,7 @@ int main(int argc, char **argv)
 	Employe *list_employe_lpc;
 	int nb_employe_lpc;
 	Mission *list_mission_lpc;
-	int nb_missions_lpc;
+	int nb_missions_lpc;**/
 
 
     // kmean 

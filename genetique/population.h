@@ -8,17 +8,17 @@
 #include "chromosome.h"
 
 // La classe population englobe plusieurs solution potentielle du probleme
-class population{
-public:
+class Population{
+private:
     // ATTRIBUTS
-	Chromosome **individus;  // liste des individus de la population
+	Chromosome *individus;  // liste des individus de la population
 	int taille_pop;          // nombre d'individus de la population
 	int *ordre;              // tableau donnat l'ordre des individus dans la population
                              //   du meilleur au plus mauvais en fonction de la fitness	population(int tp, int tc);    // constructeur de l'objet
-
+public:
 	// CONSTRUCTEURS
-	population(int tp, int tc); // constructeur de l'objet
-	~population();              // destructeur de l'objet
+	Population(int tp, int tc); // constructeur de l'objet
+	~Population();              // destructeur de l'objet
 
 	// METHODES
 	void statistiques(); // affiche quelques statistiques sur la population

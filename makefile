@@ -37,6 +37,7 @@ OBJ= \
 	centre.o \
 	employe.o \
 	position.o \
+<<<<<<< Updated upstream
 	instances/data.o
 
 # kmean/kmean.o \
@@ -44,6 +45,14 @@ OBJ= \
 	# genetique/ag.o \
 	# genetique/population.o \
 	# genetique/chromosome.o
+=======
+	genetique/ag.o \
+	genetique/population.o \
+	genetique/chromosome.o\
+	#kmean/kmean.o \
+	kmean/group_kmean.o \
+	instances/data.o
+>>>>>>> Stashed changes
 
 
 

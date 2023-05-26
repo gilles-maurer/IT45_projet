@@ -2,26 +2,26 @@
 
 
 // CONSTRUCTEURS
-population::population(int tp, int tc){
-    this->taille_pop = tp;
-    this->tc = tc;
-
-}
+Population::Population(int tp, int tc){
+        this->taille_pop = tp;
+        this->individus = new Chromosome[tp];
+        this->ordre = new int[tp];
+    }
 
 // destructeur de l'objet
-population::~population(){ 
-
-}            
+Population::~Population(){}        
 
 // METHODES
 
 // affiche quelques statistiques sur la population
-void population::statistiques(){
-
+void Population::statistiques(){
+    individus[0].evaluer();
+    int fitness = individus[0].getFitness();
+    printf("Fitness: %i\n", fitness);
 } 
 
 // compte le nombre de Chromosomes similaires 'chro'
-int population::nb_Chromosomes_similaires(Chromosome* chro){
+int Population::nb_Chromosomes_similaires(Chromosome* chro){
     int count;
 
     return count;
@@ -29,32 +29,32 @@ int population::nb_Chromosomes_similaires(Chromosome* chro){
 }
 
 // affiche les resultats du comptage de Chromosomes similaires aux meilleurs individus de la population.                   
-void population::similitude(){
+void Population::similitude(){
 
 }
 
 // OPERATEURS DE SELECTION ET DE REMPLACEMENT
 
 // selection par roulette biaisee d'un individu de la population
-Chromosome *population::selection_roulette(){
+Chromosome *Population::selection_roulette(){
 
 }     
 
 // rempacement par roulette biaisee d'un individu de la population par un Chromosome donne
-void population::remplacement_roulette(Chromosome *individu){
+void Population::remplacement_roulette(Chromosome *individu){
 
 }
     
-void population::ordonner(){
+void Population::ordonner(){
 
 }
 
-void population::reordonner(){
+void Population::reordonner(){
 
 }
 
-void population::afficher(){
-    for(int i = 0; i < taille_pop; i++){
-        individus
+void Population::afficher(){
+    for(int i = 0; i < this->taille_pop; i++){
+        this->individus[i].afficher();
     }
 }
