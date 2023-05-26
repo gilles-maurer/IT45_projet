@@ -9,8 +9,8 @@ private:
 
     int id; 
     int day; // valeur entre 1 et 7
-    int hour_start; // valeur entre 0 et 23
-    int hour_end; // valeur entre 0 et 23
+    int start_period;
+    int end_period;
     std::string competence; 
     std::string speciality; 
 
@@ -19,7 +19,7 @@ private:
     int kmean_group;
 
 public:
-    Mission(int id, int day, int hour_start, int hour_end, std::string competence, std::string speciality, Position position);
+    Mission(int id, int day, int start_period , int end_period, std::string competence, std::string speciality, Position position);
     
     Mission();
 

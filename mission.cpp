@@ -3,12 +3,12 @@
 using namespace std;
 
 
-Mission::Mission(int id, int day, int hour_start, int hour_end, string competence, string speciality, Position position)
+Mission::Mission(int id, int day, int start_period, int end_period, string competence, string speciality, Position position)
 {
     this->id = id;
     this->day = day;
-    this->hour_start = hour_start;
-    this->hour_end = hour_end;
+    this->start_period = start_period;
+    this->end_period = end_period;
     this->competence = competence;
     this->speciality = speciality;
     this->position = position;

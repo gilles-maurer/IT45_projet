@@ -33,9 +33,16 @@ FLAGS= -c -g -Wall -ansi
 # Liste des objets que l'on va obtenir, et qu'il faudra linker.
 OBJ= \
 	main.o \
-	ae.o \
-	chromosome.o \
-	population.o
+	mission.o \
+	centre.o \
+	employe.o \
+	position.o \
+	kmean/kmean.o \
+	kmean/group_kmean.o \
+	instances/data.o \
+	genetique/ag.o \
+	genetique/population.o \
+	genetique/chromosome.o
 
 
 
@@ -75,18 +82,18 @@ OBJ= \
 # Pour compiler coup_de_vent, il faut v�rifier que tous les .o
 # sont � jour (les recompiler dans le cas contraire) puis lancer
 # la commande de linkage.
-algo_evo : $(OBJ) 
-	$(COMPILO) -o algo_evo $(OBJ) $(LIBS_PATH) $(LIBS)
+algo_sessad : $(OBJ) 
+	$(COMPILO) -o algo_sessad $(OBJ) $(LIBS_PATH) $(LIBS)
 
 # Taper 'make clean' provoque l'effacement de tous les .o, et des *~ laiss�s 
 # par emacs. Il n'y a pas de d�pendence pour cette cible.
 clean : 
-	rm -f *.o *~
+	rm *.o
 
 # Taper 'make clear' fait un 'make clean' puis efface en plus l'ex�cutable.
 clear : 
 	make clean;
-	rm -f algo_evo
+	rm -f algo_sessad
 
 
 ###########################

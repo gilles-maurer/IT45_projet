@@ -2,9 +2,10 @@
 #include "mission.h"
 #include "centre.h"
 #include "kmean/kmean.h"
+#include "instances/data.h"
 
 #include <iostream>
-
+#include <string>
 
 
 using namespace std;
@@ -13,7 +14,7 @@ int main(int argc, char **argv)
 {
  
     // valeurs par défaut
-
+	string file_name = "instances/30Missions-2centres/";
 
 
 	if (argc == 7)
@@ -47,6 +48,15 @@ int main(int argc, char **argv)
 	Mission *list_mission;
 	int nb_missions; 
 
+	Data data(file_name);
+
+	nb_employe = data.count_lines("Employees.csv");
+	nb_centre = data.count_lines("centres.csv");
+	nb_missions = data.count_lines("Missions.csv");
+
+	list_employe = data.read_employes(nb_employe);
+	list_centre = data.read_centres(nb_centre);
+	list_mission = data.read_missions(nb_missions);
 
 
 
