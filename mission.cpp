@@ -32,6 +32,13 @@ Mission::~Mission()
 {
 }
 
+// GETTERS
+
+int Mission::getId()
+{
+    return this->id;
+}
+
 
 // SETTERS
 void Mission::setKmeanGroup(int kmean_group)

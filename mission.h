@@ -2,7 +2,6 @@
 #define _MISSION_H
 
 #include <string>
-#include "position.h"
 
 class Mission {
 private:
@@ -26,7 +25,6 @@ public:
     ~Mission();
 
     // GETTERS
-    Position getPosition();
 
     int getId();
 

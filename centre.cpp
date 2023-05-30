@@ -35,11 +35,24 @@ string Centre::getName()
     return this->name;
 }
 
-
 int Centre::getKmeanGroup()
 {
     return this->kmean_group;
 }
+
+float Centre::getDistance(Mission mission, int nb_centres)
+{
+    return this->distance[mission.getId() + nb_centres - 1];
+}
+
+float Centre::getDistance(Centre centre)
+{
+    return this->distance[centre.getId() - 1];
+}
+
+
+
+
 
 // SETTERS
 void Centre::setKmeanGroup(int kmean_group)

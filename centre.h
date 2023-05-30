@@ -2,7 +2,7 @@
 #define _CENTRE_H
 
 #include <string>
-#include "position.h"
+#include "mission.h"
 
 class Centre {
 private:
@@ -24,6 +24,9 @@ public:
     int getId();
     std::string getName();
     int getKmeanGroup();
+
+    float getDistance(Mission mission, int nb_centres);
+    float getDistance(Centre centre);
 
     // SETTERS
     void setKmeanGroup(int kmean_group);

@@ -35,11 +35,10 @@ OBJ= main.o \
 	mission.o \
 	centre.o \
 	employe.o \
-	position.o \
 	instances/data.o \
-	genetique/ag.o \
-	genetique/population.o \
-	genetique/chromosome.o  \
+	# genetique/ag.o \
+	# genetique/population.o \
+	# genetique/chromosome.o  \
 
 
 

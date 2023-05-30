@@ -1,9 +1,10 @@
 #include "employe.h"
 #include "mission.h"
 #include "centre.h"
-// #include "kmean/kmean.h"
 #include "instances/data.h"
-#include "genetique/ag.h"
+// #include "kmean/kmean.h"
+// #include "instances/data.h"
+// #include "genetique/ag.h"
 
 #include <iostream>
 #include <string>
@@ -80,8 +81,8 @@ int main(int argc, char **argv)
 
 
     // algo genetique
-	printf("----------------\n");
-	Ag ag = Ag(10, 10, 0.5, 0.5, nb_missions, 0.2, 0.1, 0.7); // A separer en 2 plus tard
+	// printf("----------------\n");
+	// Ag ag = Ag(10, 10, 0.5, 0.5, nb_missions, 0.2, 0.1, 0.7); // A separer en 2 plus tard
 
 
 	printf("----------------\n");

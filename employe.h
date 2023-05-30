@@ -2,7 +2,6 @@
 #define EMPLOYE_H
 
 #include <string>
-#include "position.h"
 #include "centre.h"
 
 class Employe{
