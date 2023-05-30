@@ -1,4 +1,9 @@
 #include "population.h"
+#include <iostream>
+#include <random>
+#include <vector>
+
+using namespace std;
 
 
 // CONSTRUCTEURS
@@ -37,6 +42,25 @@ void Population::similitude(){
 
 // selection par roulette biaisee d'un individu de la population
 Chromosome *Population::selection_roulette(){
+    double sumFitness = 0;
+    // calcul de la somme des fitness
+    for(int i = 0; i < this->taille_pop; i++){
+        sumFitness += this->individus[i].getFitness();
+    }
+    
+    // calcul des probabilités
+    vector<double> proba;
+    
+    for(int i = 0; i < this->taille_pop; i++){
+        proba.push_back(this->individus[i].getFitness()/sumFitness);
+    }
+
+    // Choix aléatoire d'un individu en fonction des probabilités
+    random_device rd;
+    mt19937 gen(rd());
+    discrete_distribution<> dist(proba.begin(), proba.end());
+
+    return individus[gen() + 1];
 
 }     
 
@@ -46,8 +70,38 @@ void Population::remplacement_roulette(Chromosome *individu){
 }
     
 void Population::ordonner(){
-
+    int fitness;
+    int fitness2;
+    int index;
+    int index2;
+    for(int i = 0; i < this->taille_pop; i++){
+        fitness = this->individus[i].getFitness();
+        index = i;
+        for(int j = i+1; j < this->taille_pop; j++){
+            fitness2 = this->individus[j].getFitness();
+            index2 = j;
+            if(fitness2 < fitness){
+                fitness = fitness2;
+                index = index2;
+            }
+        }
+        this->ordre[i] = index;
+    }
 }
+
+void Population::initialiser(){
+    for(int i = 0; i < this->taille_pop; i++){
+        this->individus[i] = Chromosome();
+    }
+    this->ordonner();
+}
+
+void Population::evaluer(){
+    for(int i = 0; i < this->taille_pop; i++){
+        this->individus[i].getFitness();
+    }
+}
+
 
 void Population::reordonner(){
 

@@ -30,7 +30,8 @@ public:
     // OPERATEURS DE SELECTION ET DE REMPLACEMENT
     Chromosome *selection_roulette();                 // sel�ction par roulette biais�e d'un individu de la population
     void remplacement_roulette(Chromosome *individu); // rempacement par roulette biais�e d'un individu de la population par un Chromosome donn�
-
+	void evaluer();
+	void initialiser();
     void ordonner();
     void reordonner();
     void afficher();

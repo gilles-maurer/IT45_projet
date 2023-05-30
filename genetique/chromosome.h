@@ -36,7 +36,7 @@ public:
 	//Surchage d'opérateur
 
     // OPERATEURS DE MUTATION
-    void mutation();    // opérateur de mutation
+    void muter(int taux);    // opérateur de mutation
 };
 
 

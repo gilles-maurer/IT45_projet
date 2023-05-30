@@ -74,7 +74,16 @@ void Chromosome::evaluer(){
 }
 	                    
 void Chromosome::ordonner(){  // ordonne le sens de la tournée si gene[1] > gene[taille-1]
-
+    if(this->genes[0][0] > this->genes[this->taille-1][this->taille-1]){
+        for(int i = 0; i < this->taille; i++){
+            for(int j = 0; j < this->taille; j++){
+                if(this->genes[i][j] == 1){
+                    this->genes[i][j] = 0;
+                    this->genes[j][i] = 1;
+                }
+            }
+        }
+    }
 } 
 void Chromosome::copier(Chromosome* source){ // copie le Chromosome 'source'
     this->genes = source->getGene();
@@ -88,9 +97,19 @@ bool Chromosome::identique(Chromosome* chro){ // test si 2 chromosome sont ident
 }
 
 // OPERATEURS DE MUTATION
-void Chromosome::mutation(){
-    srand(time(0));
-    int mutedGene = rand() % this->taille;
-    
+void Chromosome::muter(int taux){ // Echange deux missions (i.e. deux colomnes de la matrice)
+    int nbMutation = (this->taille * taux) / 100;
+    int nbMutationEffectue = 0;
+    int i = 0;
+    int j = 0;
+    while(nbMutationEffectue < nbMutation){
+        i = rand() % this->taille;
+        j = rand() % this->taille;
+        if(this->genes[i][j] == 1){
+            this->genes[i][j] = 0;
+            this->genes[j][i] = 1;
+            nbMutationEffectue++;
+        }
+    }
 } 
 

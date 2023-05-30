@@ -3,7 +3,7 @@
 #include "centre.h"
 // #include "kmean/kmean.h"
 #include "instances/data.h"
-#include "genetique/population.h"
+#include "genetique/ag.h"
 
 #include <iostream>
 #include <string>
@@ -40,24 +40,6 @@ int main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 
-	Population individus = Population(10, 10);
-	individus.afficher();
-	individus.statistiques();
-	getchar();
-
-<<<<<<< Updated upstream
-    // lecture des infos dans le fichier 
-=======
-    // lecture des infos dans le fichier
-	/**
-	Employe *list_employe; 
-	int nb_employe;
-	Centre *list_centre;
-	int nb_centre;
-	Mission *list_mission;
-	int nb_missions; 
->>>>>>> Stashed changes
-
 	Data data(file_name);
 
 	int nb_employes = data.count_lines("employees.csv");
@@ -91,17 +73,18 @@ int main(int argc, char **argv)
 	Employe *list_employe_lpc;
 	int nb_employe_lpc;
 	Mission *list_mission_lpc;
-	int nb_missions_lpc;**/
+	int nb_missions_lpc;
 
 
     // kmean 
 
 
-
-
-
-
     // algo genetique
+	printf("----------------\n");
+	Ag ag = Ag(10, 10, 0.5, 0.5, nb_missions, 0.2, 0.1, 0.7); // A separer en 2 plus tard
+
+
+	printf("----------------\n");
 
 
     // fusion des resultats

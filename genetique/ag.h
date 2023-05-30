@@ -22,12 +22,22 @@ private:
 	double taux_croisement;  // taux de croisement : valeur entre 0 et 1
 	double taux_mutation;    // taux de mutation : valeur entre 0 et 1
 	int taille_chromosome;   // nombre de g�nes dans le chromosome
+  	double coefNbMisAffecte; // coefficient du nombre de mission affecté
+    double coefDistParcourue; // coefficient de la distance parcourue par les employés dans la solution
+    double coefNbMisSpe; //	 coefficient du nombre de mission ou la spécialité est respectée
 	Population *pop;         // liste des individus de la population
     int **les_distances;     // matrice des distances entre les villes
 	
 public:
 	// CONSTRUCTEURS
-	Ag();
+	Ag(int nbgenerations,
+	int taille_pop,         
+	double taux_croisement,  
+	double taux_mutation,
+	int taille_chromosome, 
+	double coefNbMisAffecte,
+    double coefDistParcourue,
+    double coefNbMisSpe);
                              // constructeur de l'objet Algaorithme evolutioniste
 	~Ag();                   // destructeur de l'objet Ag
 

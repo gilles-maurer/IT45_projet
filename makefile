@@ -31,28 +31,16 @@ COMPILO=g++
 FLAGS= -c -g -Wall -ansi
 
 # Liste des objets que l'on va obtenir, et qu'il faudra linker.
-OBJ= \
-	main.o \
+OBJ= main.o \
 	mission.o \
 	centre.o \
 	employe.o \
 	position.o \
-<<<<<<< Updated upstream
-	instances/data.o
-
-# kmean/kmean.o \
-	# kmean/group_kmean.o \
-	# genetique/ag.o \
-	# genetique/population.o \
-	# genetique/chromosome.o
-=======
+	instances/data.o \
 	genetique/ag.o \
 	genetique/population.o \
-	genetique/chromosome.o\
-	#kmean/kmean.o \
-	kmean/group_kmean.o \
-	instances/data.o
->>>>>>> Stashed changes
+	genetique/chromosome.o  \
+
 
 
 
