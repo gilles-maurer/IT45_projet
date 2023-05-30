@@ -2,9 +2,8 @@
 #include "mission.h"
 #include "centre.h"
 #include "instances/data.h"
-// #include "kmean/kmean.h"
-// #include "instances/data.h"
-// #include "genetique/ag.h"
+#include "instances/data.h"
+#include "genetique/ag.h"
 
 #include <iostream>
 #include <string>
@@ -75,9 +74,6 @@ int main(int argc, char **argv)
 	int nb_employe_lpc;
 	Mission *list_mission_lpc;
 	int nb_missions_lpc;
-
-
-    // kmean 
 
 
     // algo genetique
