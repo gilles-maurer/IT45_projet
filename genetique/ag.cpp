@@ -57,6 +57,9 @@ Chromosome* Ag::optimiser() {
     this->pop->statistiques();
 
     // retourne le meilleur individu de la population
+
+    // change this
+    return new Chromosome();
 }  
 
 
@@ -70,6 +73,7 @@ void Ag::croisement(Chromosome* parent1, Chromosome* parent2,
     // copie des gènes des parents dans les enfants
     for (int i = 0; i < point; i++) {
 
-
+    }
+    
 
 }

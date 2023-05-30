@@ -22,7 +22,8 @@ Population::~Population(){}
 void Population::statistiques(){
     individus[0].evaluer();
     int fitness = individus[0].getFitness();
-    printf("Fitness: %i\n", fitness);
+    cout << "Fitness: " << fitness << endl;
+
 } 
 
 // compte le nombre de Chromosomes similaires 'chro'
@@ -60,7 +61,7 @@ Chromosome *Population::selection_roulette(){
     mt19937 gen(rd());
     discrete_distribution<> dist(proba.begin(), proba.end());
 
-    return individus[gen() + 1];
+    return &individus[gen() + 1];
 
 }     
 

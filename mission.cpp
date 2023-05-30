@@ -29,12 +29,20 @@ Mission::~Mission()
 }
 
 // GETTERS
-
 int Mission::getId()
 {
     return this->id;
 }
 
+string Mission::getSkill()
+{
+    return this->skill;
+}
+
+float Mission::getDistance(Mission mission, int nb_centres)
+{
+    return this->distance[mission.getId() + nb_centres - 1];
+}
 
 // SETTERS
 void Mission::setDistance(float *distance)

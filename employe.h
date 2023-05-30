@@ -19,6 +19,11 @@ public:
 
     ~Employe();
 
+    // GETTERS
+    int getId();
+    int getCentreId();
+    std::string getSkill();
+
 
     // METHODES
     void print();

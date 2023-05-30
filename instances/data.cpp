@@ -62,8 +62,6 @@ Mission *Data::read_missions(int nb_missions)
 
         while(getline(file, line)) {
 
-            cout << line << endl;
-
             int id, day, start_period, end_period;
             string skill, speciality; 
 
@@ -107,8 +105,6 @@ Employe *Data::read_employes(int nb_employe)
 
         while(getline(file, line)) {
 
-            cout << line << endl;
-
             int id, center_id;
             string skill, speciality; 
 
@@ -151,8 +147,6 @@ Centre *Data::read_centres(int nb_centre)
         int i = 0;
 
         while(getline(file, line)) {
-
-            cout << line << endl;
 
             int id;
             string name; 
@@ -198,7 +192,6 @@ float **Data::read_distance(int nb_missions, int nb_centres) {
         while(getline(file, line)) {
             
             for (int j = 0; j < nb_missions+nb_centres; j++){
-            
                 distance[i][j] = read_float_from_line(line);
             }
 

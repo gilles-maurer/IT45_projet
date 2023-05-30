@@ -23,9 +23,9 @@ public:
     ~Mission();
 
     // GETTERS
-
     int getId();
-
+    std::string getSkill();
+    float getDistance(Mission mission, int nb_centres);
 
     // SETTERS
     void setDistance(float *distance);

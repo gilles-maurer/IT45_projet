@@ -1,7 +1,8 @@
 #include "employe.h"
 #include "mission.h"
 #include "centre.h"
-#include "instances/data.h"
+#include "part1/group_maker.h"
+#include "part1/group.h"
 #include "instances/data.h"
 #include "genetique/ag.h"
 
@@ -59,30 +60,88 @@ int main(int argc, char **argv)
 		list_mission[i].setDistance(distance[i]);
 	}
 
-
 	// initialisation des parametres
 
 
 	// séparer les infos en 2 groupe (par compétence)
 
-	Employe *list_employe_lsf;
-	int nb_employe_lsf;
-	Mission *list_mission_lsf;
-	int nb_missions_lsf;
+	int nb_employe_lsf = 0;
 
-	Employe *list_employe_lpc;
-	int nb_employe_lpc;
-	Mission *list_mission_lpc;
-	int nb_missions_lpc;
+	for (int i = 0; i < nb_employes; i++) {
+		if (list_employe[i].getSkill() == "LSF") {
+			nb_employe_lsf++;
+		}
+	}
+
+	int nb_employe_lpc = nb_employes - nb_employe_lsf;
+
+	Employe *list_employe_lsf = new Employe[nb_employe_lsf];
+	Employe *list_employe_lpc = new Employe[nb_employe_lpc];
+
+	int i_lsf = 0;
+	int i_lpc = 0;
+
+	for (int i = 0; i < nb_employes; i++) {
+		if (list_employe[i].getSkill() == "LSF") {
+			list_employe_lsf[i_lsf] = list_employe[i];
+			i_lsf++;
+		}
+		else {
+			list_employe_lpc[i_lpc] = list_employe[i];
+			i_lpc++;
+		}
+	}
+
+	int nb_missions_lsf = 0;
+
+	for (int i = 0; i < nb_missions; i++) {
+		if (list_mission[i].getSkill() == "LSF") {
+			nb_missions_lsf++;
+		}
+	}
+
+	int nb_missions_lpc = nb_missions - nb_missions_lsf;
+
+	Mission *list_mission_lsf = new Mission[nb_missions_lsf];
+	Mission *list_mission_lpc = new Mission[nb_missions_lpc];
+
+	i_lsf = 0;
+	i_lpc = 0;
+
+	for (int i = 0; i < nb_missions; i++) {
+		if (list_mission[i].getSkill() == "LSF") {
+			list_mission_lsf[i_lsf] = list_mission[i];
+			i_lsf++;
+		}
+		else {
+			list_mission_lpc[i_lpc] = list_mission[i];
+			i_lpc++;
+		}
+	}
+
+	
+	// création des groupes (part 1)
+
+	GroupMaker group_maker_lsf = GroupMaker(nb_missions_lsf, nb_centres, list_mission_lsf, list_centre);
+	GroupMaker group_maker_lpc = GroupMaker(nb_missions_lpc, nb_centres, list_mission_lpc, list_centre);
+
+	group_maker_lsf.makeGroups();
+	group_maker_lpc.makeGroups();
+
+	// affichage des groupes (part 1)
+
+	cout << "Groupes pour les missions LSF : " << endl;
+	group_maker_lsf.printGroups();
+
+	cout << "Groupes pour les missions LPC : " << endl;
+	group_maker_lpc.printGroups();
 
 
     // algo genetique
-	// printf("----------------\n");
+	// cout << ("----------------") << endl;
 	// Ag ag = Ag(10, 10, 0.5, 0.5, nb_missions, 0.2, 0.1, 0.7); // A separer en 2 plus tard
 
-
-	printf("----------------\n");
-
+	cout << ("----------------") << endl;
 
     // fusion des resultats
 

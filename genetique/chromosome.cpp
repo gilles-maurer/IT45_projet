@@ -1,6 +1,8 @@
 #include "chromosome.h"
 #include <cmath>
 
+using namespace std;
+
 
 Chromosome::Chromosome(int tc){
     this->taille = tc;
@@ -42,7 +44,7 @@ int Chromosome::getTaille(){
 
 // METHODES
 void Chromosome::afficher(){// fonction d'affichage du Chromosome (i.e. de la solution)
-    printf("Chromosome: %i\n", this->genes[0]);
+    cout << "Chromosome: " << this->genes[0] << endl;
 }   
 
 // fonction d'évaluation du Chromosome (c-é-d calcul la fitness)

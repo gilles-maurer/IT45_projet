@@ -26,6 +26,22 @@ Employe::~Employe()
 }
 
 
+// GETTERS
+int Employe::getId()
+{
+    return this->id;
+}
+
+int Employe::getCentreId()
+{
+    return this->centre_id;
+}
+
+string Employe::getSkill()
+{
+    return this->skill;
+}
+
 // METHODES
 void Employe::print()
 {

@@ -36,6 +36,8 @@ OBJ= main.o \
 	centre.o \
 	employe.o \
 	instances/data.o \
+	part1/group.o \
+	part1/group_maker.o \
 	genetique/ag.o \
 	genetique/population.o \
 	genetique/chromosome.o  \
