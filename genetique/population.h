@@ -17,7 +17,7 @@ private:
                              //   du meilleur au plus mauvais en fonction de la fitness	population(int tp, int tc);    // constructeur de l'objet
 public:
 	// CONSTRUCTEURS
-	Population(int tp, int tc); // constructeur de l'objet
+	Population(int tp, int nb_missions, int nb_employes); // constructeur de l'objet
 	~Population();              // destructeur de l'objet
 
 	// METHODES
@@ -34,7 +34,7 @@ public:
 	void initialiser();
     void ordonner();
     void reordonner();
-    void afficher();
+    void print();
 };
 
 

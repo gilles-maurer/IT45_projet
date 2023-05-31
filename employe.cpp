@@ -11,6 +11,8 @@ Employe::Employe()
     this->centre_id = -1;
     this->skill = "";
     this->speciality = "";
+
+    this->id_skill = -1;
 }
 
 Employe::Employe(int id, int centre_id, string skill, string speciality)
@@ -32,6 +34,11 @@ int Employe::getId()
     return this->id;
 }
 
+int Employe::getIdSkill()
+{
+    return this->id_skill;
+}
+
 int Employe::getCentreId()
 {
     return this->centre_id;
@@ -40,6 +47,12 @@ int Employe::getCentreId()
 string Employe::getSkill()
 {
     return this->skill;
+}
+
+// SETTERS
+void Employe::setIdSkill(int id_skill)
+{
+    this->id_skill = id_skill;
 }
 
 // METHODES

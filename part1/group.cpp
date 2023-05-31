@@ -50,7 +50,7 @@ void Group::print()
     cout << "Centre : " << this->centre.getName() << endl;
     cout << "Missions : " << endl;
     for (int i = 0; i < this->nb_missions; i++) {
-        cout << "\t" << this->list_missions[i].getId() << endl;
+        cout << "\t" << this->list_missions[i].getIdSkill() << endl;
     }
 }
 

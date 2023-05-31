@@ -8,6 +8,7 @@ class Employe{
 private:
 
     int id; 
+    int id_skill;
     int centre_id;
     std::string skill;
     std::string speciality;
@@ -21,8 +22,12 @@ public:
 
     // GETTERS
     int getId();
+    int getIdSkill();
     int getCentreId();
     std::string getSkill();
+
+    // SETTERS
+    void setIdSkill(int id_skill);
 
 
     // METHODES

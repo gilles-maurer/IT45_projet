@@ -7,9 +7,15 @@ using namespace std;
 
 
 // CONSTRUCTEURS
-Population::Population(int tp, int tc){
+Population::Population(int tp, int nb_missions, int nb_employes){
         this->taille_pop = tp;
+
         this->individus = new Chromosome[tp];
+
+        for (int i = 0; i < tp; i++){
+            this->individus[i] = Chromosome(nb_missions, nb_employes);
+        }
+
         this->ordre = new int[tp];
     }
 
@@ -91,9 +97,13 @@ void Population::ordonner(){
 }
 
 void Population::initialiser(){
-    for(int i = 0; i < this->taille_pop; i++){
-        this->individus[i] = Chromosome();
-    }
+
+    this->individus = new Chromosome[this->taille_pop];
+
+
+
+
+
     this->ordonner();
 }
 
@@ -108,8 +118,8 @@ void Population::reordonner(){
 
 }
 
-void Population::afficher(){
+void Population::print(){
     for(int i = 0; i < this->taille_pop; i++){
-        this->individus[i].afficher();
+        this->individus[i].print();
     }
 }

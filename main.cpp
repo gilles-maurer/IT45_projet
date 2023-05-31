@@ -18,6 +18,14 @@ int main(int argc, char **argv)
     // valeurs par défaut
 	string file_name = "instances/30Missions-2centres/";
 
+	int nb_generations;
+	int taille_pop;          
+	double taux_croisement;  
+	double taux_mutation;
+	double coefNbMisAffecte;
+	double coefDistParcourue;
+	double coefNbMisSpe;
+
 
 	if (argc == 2)
 	{
@@ -27,17 +35,18 @@ int main(int argc, char **argv)
 	else if (argc == 1)
 	{
 		cout << "Parametres par default" << endl;
+
+		nb_generations = 10;
+		taille_pop = 10;          
+		taux_croisement = 0.5;  
+		taux_mutation = 0.5;
+		coefNbMisAffecte = 0.2;
+		coefDistParcourue = 0.1;
+		coefNbMisSpe = 0.7;
+
 	}
 	else
 	{
-		cout << "Nombre d'arguments n'est pas correct." << endl;
-		cout << "Soit l'executable 'algo_evo' ne prend pas d'arguments soit il prend 6 arguments : " << endl;
-		cout << "   1. nombre de generation (entier > 0)" << endl;
-		cout << "   2. taille de la population (entier > 0)" << endl;
-		cout << "   3. taux de croisement (0 <= reel <= 1)" << endl;
-		cout << "   4. taux de mutation (0 <= reel <= 1)" << endl;
-		cout << "   5. nombre de villes (=taille d'un chromosome)" << endl;
-		cout << "   6. nom du fichier indiquant les distances entre villes" << endl;
 		exit(EXIT_FAILURE);
 	}
 
@@ -84,10 +93,12 @@ int main(int argc, char **argv)
 	for (int i = 0; i < nb_employes; i++) {
 		if (list_employe[i].getSkill() == "LSF") {
 			list_employe_lsf[i_lsf] = list_employe[i];
+			list_employe_lsf[i_lsf].setIdSkill(i_lsf + 1);
 			i_lsf++;
 		}
 		else {
 			list_employe_lpc[i_lpc] = list_employe[i];
+			list_employe_lpc[i_lpc].setIdSkill(i_lpc + 1);
 			i_lpc++;
 		}
 	}
@@ -111,10 +122,12 @@ int main(int argc, char **argv)
 	for (int i = 0; i < nb_missions; i++) {
 		if (list_mission[i].getSkill() == "LSF") {
 			list_mission_lsf[i_lsf] = list_mission[i];
+			list_mission_lsf[i_lsf].setIdSkill(i_lsf + 1);
 			i_lsf++;
 		}
 		else {
 			list_mission_lpc[i_lpc] = list_mission[i];
+			list_mission_lpc[i_lpc].setIdSkill(i_lpc + 1);
 			i_lpc++;
 		}
 	}
@@ -138,20 +151,40 @@ int main(int argc, char **argv)
 
 
     // algo genetique
-	// cout << ("----------------") << endl;
-	// Ag ag = Ag(10, 10, 0.5, 0.5, nb_missions, 0.2, 0.1, 0.7); // A separer en 2 plus tard
-
+	cout << ("----------------") << endl;
+	cout << ("Algorithme genetique") << endl;
 	cout << ("----------------") << endl;
 
-    // fusion des resultats
+	Ag ag = Ag(nb_generations, taille_pop, taux_croisement, taux_mutation,
+		coefNbMisAffecte, coefDistParcourue, coefNbMisSpe,
+		list_mission_lsf, nb_missions_lsf, list_employe_lsf, nb_employe_lsf, list_centre, nb_centres,
+		group_maker_lsf.getListGroups(), nb_centres);
+
+	Chromosome *solution_lsf = ag.optimiser();
+
+	ag = Ag(nb_generations, taille_pop, taux_croisement, taux_mutation,
+		coefNbMisAffecte, coefDistParcourue, coefNbMisSpe,
+		list_mission_lpc, nb_missions_lpc, list_employe_lpc, nb_employe_lpc, list_centre, nb_centres,
+		group_maker_lpc.getListGroups(), nb_centres);
+
+	Chromosome *solution_lpc = ag.optimiser();
+
+	// affichage des solutions (part 2)
+
+	cout << "Resultat pour les missions LSF : " << endl;
+	solution_lsf->print();
+
+	cout << "Resultat pour les missions LPC : " << endl;
+	solution_lpc->print();
 
 
-    // affichage des resultats
-    cout << "La meilleure solution trouvee pour la competence 1 est : " << endl;
-    // afficher la meilleure solution
-    cout << "La meilleure solution trouvee pour la competence 2 est : " << endl;
+	// fusion des solutions
+	Chromosome *solution = new Chromosome(nb_missions, nb_employes);
+	solution->fusion(solution_lsf, solution_lpc);
+
+
     // afficher la meilleure solution
     cout << "La meilleure solution totale est : " << endl;
-    // afficher la meilleure solution
+	solution->print();
 
 }

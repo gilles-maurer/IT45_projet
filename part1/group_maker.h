@@ -25,6 +25,9 @@ public:
     GroupMaker(int nb_missions, int nb_centres, Mission *list_missions, Centre *list_centres);
     ~GroupMaker();
 
+    // GETTERS
+    Group *getListGroups();
+
     // METHODES
     void makeGroups();
     

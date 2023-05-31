@@ -7,6 +7,7 @@ class Mission {
 private:
 
     int id; 
+    int id_skill; 
     int day; // valeur entre 1 et 7
     int start_period;
     int end_period;
@@ -24,11 +25,14 @@ public:
 
     // GETTERS
     int getId();
+    int getIdSkill();
     std::string getSkill();
     float getDistance(Mission mission, int nb_centres);
 
     // SETTERS
+    void setIdSkill(int id_skill);
     void setDistance(float *distance);
+
 
     // METHODES
     void print();

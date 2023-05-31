@@ -18,6 +18,13 @@ GroupMaker::~GroupMaker()
 {
 }
 
+// GETTERS
+
+Group *GroupMaker::getListGroups()
+{
+    return this->list_groups;
+}
+
 // METHODES
 
 void GroupMaker::makeGroups()

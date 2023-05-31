@@ -12,6 +12,8 @@ Mission::Mission(int id, int day, int start_period, int end_period,string skill,
     this->end_period = end_period;
     this->skill = skill;
     this->speciality = speciality;
+
+    this->id_skill = -1;
 }
 
 Mission::Mission()
@@ -34,6 +36,11 @@ int Mission::getId()
     return this->id;
 }
 
+int Mission::getIdSkill()
+{
+    return this->id_skill;
+}
+
 string Mission::getSkill()
 {
     return this->skill;
@@ -45,6 +52,11 @@ float Mission::getDistance(Mission mission, int nb_centres)
 }
 
 // SETTERS
+void Mission::setIdSkill(int id_skill)
+{
+    this->id_skill = id_skill;
+}
+
 void Mission::setDistance(float *distance)
 {
     this->distance = distance;

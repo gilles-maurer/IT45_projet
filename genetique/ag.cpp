@@ -1,19 +1,32 @@
 #include "ag.h"
 
+
 using namespace std;
 
 
 // CONSTRUCTEUR 
-Ag::Ag(int nbgenerations, int taille_pop, double taux_croisement, double taux_mutation, int taille_chromosome, 	double coefNbMisAffecte, double coefDistParcourue, double coefNbMisSpe){
+Ag::Ag(int nbgenerations, int taille_pop, double taux_croisement, double taux_mutation, 
+            double coefNbMisAffecte, double coefDistParcourue, double coefNbMisSpe, 
+            Mission *list_missions, int nb_missions, Employe *list_employes, int nb_employes, 
+            Centre *list_centres, int nb_centres, Group *list_group, int nb_group) {
     this->nbgenerations = nbgenerations;
     this->taille_pop = taille_pop;
     this->taux_croisement = taux_croisement;
     this->taux_mutation = taux_mutation;
-    this->taille_chromosome = taille_chromosome;
     this->coefNbMisAffecte = coefNbMisAffecte;
     this->coefDistParcourue = coefDistParcourue;
     this->coefNbMisSpe = coefNbMisSpe;
-    this->pop = new Population(taille_pop, taille_chromosome);
+    this->pop = new Population(taille_pop, nb_missions, nb_employes);
+
+    this->list_missions = list_missions;
+    this->nb_missions = nb_missions;
+    this->list_employes = list_employes;
+    this->nb_employes = nb_employes;
+    this->list_centres = list_centres;
+    this->nb_centres = nb_centres;
+
+    this->list_group = list_group;
+    this->nb_group = nb_group;
 }
 
 // DESTRUCTEUR
@@ -34,12 +47,15 @@ Chromosome* Ag::optimiser() {
     this->pop->statistiques();
     // boucle principale de l'algorithme
     for (int i = 0; i < this->nbgenerations; i++) {
+
+        cout << "Generation " << i << endl;
+
         // sélection de deux parents
         Chromosome* parent1 = this->pop->selection_roulette();
         Chromosome* parent2 = this->pop->selection_roulette();
         // croisement des deux parents
-        Chromosome* enfant1 = new Chromosome(this->taille_chromosome);
-        Chromosome* enfant2 = new Chromosome(this->taille_chromosome);
+        Chromosome* enfant1 = new Chromosome(this->nb_missions, this->nb_employes);
+        Chromosome* enfant2 = new Chromosome(this->nb_missions, this->nb_employes);
         this->croisement(parent1, parent2, enfant1, enfant2);
         // mutation des deux enfants
         enfant1->muter(this->taux_mutation);
@@ -69,7 +85,7 @@ Chromosome* Ag::optimiser() {
 void Ag::croisement(Chromosome* parent1, Chromosome* parent2,
                       Chromosome* enfant1, Chromosome* enfant2) {
     // tirage aléatoire d'un point de croisement
-    int point = rand() % this->taille_chromosome;
+    int point = rand() % this->nb_missions;
     // copie des gènes des parents dans les enfants
     for (int i = 0; i < point; i++) {
 
