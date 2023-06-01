@@ -29,6 +29,11 @@ Group *GroupMaker::getListGroups()
 
 void GroupMaker::makeGroups()
 {
+
+    for (int i = 0; i < this->nb_centres; i++) {
+        this->list_groups[i].setCentre(this->list_centres[i]);
+    } 
+
     this->list_groups = new Group[this->nb_centres];
 
     for (int i = 0; i < this->nb_missions; i++) {
