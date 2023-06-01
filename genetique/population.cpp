@@ -96,15 +96,9 @@ void Population::ordonner(){
     }
 }
 
-void Population::initialiser(){
-
-    this->individus = new Chromosome[this->taille_pop];
-
-
-
-
-
-    this->ordonner();
+// Permet d'ajouter un individu à la population
+void Population::ajouter(bool** genes, int numIndividu){
+    this->individus[numIndividu].copier(genes);
 }
 
 void Population::evaluer(){

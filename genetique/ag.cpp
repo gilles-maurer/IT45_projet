@@ -39,8 +39,7 @@ Ag::~Ag() {
 
 // fonction principale qui décit le déroulement de l'algorithme évolusionniste
 Chromosome* Ag::optimiser() {
-    // initialisation de la population
-    this->pop->initialiser();
+
     // évaluation de la population
     this->pop->evaluer();
     // affichage des statistiques de la population
@@ -85,11 +84,91 @@ Chromosome* Ag::optimiser() {
 void Ag::croisement(Chromosome* parent1, Chromosome* parent2,
                       Chromosome* enfant1, Chromosome* enfant2) {
     // tirage aléatoire d'un point de croisement
-    int point = rand() % this->nb_missions;
-    // copie des gènes des parents dans les enfants
-    for (int i = 0; i < point; i++) {
+    int point = rand() % this->nb_missions-1;
 
-    }
+    // copie des gènes des parents dans les enfants
+    enfant1->fusion(parent1->getGene(0, point), parent2->getGene(point+1, this->nb_missions), point); // enfant1 = parent1[0:point] + parent2[point+1:nb_missions]
+    enfant2->fusion(parent2->getGene(0, point), parent1->getGene(point+1, this->nb_missions), point); // enfant2 = parent2[0:point] + parent1[point+1:nb_missions]
+}
+
+bool Ag::isPlaningValid(bool* planing){
     
+    return true;
+}
+
+void Ag::initialiser(){
+    cout << "Initialisation de la population" << endl;
+    int nb_solutions = 0; // Nombre de solutions trouvées (pour savoir si on a trouvé autant de solutions valides que de population)
+
+    // Tant qu'on a pas trouvé autant de solutions valides que de population
+    while(nb_solutions < this->nbgenerations){
+
+        bool** genes = new bool*[this->nb_missions];
+
+        bool hasFound = false; // Permet de savoir si on a reussis à trouver une solution valide
+
+        // Pour chaque groupe 
+        for(int numGroupe = 0; numGroupe < this->nb_group; numGroupe++){
+            // On récupère le centre du groupe
+            Centre centre = this->list_group[numGroupe].getCentre();
+
+            // On récupère les missions du groupe
+            Mission *list_missions = this->list_group[numGroupe].getListMissions();
+
+            // On récupère le nombre de mission du groupe
+            int nb_mission = this->list_group[numGroupe].getNbMissions();
+
+            // On récupère la liste des employés du centre du groupe
+            Employe *list_employes;
+            int count = 0;
+            for(int numEmploye = 0; numEmploye < this->nb_employes; numEmploye++){
+                if(this->list_employes[numEmploye].getCentreId() == centre.getId()){
+                    list_employes[count] = this->list_employes[numEmploye];
+                    count++;
+                }
+            }
+            
+            for(int numMission = 0; numMission < nb_mission; numMission++){ // Pour chaque mission (du groupe)
+                // on affecte aléatoirement un employé à la mission, pour eviter de tourner indefiniment, on limite le nombre d'essai au nombre d'employés
+                hasFound = false; // Pour savoir si on a reussis une affectation, on arrete la recherche si on n'a pas reussis
+                for(int i = 0; i < count; i++){
+                    // On tire un nombre aléatoire entre 0 et le nombre d'employés
+
+                    int employeSelectionned = rand() % count;
+                    // On affecte l'employé à la mission
+                    genes[numMission][employeSelectionned] = 1;
+
+                    // On verifie que l'affectation fournie une solution valide
+                    if(!this->isPlaningValid(genes[numMission])){
+                        // Si la solution n'est pas valide on recommence
+                        genes[numMission][employeSelectionned] = 0;
+                    }else{
+                        // Si la solution est valide on arrete la recherche
+                        cout << "Affectation valide trouvée pour la mission " << list_missions[numMission].getId() << endl;
+                        hasFound = true;
+                        break;
+                    }
+                }
+                if (!hasFound){
+                    cout << "Erreur, pas d'affectation valide trouvée pour la mission " << list_missions[numMission].getId() << endl;
+                    break;// On arrete l'exploration de cette population
+                }
+            }
+
+            if (!hasFound){
+                cout << "Erreur, pas d'affectation valide trouvée pour le groupe" << endl;
+                break;// On arrete l'exploration de cette population
+            }
+        }
+
+        if(hasFound){
+            // On ajoute la solution à la population
+            this->pop->ajouter(genes, nb_solutions);
+
+            // On a trouvé une solution valide
+            nb_solutions++;
+        }
+    }
+    this->pop->statistiques();
 
 }

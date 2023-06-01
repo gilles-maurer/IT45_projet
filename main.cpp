@@ -160,6 +160,7 @@ int main(int argc, char **argv)
 		list_mission_lsf, nb_missions_lsf, list_employe_lsf, nb_employe_lsf, list_centre, nb_centres,
 		group_maker_lsf.getListGroups(), nb_centres);
 
+	ag.initialiser(); // on réinitialise la population
 	Chromosome *solution_lsf = ag.optimiser();
 
 	ag = Ag(nb_generations, taille_pop, taux_croisement, taux_mutation,
@@ -167,6 +168,7 @@ int main(int argc, char **argv)
 		list_mission_lpc, nb_missions_lpc, list_employe_lpc, nb_employe_lpc, list_centre, nb_centres,
 		group_maker_lpc.getListGroups(), nb_centres);
 
+	
 	Chromosome *solution_lpc = ag.optimiser();
 
 	// affichage des solutions (part 2)

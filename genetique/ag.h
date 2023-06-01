@@ -69,6 +69,10 @@ public:
     void croisement(Chromosome* parent1, Chromosome* parent2,
                       Chromosome* enfant1, Chromosome* enfant2);
 
+	void initialiser();
+
+	bool isPlaningValid(bool* planing);
+
 };
 
 

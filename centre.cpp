@@ -43,9 +43,6 @@ float Centre::getDistance(Centre centre)
 }
 
 
-
-
-
 // SETTERS
 
 void Centre::setDistance(float *distance)

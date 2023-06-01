@@ -30,15 +30,16 @@ public:
 					    //   l'exécution des operateurs de mutation et de croisement
     void ordonner();    // ordonne le sens de la tournée si gene[1] > gene[taille-1]
     void copier(Chromosome* source);  // copie le Chromosome 'source'
+	void copier(bool** genes);  // copie le gene 'source'
 	bool** getGene();	 // retourne le tableau de genes
+	bool** getGene(int firstPoint, int lastPoint); // retourne le tableau de genes entre deux point
 	int getFitness();	 // retourne la fitness
     bool identique(Chromosome* chro); // test si 2 chromosome sont identique
 
 	Chromosome* fusion(Chromosome* chro1, Chromosome* chro2); // fusionne 2 chromosomes
+	void fusion(bool** gene1, bool** gene2, int point); // fusionne 2 genomes
 
 	void print(); // fonction d'affichage du Chromosome (i.e. de la solution)
-
-	//Surchage d'opérateur
 
     // OPERATEURS DE MUTATION
     void muter(int taux);    // opérateur de mutation

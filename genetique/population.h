@@ -31,7 +31,7 @@ public:
     Chromosome *selection_roulette();                 // sel�ction par roulette biais�e d'un individu de la population
     void remplacement_roulette(Chromosome *individu); // rempacement par roulette biais�e d'un individu de la population par un Chromosome donn�
 	void evaluer();
-	void initialiser();
+	void ajouter(bool** genes, int numIndividu);
     void ordonner();
     void reordonner();
     void print();

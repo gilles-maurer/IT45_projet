@@ -4,6 +4,7 @@
 using namespace std;
 
 
+
 Mission::Mission(int id, int day, int start_period, int end_period,string skill, string speciality)
 {
     this->id = id;
@@ -12,7 +13,7 @@ Mission::Mission(int id, int day, int start_period, int end_period,string skill,
     this->end_period = end_period;
     this->skill = skill;
     this->speciality = speciality;
-
+ 
     this->id_skill = -1;
 }
 

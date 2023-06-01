@@ -21,10 +21,6 @@ Chromosome::Chromosome(int nb_missions, int employes){
     this->fitness = 0;
 
     this->genes = new bool*[nb_missions];
-    for(int i = 0; i < nb_missions; i++){
-        this->genes[i] = new bool[nb_employes];
-    }
-
 }
 
 
@@ -37,10 +33,22 @@ bool** Chromosome::getGene(){
     return this->genes;
 }
 
+// retourne le tableau de genes entre deux point
+bool** Chromosome::getGene(int firstPoint, int secondPoint){
+    bool** genes = new bool*[secondPoint - firstPoint];
+
+    for(int i = 0; i < secondPoint - firstPoint; i++){
+        for(int j = 0; j < this->nb_employes; j++){
+            genes[i][j] = this->genes[firstPoint + i][j];
+        }
+    }
+    
+    return genes;
+}
+
 int Chromosome::getFitness(){
     return this->fitness;
 }
-
 
 // METHODES
 void Chromosome::print(){// fonction d'affichage du Chromosome (i.e. de la solution)
@@ -92,6 +100,10 @@ void Chromosome::copier(Chromosome* source){ // copie le Chromosome 'source'
     this->genes = source->getGene();
 }
 
+void Chromosome::copier(bool** genes){ // copie le gene 'source'
+    this->genes = genes;
+}
+
 bool Chromosome::identique(Chromosome* chro){ // test si 2 chromosome sont identique
     if(this->genes != chro->getGene()){
         return false;
@@ -118,9 +130,26 @@ void Chromosome::muter(int taux){ // Echange deux missions (i.e. deux colomnes d
 
 
 Chromosome* Chromosome::fusion(Chromosome* chro1, Chromosome* chro2){ // fusionne 2 chromosomes
+    //
+}
 
-    Chromosome* chroFusion = new Chromosome(this->nb_missions, this->nb_employes);
+void Chromosome::fusion(bool** gene1, bool** gene2, int point){ // fusionne 2 genomes
+    // taille total = n, taille gene1 = n1, taille gene2 = n2, n1 + n2 = n
+    // Il faut fusioner *gene1[0] à *gene2[0] ... *gene1[n1] à *gene2[n2]
 
-    return chroFusion;
+    // pour chaque employé
+    for (int i = 0; i < this->nb_employes; i++){
+        // Allouer un nouvel espace mémoire pour le tableau fusionné
+        bool* fusion = (bool*)malloc((this->nb_missions) * sizeof(bool));
+
+        // Copier les valeurs du tableau gene1
+        memcpy(fusion, gene1, point * sizeof(bool));
+
+        // Copier les valeurs du tableau gene2 à la suite de gene1
+        memcpy(fusion + point, gene2, (this->nb_missions - point) * sizeof(bool));
+        
+        // On a fusionné *gene1[i] et *gene2[i]
+        this->genes[i] = fusion;
+    }
 }
 
