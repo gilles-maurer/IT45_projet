@@ -131,7 +131,6 @@ int main(int argc, char **argv)
 			i_lpc++;
 		}
 	}
-
 	
 	// création des groupes (part 1)
 
