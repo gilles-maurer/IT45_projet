@@ -91,7 +91,42 @@ void Ag::croisement(Chromosome* parent1, Chromosome* parent2,
     enfant2->fusion(parent2->getGene(0, point), parent1->getGene(point+1, this->nb_missions), point); // enfant2 = parent2[0:point] + parent1[point+1:nb_missions]
 }
 
-bool Ag::isPlaningValid(bool* planing){
+bool Ag::isPlaningValid(bool* planning) { 
+
+    // pour être valide il faut qu'aucune mission ne se chevauche
+    // il faut que l'employé ne travaille pas plus de 7h par jour
+    // il faut que l'employé ne travaille pas plus de 35h par semaine
+    // il faut que l'amplitude horaire de travail soit inférieure à 13h par jour
+
+    int heures_semaine = 0;
+
+    for (int i = 1; i <= 5; i++) { // on regarde pour tout les jours 
+
+        int heures_jour = 0;
+
+        for (int m = 0; m < nb_missions; m++) { // on parcours toutes les missisions 
+
+            if (planning[m] == 1) { // si la mission est affectée à l'employé
+                if (list_missions[m].getDay() == i) { // si la mission est le jour i
+
+                    heures_semaine += list_missions[m].getDuration(); // on ajoute la durée de la mission au nombre d'heures travaillées dans la semaine
+                    heures_jour += list_missions[m].getDuration(); // on ajoute la durée de la mission au nombre d'heures travaillées dans la journée
+                    
+                }
+            }
+
+            if (heures_jour > 7) { // si l'employé travaille plus de 7h dans la journée
+                return false;
+            }
+
+        }
+
+    }
+
+    if (heures_semaine > 35) { // si l'employé travaille plus de 35h dans la semaine
+        return false;
+    }
+
     
     return true;
 }
@@ -138,8 +173,14 @@ void Ag::initialiser(){
                     // On affecte l'employé à la mission
                     genes[numMission][employeSelectionned] = 1;
 
+                    bool* planning = new bool[nb_missions]; // On crée un tableau de booléen pour stocker le planning de l'employé 
+
+                    for (int j = 0; j < nb_missions; j++) {
+                        planning[j] = genes[j][employeSelectionned];
+                    }
+                    
                     // On verifie que l'affectation fournie une solution valide
-                    if(!this->isPlaningValid(genes[numMission])){
+                    if(!this->isPlaningValid(planning)){
                         // Si la solution n'est pas valide on recommence
                         genes[numMission][employeSelectionned] = 0;
                     }else{

@@ -29,6 +29,11 @@ public:
     std::string getSkill();
     float getDistance(Mission mission, int nb_centres);
 
+    int getDay();
+    int getDuration();
+    int getStartPeriod();
+    int getEndPeriod();
+
     // SETTERS
     void setIdSkill(int id_skill);
     void setDistance(float *distance);

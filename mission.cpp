@@ -52,6 +52,26 @@ float Mission::getDistance(Mission mission, int nb_centres)
     return this->distance[mission.getId() + nb_centres - 1];
 }
 
+int Mission::getDay()
+{
+    return this->day;
+}
+
+int Mission::getDuration()
+{
+    return (this->end_period - this->start_period) / 60;
+}
+
+int Mission::getStartPeriod()
+{
+    return this->start_period / 60;
+}
+
+int Mission::getEndPeriod()
+{
+    return this->end_period / 60;
+}
+
 // SETTERS
 void Mission::setIdSkill(int id_skill)
 {
