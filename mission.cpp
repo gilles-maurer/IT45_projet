@@ -62,12 +62,12 @@ int Mission::getDuration()
     return (this->end_period - this->start_period) / 60;
 }
 
-int Mission::getStartPeriod()
+int Mission::getStart()
 {
     return this->start_period / 60;
 }
 
-int Mission::getEndPeriod()
+int Mission::getEnd()
 {
     return this->end_period / 60;
 }

@@ -91,7 +91,7 @@ void Ag::croisement(Chromosome* parent1, Chromosome* parent2,
     enfant2->fusion(parent2->getGene(0, point), parent1->getGene(point+1, this->nb_missions), point); // enfant2 = parent2[0:point] + parent1[point+1:nb_missions]
 }
 
-bool Ag::isPlaningValid(bool* planning) { 
+bool Ag::isPlaningValid(bool* planning) { // planning correspond donc à toutes les missions affectées à un employé 
 
     // pour être valide il faut qu'aucune mission ne se chevauche
     // il faut que l'employé ne travaille pas plus de 7h par jour
@@ -103,6 +103,8 @@ bool Ag::isPlaningValid(bool* planning) {
     for (int i = 1; i <= 5; i++) { // on regarde pour tout les jours 
 
         int heures_jour = 0;
+        Mission *mission_jour = new Mission[nb_missions]; // on crée un tableau de missions pour stocker les missions du jour i
+        int count = 0;
 
         for (int m = 0; m < nb_missions; m++) { // on parcours toutes les missisions 
 
@@ -111,24 +113,110 @@ bool Ag::isPlaningValid(bool* planning) {
 
                     heures_semaine += list_missions[m].getDuration(); // on ajoute la durée de la mission au nombre d'heures travaillées dans la semaine
                     heures_jour += list_missions[m].getDuration(); // on ajoute la durée de la mission au nombre d'heures travaillées dans la journée
-                    
+
+                    mission_jour[count] = list_missions[m]; // on ajoute la mission au tableau de missions du jour i
+                    count++;
+
                 }
             }
 
-            if (heures_jour > 7) { // si l'employé travaille plus de 7h dans la journée
+            mission_jour = sortMission(mission_jour, count); // on trie les missions du jour par heure de début
+
+            if(areMissionsOverlapping(mission_jour, count)){ // si les missions du jour se chevauchent
                 return false;
             }
 
-        }
+            if(isDayTooLong(mission_jour, count)){ // si l'amplitude horaire de travail est supérieure à 13h
+                return false;
+            }
 
+            float temps_trajet = rideTime(mission_jour, count); // on calcule le temps de trajet entre les missions du jour
+            
+            if (heures_jour + temps_trajet > 7) { // si l'employé travaille plus de 7h dans la journée
+                return false;
+            }
+        }
     }
 
     if (heures_semaine > 35) { // si l'employé travaille plus de 35h dans la semaine
         return false;
     }
 
-    
     return true;
+}
+
+float Ag::rideTime(Mission* missions, int count) {
+
+    float temps_total = 0;
+
+    for (int i = 0; i < count - 1; i++) {
+        // on calcule le temps pour aller d'une mission à une autre 
+        float distance = missions[i].getDistance(missions[i + 1], this->nb_centres);    // on suppose que les employés se déplacent à 50km/h
+
+        // on calcule le temps de trajet entre les deux missions
+        float temps_trajet = distance / 50; // on suppose que les employés se déplacent à 50km/h
+
+        temps_total += temps_trajet;
+    }
+
+
+    return temps_total;
+}
+
+Mission* Ag::sortMission(Mission* missions, int count) {
+
+    // on tri les missions par heure de début
+
+    for (int i = 0; i < count; i++) {
+        for (int j = 0; j < count - 1; j++) {
+            if (missions[j].getStart() > missions[j + 1].getStart()) {
+                Mission temp = missions[j];
+                missions[j] = missions[j + 1];
+                missions[j + 1] = temp;
+            }
+        }
+    }
+
+    return missions;
+}
+
+bool Ag::areMissionsOverlapping(Mission* missions, int count) {
+
+    for (int i = 0; i < count - 1; i++) {
+        // on calcule le temps pour aller d'une mission à une autre 
+        float distance = missions[i].getDistance(missions[i + 1], this->nb_centres);   
+
+        // on calcule le temps de trajet entre les deux missions
+        float temps_trajet = distance / 50; // on suppose que les employés se déplacent à 50km/h
+
+        if (missions[i].getEnd() + temps_trajet > missions[i + 1].getStart()) { // si le temps de trajet entre les deux missions fait que la mission i+1 commence avant la fin de la mission i
+            return true;
+        }
+
+    }
+
+    return false;
+} 
+
+bool Ag::isDayTooLong(Mission* missions, int count) {
+
+    int start = 24; 
+    int end = 0; 
+
+    for (int i = 0; i < count; i++) {
+        if (missions[i].getStart() < start) {
+            start = missions[i].getStart();
+        }
+        if (missions[i].getEnd() > end) {
+            end = missions[i].getEnd();
+        }
+    }
+
+    if (end - start > 13) {
+        return true;
+    }
+
+    return false;
 }
 
 void Ag::initialiser(){

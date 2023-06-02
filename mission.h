@@ -31,8 +31,8 @@ public:
 
     int getDay();
     int getDuration();
-    int getStartPeriod();
-    int getEndPeriod();
+    int getStart();
+    int getEnd();
 
     // SETTERS
     void setIdSkill(int id_skill);

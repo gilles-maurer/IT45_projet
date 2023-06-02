@@ -73,6 +73,11 @@ public:
 
 	bool isPlaningValid(bool* planing);
 
+	Mission* sortMission(Mission* missions, int count);
+	float rideTime(Mission* missions, int count);
+	bool areMissionsOverlapping(Mission* missions, int count); 
+	bool isDayTooLong(Mission* missions, int count);
+
 };
 
 
