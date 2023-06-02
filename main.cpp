@@ -6,6 +6,8 @@
 #include "instances/data.h"
 #include "genetique/ag.h"
 
+#include "functions.h"
+
 #include <iostream>
 #include <string>
 
@@ -15,41 +17,21 @@ using namespace std;
 int main(int argc, char **argv)
 {
  
-    // valeurs par défaut
-	string file_name = "instances/30Missions-2centres/";
-
+	// initialisation des parametres
+	string file_name;
 	int nb_generations;
-	int taille_pop;          
-	double taux_croisement;  
+	int taille_pop;
+	double taux_croisement;
 	double taux_mutation;
 	double coefNbMisAffecte;
 	double coefDistParcourue;
 	double coefNbMisSpe;
 
+	init_parameter(argc, argv, file_name, nb_generations, taille_pop, taux_croisement, 
+					taux_mutation, coefNbMisAffecte, coefDistParcourue, coefNbMisSpe);
 
-	if (argc == 2)
-	{
-        // initialisation des parametres
-		file_name = argv[1];
-	}
-	else if (argc == 1)
-	{
-		cout << "Parametres par default" << endl;
 
-		nb_generations = 10;
-		taille_pop = 10;          
-		taux_croisement = 0.5;  
-		taux_mutation = 0.5;
-		coefNbMisAffecte = 0.2;
-		coefDistParcourue = 0.1;
-		coefNbMisSpe = 0.7;
-
-	}
-	else
-	{
-		exit(EXIT_FAILURE);
-	}
-
+	// lecture des données
 	Data data(file_name);
 
 	int nb_employes = data.count_lines("employees.csv");
@@ -69,11 +51,8 @@ int main(int argc, char **argv)
 		list_mission[i].setDistance(distance[i]);
 	}
 
-	// initialisation des parametres
-
 
 	// séparer les infos en 2 groupe (par compétence)
-
 	int nb_employe_lsf = 0;
 
 	for (int i = 0; i < nb_employes; i++) {
@@ -133,22 +112,22 @@ int main(int argc, char **argv)
 	}
 
 	// création des groupes (part 1)
-
 	GroupMaker group_maker_lsf = GroupMaker(nb_missions_lsf, nb_centres, list_mission_lsf, list_centre);
 	GroupMaker group_maker_lpc = GroupMaker(nb_missions_lpc, nb_centres, list_mission_lpc, list_centre);
 
 	group_maker_lsf.makeGroups();
 	group_maker_lpc.makeGroups();
 
-	// affichage des groupes (part 1)
 
+	// affichage des groupes (part 1)
 	cout << "Groupes pour les missions LSF : " << endl;
 	group_maker_lsf.printGroups();
 
 	cout << "Groupes pour les missions LPC : " << endl;
 	group_maker_lpc.printGroups();
 
-    // algo genetique
+
+    // algo genetique (part 2)
 	cout << ("----------------") << endl;
 	cout << ("Algorithme genetique") << endl;
 	cout << ("----------------") << endl;
@@ -169,22 +148,13 @@ int main(int argc, char **argv)
 	ag.initialiser(); // on initialise la population
 	Chromosome *solution_lpc = ag.optimiser();
 
-	// affichage des solutions (part 2)
 
+	// affichage des solutions (part 2)
 	cout << "Resultat pour les missions LSF : " << endl;
 	solution_lsf->print();
 
 	cout << "Resultat pour les missions LPC : " << endl;
 	solution_lpc->print();
 
-
-	// fusion des solutions
-	Chromosome *solution = new Chromosome(nb_missions, nb_employes);
-	solution->fusion(solution_lsf, solution_lpc);
-
-
-    // afficher la meilleure solution
-    cout << "La meilleure solution totale est : " << endl;
-	solution->print();
 
 }
