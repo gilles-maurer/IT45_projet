@@ -12,8 +12,6 @@ GroupMaker::GroupMaker(int nb_missions, int nb_centres, Mission *list_missions, 
     this->nb_centres = nb_centres;
     this->list_missions = list_missions;
     this->list_centres = list_centres;
-
-    this->list_groups = new Group[nb_centres];
 }
 
 GroupMaker::~GroupMaker()
@@ -31,12 +29,11 @@ Group *GroupMaker::getListGroups()
 
 void GroupMaker::makeGroups()
 {
+    this->list_groups = new Group[this->nb_centres];
 
     for (int i = 0; i < this->nb_centres; i++) {
         this->list_groups[i].setCentre(this->list_centres[i]);
     } 
-
-    this->list_groups = new Group[this->nb_centres];
 
     for (int i = 0; i < this->nb_missions; i++) {
         Mission mission = this->list_missions[i];

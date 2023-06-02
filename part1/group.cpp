@@ -47,7 +47,7 @@ void Group::setListMissions(Mission *list_missions)
 void Group::print()
 {
     cout << "Groupe " << " : " << endl;
-    cout << "Centre : " << this->centre.getName() << endl;
+    this->centre.print();
     cout << "Missions : " << endl;
     for (int i = 0; i < this->nb_missions; i++) {
         cout << "\t" << this->list_missions[i].getIdSkill() << endl;

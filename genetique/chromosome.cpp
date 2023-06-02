@@ -130,7 +130,10 @@ void Chromosome::muter(int taux){ // Echange deux missions (i.e. deux colomnes d
 
 
 Chromosome* Chromosome::fusion(Chromosome* chro1, Chromosome* chro2){ // fusionne 2 chromosomes
-    //
+    
+
+    return new Chromosome();
+
 }
 
 void Chromosome::fusion(bool** gene1, bool** gene2, int point){ // fusionne 2 genomes

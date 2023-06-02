@@ -131,7 +131,7 @@ int main(int argc, char **argv)
 			i_lpc++;
 		}
 	}
-	
+
 	// création des groupes (part 1)
 
 	GroupMaker group_maker_lsf = GroupMaker(nb_missions_lsf, nb_centres, list_mission_lsf, list_centre);
@@ -148,7 +148,6 @@ int main(int argc, char **argv)
 	cout << "Groupes pour les missions LPC : " << endl;
 	group_maker_lpc.printGroups();
 
-
     // algo genetique
 	cout << ("----------------") << endl;
 	cout << ("Algorithme genetique") << endl;
@@ -159,7 +158,7 @@ int main(int argc, char **argv)
 		list_mission_lsf, nb_missions_lsf, list_employe_lsf, nb_employe_lsf, list_centre, nb_centres,
 		group_maker_lsf.getListGroups(), nb_centres);
 
-	ag.initialiser(); // on réinitialise la population
+	ag.initialiser(); // on initialise la population
 	Chromosome *solution_lsf = ag.optimiser();
 
 	ag = Ag(nb_generations, taille_pop, taux_croisement, taux_mutation,
@@ -167,7 +166,7 @@ int main(int argc, char **argv)
 		list_mission_lpc, nb_missions_lpc, list_employe_lpc, nb_employe_lpc, list_centre, nb_centres,
 		group_maker_lpc.getListGroups(), nb_centres);
 
-	
+	ag.initialiser(); // on initialise la population
 	Chromosome *solution_lpc = ag.optimiser();
 
 	// affichage des solutions (part 2)
