@@ -47,6 +47,11 @@ string Mission::getSkill()
     return this->skill;
 }
 
+string Mission::getSpeciality()
+{
+    return this->speciality;
+}
+
 float Mission::getDistance(Mission mission, int nb_centres)
 {
     return this->distance[mission.getId() + nb_centres - 1];

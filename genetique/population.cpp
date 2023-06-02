@@ -25,8 +25,8 @@ Population::~Population(){}
 // METHODES
 
 // affiche quelques statistiques sur la population
-void Population::statistiques(){
-    individus[0].evaluer();
+void Population::statistiques(double coefNbMisAffecte, double coefDistParcourue, double coefNbMisSpe){
+    individus[0].evaluer(coefNbMisAffecte, coefDistParcourue, coefNbMisSpe);
     int fitness = individus[0].getFitness();
     cout << "Fitness: " << fitness << endl;
 
@@ -101,9 +101,9 @@ void Population::ajouter(bool** genes, int numIndividu){
     this->individus[numIndividu].copier(genes);
 }
 
-void Population::evaluer(){
+void Population::evaluer(double coefNbMisAffecte, double coefDistParcourue, double coefNbMisSpe){
     for(int i = 0; i < this->taille_pop; i++){
-        this->individus[i].getFitness();
+        this->individus[i].evaluer(coefNbMisAffecte, coefDistParcourue, coefNbMisSpe);
     }
 }
 

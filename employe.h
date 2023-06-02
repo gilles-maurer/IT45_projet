@@ -25,6 +25,7 @@ public:
     int getIdSkill();
     int getCentreId();
     std::string getSkill();
+    std::string getSpeciality();
 
     // SETTERS
     void setIdSkill(int id_skill);

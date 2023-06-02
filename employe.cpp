@@ -49,6 +49,12 @@ string Employe::getSkill()
     return this->skill;
 }
 
+string Employe::getSpeciality()
+{
+    return this->speciality;
+}
+
+
 // SETTERS
 void Employe::setIdSkill(int id_skill)
 {

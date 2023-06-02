@@ -9,14 +9,22 @@ Chromosome::Chromosome(){
     this->nb_missions = -1;
     this->nb_employes = -1; 
     this->fitness = -1;
+
+    this->list_missions = NULL;
+
     this->genes = NULL;
 
 }
 
-Chromosome::Chromosome(int nb_missions, int employes){
+Chromosome::Chromosome(int nb_missions, int nb_employes, int nb_centres, Mission *list_missions, Employe *list_employes, Centre *list_centres){
 
     this->nb_missions = nb_missions;
     this->nb_employes = nb_employes;
+    this->nb_centres = nb_centres;
+
+    this->list_missions = list_missions;
+    this->list_employes = list_employes;
+    this->list_centres = list_centres;
 
     this->fitness = 0;
 
@@ -63,12 +71,12 @@ void Chromosome::print(){// fonction d'affichage du Chromosome (i.e. de la solut
 
 //Pour ces 3 critères on pourra attribuer un coefficient qui permettra de faire varier l’importance 
 //de chacun dans la valeur de la fitness, on s’assurera cependant de conserver l’ordre d’importance du sujet.  
-void Chromosome::evaluer(){
-    int fitness = 0; // valeur de la fonction objectif (fitness) de la solution
+void Chromosome::evaluer(double coefNbMisAffecte, double coefDistParcourue, double coefNbMisSpe){
     int nbMissionAffecte = 0; // nombre de mission affecté
     int distanceParcourue = 0; // distance parcourue par les employés dans la solution
     int nbMissionSpe = 0; // nombre de mission ou la spécialité est respectée
 
+    // Calcul du nombre de mission affecté
     for(int i = 0; i < this->nb_missions; i++){ 
         for(int j = 0; j < this->nb_employes; j++){
             if(this->genes[i][j] == 1){
@@ -76,13 +84,89 @@ void Chromosome::evaluer(){
             }
         }
     }
-    fitness = nbMissionAffecte + distanceParcourue + nbMissionSpe;
-    this->fitness = fitness;
+
 
     // Calcul de la distance parcourue par les employés dans la solution 
+    for (int i = 0; i < this->nb_employes; i++){ // chaque employé
+
+        for (int j = 0; j < 5; j++){ // chaque jour 
+            
+            Mission* missions = new Mission[this->nb_missions];
+            int count = 0;
+
+            for (int k = 0; k < this->nb_missions; k++){ // chaque mission
+                if(this->genes[k][i] == 1){ // si la mission est affecté à l'employé
+                    if (list_missions[k].getDay() == j){ // si la mission est le jour j
+                        missions[count] = list_missions[k];
+                        count++;
+                    }
+                }    
+            }
+
+            // on tri les missions par heure de début
+            missions = sortMission(missions, count);
+
+            // on calcule la distance parcourue par l'employé pour le jour j
+            distanceParcourue += ridelenght(missions, count, i);
+        }
+    }
+
+
+    // Calcul du nombre de mission ou la spécialité est respectée
+
+    for(int i = 0; i < this->nb_missions; i++){ // chaque mission
+        for(int j = 0; j < this->nb_employes; j++){ // chaque employé
+            if(this->genes[i][j] == 1){ // si la mission est affecté à l'employé
+                if(list_missions[i].getSpeciality() == list_employes[j].getSpeciality()){ // si la spécialité de l'employé correspond à la spécialité de la mission
+                    nbMissionSpe++;
+                }
+            }
+        }
+    }
+
+
+    this->fitness = coefNbMisAffecte * nbMissionAffecte + 
+                        coefDistParcourue * distanceParcourue + coefNbMisSpe * nbMissionSpe;
 
 }
-	                    
+
+Mission* Chromosome::sortMission(Mission* missions, int count){
+   
+    // on tri les missions par heure de début
+    for (int i = 0; i < count; i++) {
+        for (int j = 0; j < count - 1; j++) {
+            if (missions[j].getStart() > missions[j + 1].getStart()) {
+                Mission temp = missions[j];
+                missions[j] = missions[j + 1];
+                missions[j + 1] = temp;
+            }
+        }
+    }
+
+    return missions;
+}
+
+float Chromosome::ridelenght(Mission* missions, int count, int id_employe){
+    
+    float distance_totale = 0;
+
+    for (int i = 0; i < count - 1; i++) {
+        // on calcule le temps pour aller d'une mission à une autre 
+        float distance = missions[i].getDistance(missions[i + 1], this->nb_centres);
+
+        // on ajoute le temps de trajet à la distance totale
+        distance_totale += distance;
+    }
+
+    int id_centre = list_employes[id_employe].getCentreId();
+    Centre centre = list_centres[id_centre];
+
+    distance_totale += centre.getDistance(missions[0], this->nb_centres);
+    distance_totale += centre.getDistance(missions[count - 1], this->nb_centres);
+
+    return distance_totale; 
+}
+
 void Chromosome::ordonner(){  // ordonne le sens de la tournée si gene[1] > gene[taille-1]
     if(this->genes[0][0] > this->genes[this->nb_missions-1][this->nb_employes-1]){
         for(int i = 0; i < this->nb_missions; i++){

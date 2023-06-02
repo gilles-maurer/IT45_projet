@@ -21,7 +21,7 @@ public:
 	~Population();              // destructeur de l'objet
 
 	// METHODES
-	void statistiques(); // affiche quelques statistiques sur la population
+	void statistiques(double coefNbMisAffecte, double coefDistParcourue, double coefNbMisSpe); // affiche quelques statistiques sur la population
 	int nb_Chromosomes_similaires(Chromosome* chro);
 	                     // compte le nombre de Chromosomes similaires � 'chro'
 	void similitude();   // affiche les r�sultats du comptage de Chromosomes similaires
@@ -30,7 +30,8 @@ public:
     // OPERATEURS DE SELECTION ET DE REMPLACEMENT
     Chromosome *selection_roulette();                 // sel�ction par roulette biais�e d'un individu de la population
     void remplacement_roulette(Chromosome *individu); // rempacement par roulette biais�e d'un individu de la population par un Chromosome donn�
-	void evaluer();
+	void evaluer(double coefNbMisAffecte, double coefDistParcourue, double coefNbMisSpe);
+	                     
 	void ajouter(bool** genes, int numIndividu);
     void ordonner();
     void reordonner();

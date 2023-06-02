@@ -40,10 +40,10 @@ Ag::~Ag() {
 // fonction principale qui décit le déroulement de l'algorithme évolusionniste
 Chromosome* Ag::optimiser() {
 
-    // évaluation de la population
-    this->pop->evaluer();
+    // évaluation de la population (appel de la fonction evaluer de chaque individu)
+    this->pop->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe); 
     // affichage des statistiques de la population
-    this->pop->statistiques();
+    this->pop->statistiques(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
     // boucle principale de l'algorithme
     for (int i = 0; i < this->nbgenerations; i++) {
 
@@ -60,16 +60,16 @@ Chromosome* Ag::optimiser() {
         enfant1->muter(this->taux_mutation);
         enfant2->muter(this->taux_mutation);
         // évaluation des deux enfants
-        enfant1->evaluer();
-        enfant2->evaluer();
+        enfant1->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
+        enfant2->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
         // remplacement des deux parents par les deux enfants
         this->pop->remplacement_roulette(enfant1);
         this->pop->remplacement_roulette(enfant2);
         // affichage des statistiques de la population
-        this->pop->statistiques();
+        this->pop->statistiques(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
     }
     // affichage des statistiques de la population
-    this->pop->statistiques();
+    this->pop->statistiques(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
 
     // retourne le meilleur individu de la population
 
@@ -298,6 +298,6 @@ void Ag::initialiser(){
             nb_solutions++;
         }
     }
-    this->pop->statistiques();
+    this->pop->statistiques(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
 
 }

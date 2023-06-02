@@ -27,6 +27,8 @@ public:
     int getId();
     int getIdSkill();
     std::string getSkill();
+    std::string getSpeciality();
+
     float getDistance(Mission mission, int nb_centres);
 
     int getDay();
