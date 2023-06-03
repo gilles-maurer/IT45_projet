@@ -83,9 +83,6 @@ bool Ag::isPlaningValid(bool* planning) { // planning correspond donc à toutes 
     // il faut que l'employé ne travaille pas plus de 7h par jour
     // il faut que l'employé ne travaille pas plus de 35h par semaine
     // il faut que l'amplitude horaire de travail soit inférieure à 13h par jour
-    for(int i = 0; i < this->nb_missions; i++){
-        cout << planning[i] << " ";
-    }
 
     int heures_semaine = 0;
 
@@ -169,25 +166,20 @@ Mission* Ag::sortMission(Mission* missions, int count) {
 }
 
 bool Ag::areMissionsOverlapping(Mission* missions, int count) {
-    cout << "count : " << count << " ";
 
     for (int i = 0; i < count - 1; i++) {
-        cout << i;
 
         // on calcule le temps pour aller d'une mission à une autre 
         float distance = missions[i].getDistance(missions[i + 1], this->nb_centres);
-        cout << "bka";
 
         // on calcule le temps de trajet entre les deux missions
         float temps_trajet = distance / 50; // on suppose que les employés se déplacent à 50km/h
 
         if (missions[i].getEnd() + temps_trajet > missions[i + 1].getStart()) { // si le temps de trajet entre les deux missions fait que la mission i+1 commence avant la fin de la mission i 
-            cout << endl;
             return true;
         }
 
     }
-    cout << endl;
 
     return false;
 } 
@@ -216,8 +208,7 @@ bool Ag::isDayTooLong(Mission* missions, int count) {
 void Ag::initialiser(){
     cout << "Initialisation de la population" << endl;
     srand(time(NULL));
-    // Nombre de solutions trouvées (pour savoir si on a trouvé autant de solutions valides que de population)
-
+ 
     // Tant qu'on a pas trouvé autant de solutions valides que de population
     for(int nbsol = 0; nbsol < this->taille_pop; nbsol++){
 
@@ -280,7 +271,7 @@ void Ag::initialiser(){
                     }
                     
                     // On verifie que l'affectation fournie une solution valide
-                    if(!true){
+                    if(!this->isPlaningValid(planning)){
                         // Si la solution n'est pas valide on recommence
                         genes[idMission][list_employes[employeSelectionned].getIdSkill()-1] = 0;
                     }else{
@@ -298,7 +289,8 @@ void Ag::initialiser(){
             cout << endl;
         }
 
-        cout << nbsol + 1 << " / " << this->taille_pop << endl;
+        //On ajoute la solution à un nouvel individu de la population
+        this->pop->ajouter(genes, nbsol);
 
     }
 
