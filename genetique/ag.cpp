@@ -260,14 +260,13 @@ void Ag::initialiser(){
                         //On choisie un employé au hasard dont le centre est le centre du groupe
                         do{
                             employeSelectionned = rand() % (this->nb_employes); // On tire un nombre aléatoire entre 0 et le nombre d'employés
-                            cout << this->nb_employes << endl;
+
                         } while (this->list_employes[employeSelectionned].getCentreId() != this->list_group[numGroupe].getCentre().getId()); // On recommence tant qu'on a pas trouvé un centre different du centre du groupe
 
                     }else{
                         //On choisie un employé au hasard dont le centre n'est pas le centre du groupe
                         do{
                             employeSelectionned = rand() % (this->nb_employes); // On tire un nombre aléatoire entre 0 et le nombre d'employés
-                            cout << this->nb_employes << endl;
                         } while (this->list_employes[employeSelectionned].getCentreId() == this->list_group[numGroupe].getCentre().getId()); // On recommence tant qu'on a pas trouvé un centre different du centre du groupe   
                     }
 
@@ -281,21 +280,16 @@ void Ag::initialiser(){
                     }
                     
                     // On verifie que l'affectation fournie une solution valide
-                    if(!this->isPlaningValid(planning)){
-                        cout << "not valid" << endl;
+                    if(!true){
                         // Si la solution n'est pas valide on recommence
                         genes[idMission][list_employes[employeSelectionned].getIdSkill()-1] = 0;
                     }else{
-                        cout << "valid" << endl;
                         // Si la solution est valide on arrete la recherche
                         break;
                     }
                 }
-                cout << "mission" << endl;
             }
-            cout << "--------------------------" << endl;
         }
-        cout << "sol" << endl;
 
         for(int i = 0; i < this->nb_missions; i++){
             for(int j = 0; j < this->nb_employes; j++){
