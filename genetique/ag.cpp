@@ -107,25 +107,35 @@ bool Ag::isPlaningValid(bool* planning) { // planning correspond donc à toutes 
 
             mission_jour = sortMission(mission_jour, count); // on trie les missions du jour par heure de début
 
+            cout << "check 1" << endl;
+
             if(areMissionsOverlapping(mission_jour, count)){ // si les missions du jour se chevauchent
                 return false;
             }
 
+            cout << "check 2" << endl;
+
             if(isDayTooLong(mission_jour, count)){ // si l'amplitude horaire de travail est supérieure à 13h
                 return false;
             }
+
+            cout << "check 3" << endl;
 
             float temps_trajet = rideTime(mission_jour, count); // on calcule le temps de trajet entre les missions du jour
             
             if (heures_jour + temps_trajet > 7) { // si l'employé travaille plus de 7h dans la journée
                 return false;
             }
+
+            cout << "check 4" << endl;
         }
     }
 
     if (heures_semaine > 35) { // si l'employé travaille plus de 35h dans la semaine
         return false;
     }
+
+    cout << "Planning valide" << endl;
 
     return true;
 }
@@ -152,6 +162,10 @@ Mission* Ag::sortMission(Mission* missions, int count) {
 
     // on tri les missions par heure de début
 
+    if (count == 0 || count == 1) {
+        return missions;
+    }
+
     for (int i = 0; i < count; i++) {
         for (int j = 0; j < count - 1; j++) {
             if (missions[j].getStart() > missions[j + 1].getStart()) {
@@ -167,6 +181,12 @@ Mission* Ag::sortMission(Mission* missions, int count) {
 
 bool Ag::areMissionsOverlapping(Mission* missions, int count) {
 
+    if (count == 0 || count == 1) {
+        return false;
+    }
+
+    cout << "check 1.1" << endl;
+
     for (int i = 0; i < count - 1; i++) {
 
         // on calcule le temps pour aller d'une mission à une autre 
@@ -175,11 +195,15 @@ bool Ag::areMissionsOverlapping(Mission* missions, int count) {
         // on calcule le temps de trajet entre les deux missions
         float temps_trajet = distance / 50; // on suppose que les employés se déplacent à 50km/h
 
+        cout << "check 1.2" << endl;
+
         if (missions[i].getEnd() + temps_trajet > missions[i + 1].getStart()) { // si le temps de trajet entre les deux missions fait que la mission i+1 commence avant la fin de la mission i 
             return true;
         }
 
     }
+
+    cout << "check 1.3" << endl;   
 
     return false;
 } 
@@ -211,6 +235,8 @@ void Ag::initialiser(){
  
     // Tant qu'on a pas trouvé autant de solutions valides que de population
     for(int nbsol = 0; nbsol < this->taille_pop; nbsol++){
+
+        cout << "Solution " << nbsol << endl;
 
         bool** genes = new bool*[this->nb_missions];
         for(int i = 0; i < this->nb_missions; i++){
@@ -271,7 +297,9 @@ void Ag::initialiser(){
                     }
                     
                     // On verifie que l'affectation fournie une solution valide
+                    cout << "Planning valide ? " << this->isPlaningValid(planning) << endl;
                     if(!this->isPlaningValid(planning)){
+                        cout << "Planning invalide" << endl;
                         // Si la solution n'est pas valide on recommence
                         genes[idMission][list_employes[employeSelectionned].getIdSkill()-1] = 0;
                     }else{

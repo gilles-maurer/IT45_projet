@@ -38,7 +38,7 @@ public:
 
     // SETTERS
     void setIdSkill(int id_skill);
-    void setDistance(float *distance);
+    void setDistance(float *distance, int nb_centres, int nb_missions);
 
 
     // METHODES

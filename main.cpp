@@ -48,10 +48,13 @@ int main(int argc, char **argv)
 
 		list_centre[i].setDistance(distance[i]);
 	}
-	for (int i = nb_centres; i < nb_missions; i++) { // on ajoute les distances aux missions
-		list_mission[i].setDistance(distance[i]);
+	for (int i = 0; i < nb_missions; i++) { // on ajoute les distances aux missions
+		list_mission[i].setDistance(distance[i + nb_centres], nb_centres, nb_missions);
 	}
 
+	for (int i = 0; i < nb_missions; i++) { 
+		cout << list_mission[i].getDistance(list_mission[0], nb_centres) << endl;
+	}
 
 	// séparer les infos en 2 groupe (par compétence)
 	int nb_employe_lsf = 0;
