@@ -43,11 +43,23 @@ bool** Chromosome::getGene(){
 
 // retourne le tableau de genes entre deux point
 bool** Chromosome::getGene(int firstPoint, int secondPoint){
-    bool** genes = new bool*[secondPoint - firstPoint];
+        cout << "getGene" << endl;
+    bool** returnGenes = new bool*[secondPoint - firstPoint];
+    for (int i = 0; i < secondPoint - firstPoint; i++){
+        returnGenes[i] = new bool[this->nb_employes];
+    }
 
     for(int i = 0; i < secondPoint - firstPoint; i++){
         for(int j = 0; j < this->nb_employes; j++){
-            genes[i][j] = this->genes[firstPoint + i][j];
+            returnGenes[i][j] = false; // Initialisation à false (0)
+        }
+    }
+
+    cout << "getGene" << endl;
+
+    for(int i = 0; i < secondPoint - firstPoint; i++){
+        for(int j = 0; j < this->nb_employes; j++){
+            returnGenes[i][j] = this->genes[firstPoint + i][j];
         }
     }
     
@@ -114,7 +126,7 @@ void Chromosome::evaluer(double coefNbMisAffecte, double coefDistParcourue, doub
 
     // Calcul du nombre de mission ou la spécialité est respectée
 
-    for(int i = 0; i < this->nb_missions; i++){ // chaque mission
+    /**for(int i = 0; i < this->nb_missions; i++){ // chaque mission
         for(int j = 0; j < this->nb_employes; j++){ // chaque employé
             if(this->genes[i][j] == 1){ // si la mission est affecté à l'employé
                 if(list_missions[i].getSpeciality() == list_employes[j].getSpeciality()){ // si la spécialité de l'employé correspond à la spécialité de la mission
@@ -122,7 +134,7 @@ void Chromosome::evaluer(double coefNbMisAffecte, double coefDistParcourue, doub
                 }
             }
         }
-    }
+    }**/
 
 
     this->fitness = coefNbMisAffecte * nbMissionAffecte + 

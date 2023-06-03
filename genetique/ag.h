@@ -65,9 +65,6 @@ public:
 	Chromosome* optimiser(); // fonction principale qui d�cit le d�roulement de l'algorithme �volusionniste
 
 	// OPERATEURS DE CROISEMENT
-	// opérateur de croisement de deux Chromosomes
-    void croisement(Chromosome* parent1, Chromosome* parent2,
-                      Chromosome* enfant1, Chromosome* enfant2);
 
 	void initialiser();
 

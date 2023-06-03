@@ -54,6 +54,7 @@ string Mission::getSpeciality()
 
 float Mission::getDistance(Mission mission, int nb_centres)
 {
+    cout << "distance" << endl;
     return this->distance[mission.getId() + nb_centres - 1];
 }
 

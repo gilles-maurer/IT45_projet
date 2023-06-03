@@ -14,10 +14,20 @@ private:
 	Chromosome *individus;  // liste des individus de la population
 	int taille_pop;          // nombre d'individus de la population
 	int *ordre;              // tableau donnat l'ordre des individus dans la population
+
+	int nb_missions;
+	int nb_employes;
+	int nb_centres;
+
+	Mission *list_missions;
+	Employe *list_employes;
+	Centre *list_centres;
+
                              //   du meilleur au plus mauvais en fonction de la fitness	population(int tp, int tc);    // constructeur de l'objet
 public:
 	// CONSTRUCTEURS
-	Population(int tp, int nb_missions, int nb_employes); // constructeur de l'objet
+	Population(int tp, int nb_missions, int nb_employes, int nb_centres, Mission *list_missions, Employe *list_employes, Centre *list_centres); // constructeur de l'objet
+	
 	~Population();              // destructeur de l'objet
 
 	// METHODES
@@ -36,6 +46,11 @@ public:
     void ordonner();
     void reordonner();
     void print();
+
+	// opérateur de croisement de deux Chromosomes
+    void croisement(Chromosome* parent1, Chromosome* parent2,
+                      Chromosome* enfant1, Chromosome* enfant2);
+	void test_croisement(int a, int b);
 };
 
 

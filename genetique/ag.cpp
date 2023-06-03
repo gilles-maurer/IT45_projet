@@ -16,7 +16,7 @@ Ag::Ag(int nbgenerations, int taille_pop, double taux_croisement, double taux_mu
     this->coefNbMisAffecte = coefNbMisAffecte;
     this->coefDistParcourue = coefDistParcourue;
     this->coefNbMisSpe = coefNbMisSpe;
-    this->pop = new Population(taille_pop, nb_missions, nb_employes);
+    this->pop = new Population(taille_pop, nb_missions, nb_employes, nb_centres, list_missions, list_employes, list_centres);       
 
     this->list_missions = list_missions;
     this->nb_missions = nb_missions;
@@ -45,7 +45,7 @@ Chromosome* Ag::optimiser() {
     // affichage des statistiques de la population
     this->pop->statistiques(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
     // boucle principale de l'algorithme
-    for (int i = 0; i < this->nbgenerations; i++) {
+    /**for (int i = 0; i < this->nbgenerations; i++) {
 
         cout << "Generation " << i << endl;
 
@@ -67,7 +67,7 @@ Chromosome* Ag::optimiser() {
         this->pop->remplacement_roulette(enfant2);
         // affichage des statistiques de la population
         this->pop->statistiques(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
-    }
+    }**/
     // affichage des statistiques de la population
     this->pop->statistiques(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
 
@@ -77,26 +77,15 @@ Chromosome* Ag::optimiser() {
     return new Chromosome();
 }  
 
-
-// OPERATEURS DE CROISEMENT
-// opérateur de croisement de deux Chromosomes
-
-void Ag::croisement(Chromosome* parent1, Chromosome* parent2,
-                      Chromosome* enfant1, Chromosome* enfant2) {
-    // tirage aléatoire d'un point de croisement
-    int point = rand() % this->nb_missions-1;
-
-    // copie des gènes des parents dans les enfants
-    enfant1->fusion(parent1->getGene(0, point), parent2->getGene(point+1, this->nb_missions), point); // enfant1 = parent1[0:point] + parent2[point+1:nb_missions]
-    enfant2->fusion(parent2->getGene(0, point), parent1->getGene(point+1, this->nb_missions), point); // enfant2 = parent2[0:point] + parent1[point+1:nb_missions]
-}
-
 bool Ag::isPlaningValid(bool* planning) { // planning correspond donc à toutes les missions affectées à un employé 
 
     // pour être valide il faut qu'aucune mission ne se chevauche
     // il faut que l'employé ne travaille pas plus de 7h par jour
     // il faut que l'employé ne travaille pas plus de 35h par semaine
     // il faut que l'amplitude horaire de travail soit inférieure à 13h par jour
+    for(int i = 0; i < this->nb_missions; i++){
+        cout << planning[i] << " ";
+    }
 
     int heures_semaine = 0;
 
@@ -113,7 +102,6 @@ bool Ag::isPlaningValid(bool* planning) { // planning correspond donc à toutes 
 
                     heures_semaine += list_missions[m].getDuration(); // on ajoute la durée de la mission au nombre d'heures travaillées dans la semaine
                     heures_jour += list_missions[m].getDuration(); // on ajoute la durée de la mission au nombre d'heures travaillées dans la journée
-
                     mission_jour[count] = list_missions[m]; // on ajoute la mission au tableau de missions du jour i
                     count++;
 
@@ -181,19 +169,25 @@ Mission* Ag::sortMission(Mission* missions, int count) {
 }
 
 bool Ag::areMissionsOverlapping(Mission* missions, int count) {
+    cout << "count : " << count << " ";
 
     for (int i = 0; i < count - 1; i++) {
+        cout << i;
+
         // on calcule le temps pour aller d'une mission à une autre 
-        float distance = missions[i].getDistance(missions[i + 1], this->nb_centres);   
+        float distance = missions[i].getDistance(missions[i + 1], this->nb_centres);
+        cout << "bka";
 
         // on calcule le temps de trajet entre les deux missions
         float temps_trajet = distance / 50; // on suppose que les employés se déplacent à 50km/h
 
-        if (missions[i].getEnd() + temps_trajet > missions[i + 1].getStart()) { // si le temps de trajet entre les deux missions fait que la mission i+1 commence avant la fin de la mission i
+        if (missions[i].getEnd() + temps_trajet > missions[i + 1].getStart()) { // si le temps de trajet entre les deux missions fait que la mission i+1 commence avant la fin de la mission i 
+            cout << endl;
             return true;
         }
 
     }
+    cout << endl;
 
     return false;
 } 
@@ -221,19 +215,32 @@ bool Ag::isDayTooLong(Mission* missions, int count) {
 
 void Ag::initialiser(){
     cout << "Initialisation de la population" << endl;
-    int nb_solutions = 0; // Nombre de solutions trouvées (pour savoir si on a trouvé autant de solutions valides que de population)
+    srand(time(NULL));
+    // Nombre de solutions trouvées (pour savoir si on a trouvé autant de solutions valides que de population)
 
     // Tant qu'on a pas trouvé autant de solutions valides que de population
-    while(nb_solutions < this->nbgenerations){
+    for(int nbsol = 0; nbsol < this->taille_pop; nbsol++){
 
         bool** genes = new bool*[this->nb_missions];
+        for(int i = 0; i < this->nb_missions; i++){
+            genes[i] = new bool[this->nb_employes];
+        }
+
+        for(int i = 0; i < this->nb_missions; i++){
+            for(int j = 0; j < this->nb_employes; j++){
+                genes[i][j] = false; // Initialisation à false (0)
+            }
+        }
 
         bool hasFound = false; // Permet de savoir si on a reussis à trouver une solution valide
 
         // Pour chaque groupe 
         for(int numGroupe = 0; numGroupe < this->nb_group; numGroupe++){
+            
             // On récupère le centre du groupe
-            Centre centre = this->list_group[numGroupe].getCentre();
+            // Plus de chance de choisir le centre du groupe mais pas obligatoire
+            // On tire un nombre aléatoire entre 1 et 3, si le nombre est inferieur à 2 on choisit un employé du groupe        
+            Centre centreGroupe = this->list_group[numGroupe].getCentre();
 
             // On récupère les missions du groupe
             Mission *list_missions = this->list_group[numGroupe].getListMissions();
@@ -241,63 +248,71 @@ void Ag::initialiser(){
             // On récupère le nombre de mission du groupe
             int nb_mission = this->list_group[numGroupe].getNbMissions();
 
-            // On récupère la liste des employés du centre du groupe
-            Employe *list_employes;
-            int count = 0;
-            for(int numEmploye = 0; numEmploye < this->nb_employes; numEmploye++){
-                if(this->list_employes[numEmploye].getCentreId() == centre.getId()){
-                    list_employes[count] = this->list_employes[numEmploye];
-                    count++;
-                }
-            }
-            
+
             for(int numMission = 0; numMission < nb_mission; numMission++){ // Pour chaque mission (du groupe)
                 // on affecte aléatoirement un employé à la mission, pour eviter de tourner indefiniment, on limite le nombre d'essai au nombre d'employés
-                hasFound = false; // Pour savoir si on a reussis une affectation, on arrete la recherche si on n'a pas reussis
-                for(int i = 0; i < count; i++){
-                    // On tire un nombre aléatoire entre 0 et le nombre d'employés
+                for(int i = 0; i < this->nb_employes; i++){ // POur eviter de boucler indéfiniment, on limite le nombre d'essai au nombre d'employés
+                    // nombre aléatoire pour choisir si on va essayer d'affecter un emplouyé du groupe ou non. Permet d'avoir des changements entre les populaitons 
+                    int random = rand() % 3 +1;
+                    int employeSelectionned = -1;
+                    int idMission = list_missions[numMission].getIdSkill() -1;
+                    if(random <=2){ // On choisi un employé du groupe
+                        //On choisie un employé au hasard dont le centre est le centre du groupe
+                        do{
+                            employeSelectionned = rand() % (this->nb_employes); // On tire un nombre aléatoire entre 0 et le nombre d'employés
+                            cout << this->nb_employes << endl;
+                        } while (this->list_employes[employeSelectionned].getCentreId() != this->list_group[numGroupe].getCentre().getId()); // On recommence tant qu'on a pas trouvé un centre different du centre du groupe
 
-                    int employeSelectionned = rand() % count;
+                    }else{
+                        //On choisie un employé au hasard dont le centre n'est pas le centre du groupe
+                        do{
+                            employeSelectionned = rand() % (this->nb_employes); // On tire un nombre aléatoire entre 0 et le nombre d'employés
+                            cout << this->nb_employes << endl;
+                        } while (this->list_employes[employeSelectionned].getCentreId() == this->list_group[numGroupe].getCentre().getId()); // On recommence tant qu'on a pas trouvé un centre different du centre du groupe   
+                    }
+
                     // On affecte l'employé à la mission
-                    genes[numMission][employeSelectionned] = 1;
-
+                    genes[idMission][list_employes[employeSelectionned].getIdSkill()-1] = 1;
+                    
                     bool* planning = new bool[nb_missions]; // On crée un tableau de booléen pour stocker le planning de l'employé 
 
                     for (int j = 0; j < nb_missions; j++) {
-                        planning[j] = genes[j][employeSelectionned];
+                        planning[j] = genes[j][list_employes[employeSelectionned].getIdSkill()-1];
                     }
                     
                     // On verifie que l'affectation fournie une solution valide
                     if(!this->isPlaningValid(planning)){
+                        cout << "not valid" << endl;
                         // Si la solution n'est pas valide on recommence
-                        genes[numMission][employeSelectionned] = 0;
+                        genes[idMission][list_employes[employeSelectionned].getIdSkill()-1] = 0;
                     }else{
+                        cout << "valid" << endl;
                         // Si la solution est valide on arrete la recherche
-                        cout << "Affectation valide trouvée pour la mission " << list_missions[numMission].getId() << endl;
-                        hasFound = true;
                         break;
                     }
                 }
-                if (!hasFound){
-                    cout << "Erreur, pas d'affectation valide trouvée pour la mission " << list_missions[numMission].getId() << endl;
-                    break;// On arrete l'exploration de cette population
-                }
+                cout << "mission" << endl;
             }
+            cout << "--------------------------" << endl;
+        }
+        cout << "sol" << endl;
 
-            if (!hasFound){
-                cout << "Erreur, pas d'affectation valide trouvée pour le groupe" << endl;
-                break;// On arrete l'exploration de cette population
+        for(int i = 0; i < this->nb_missions; i++){
+            for(int j = 0; j < this->nb_employes; j++){
+                cout << genes[i][j] << " ";
             }
+            cout << endl;
         }
 
-        if(hasFound){
-            // On ajoute la solution à la population
-            this->pop->ajouter(genes, nb_solutions);
+        cout << nbsol + 1 << " / " << this->taille_pop << endl;
 
-            // On a trouvé une solution valide
-            nb_solutions++;
-        }
     }
-    this->pop->statistiques(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
+
+    // TEST fusion
+    cout << endl;
+    cout << "-------------------TEST FUSION---------------" << endl;
+    cout << endl;
+
+    this->pop->test_croisement(0, 1);
 
 }

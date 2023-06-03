@@ -45,6 +45,7 @@ int main(int argc, char **argv)
 	float **distance = data.read_distance(nb_missions, nb_centres);
 
 	for (int i = 0; i < nb_centres; i++) { // on ajoute les distances aux centres
+
 		list_centre[i].setDistance(distance[i]);
 	}
 	for (int i = nb_centres; i < nb_missions; i++) { // on ajoute les distances aux missions
