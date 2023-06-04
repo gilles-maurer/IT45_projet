@@ -32,6 +32,15 @@ public:
 	Chromosome();
 	Chromosome(int nb_missions, int nb_employes, int nb_centres, Mission *list_missions, Employe *list_employes, Centre *list_centres);  
 	~Chromosome();      // destructeur de l'objet
+	
+	// Geters
+	int getNbMissions();
+	int getNbEmployes();
+	int getNbCentres();
+	Mission* getLsitMissions();
+	Employe* getListEmployes();
+	Centre* getListCentres();
+
 
 	// METHODES
 	void evaluer(double coefNbMisAffecte, double coefDistParcourue, double coefNbMisSpe);
@@ -56,6 +65,15 @@ public:
 	void fusion(bool** gene1, bool** gene2, int point); // fusionne 2 genomes
 
 	void print(); // fonction d'affichage du Chromosome (i.e. de la solution)
+
+	// Verifier que la solution est valide
+	bool isPlaningValid(bool* planning);
+	bool isMissionValide(int mission);
+	float rideTime(Mission* missions, int count);
+	bool areMissionsOverlapping(Mission* missions, int count);
+	bool isDayTooLong(Mission* missions, int count);
+
+
 
     // OPERATEURS DE MUTATION
     void muter(int taux);    // opérateur de mutation

@@ -48,9 +48,6 @@ Chromosome* Ag::optimiser() {
     // boucle principale de l'algorithme
     for (int i = 0; i < this->nbgenerations; i++) {
 
-        cout << "Generation " << i << endl;
-
-        cout << taille_pop << endl;
         for (int i = 0; i < taille_pop; i++) {
             this->pop->print();
         }
@@ -147,8 +144,6 @@ bool Ag::isPlaningValid(bool* planning) { // planning correspond donc à toutes 
     if (heures_semaine > 35) { // si l'employé travaille plus de 35h dans la semaine
         return false;
     }
-
-    cout << "Planning valide" << endl;
 
     return true;
 }
@@ -328,11 +323,11 @@ void Ag::initialiser(){
 
     }
 
-    // // TEST fusion
-    // cout << endl;
-    // cout << "-------------------TEST FUSION---------------" << endl;
-    // cout << endl;
+     // TEST fusion
+    cout << endl;
+    cout << "-------------------TEST FUSION---------------" << endl;
+    cout << endl;
 
-    // this->pop->test_croisement(0, 1);
+    this->pop->test_croisement(0, 1);
 
 }

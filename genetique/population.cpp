@@ -56,28 +56,36 @@ void Population::similitude(){
 
 // selection par roulette biaisee d'un individu de la population
 Chromosome *Population::selection_roulette(){
-    double sumFitness = 0;
     // calcul de la somme des fitness
+    int sumFitness = 0;
+    
     for(int i = 0; i < this->taille_pop; i++){
         sumFitness += this->individus[i].getFitness();
     }
 
-    cout << "Somme des fitness: " << sumFitness << endl;
-    
     // calcul des probabilités
-    vector<double> proba;
-    
-    for(int i = 0; i < this->taille_pop; i++){
-        proba.push_back(this->individus[i].getFitness()/sumFitness);
+    // On créer un tableau qui garde en mémoire la plage de valeur pour laquel un individu sera selectioné, 
+    //plus son fitness est grand, plus il a de chance d'être sélectioné
+    int* proba = new int[this->taille_pop];
+    proba[1] = this->individus[1].getFitness();
+
+    for(int i = 1; i < this->taille_pop; i++){
+        proba[i] = proba[i-1] + this->individus[i].getFitness(); // Plage de selection d'un individu = i-1 - i 
     }
 
-    // Choix aléatoire d'un individu en fonction des probabilités
-    random_device rd;
-    mt19937 gen(rd());
-    discrete_distribution<> dist(proba.begin(), proba.end());
+    // selection biaisée
+    int random = rand() % sumFitness;
 
+    int numIndividu = 0;
+    // tant que le nombre aléatoire est plus petit que la plage superieur de la probabilité de l'individu
+    while(random < proba[numIndividu] || numIndividu < this->taille_pop){
+        numIndividu++; // On incrémente
+    }
 
-    return &(individus[gen() + 1]);
+    // On retourn l'individu.
+    // Attention dès que random est supéreieur à la borne superieur de proba on sort, mais l'individu seletionné est l'individu précédent
+    numIndividu--;
+    return &this->individus[numIndividu];
 
 }     
 
@@ -107,8 +115,9 @@ void Population::ordonner(){
 }
 
 // Permet d'ajouter un individu à la population
-void Population::ajouter(bool** genes, int numIndividu){
+void Population::ajouter(bool** genes, int numIndividu){    
     this->individus[numIndividu].copier(genes);
+    this->individus[numIndividu].print();
 }
 
 void Population::evaluer(double coefNbMisAffecte, double coefDistParcourue, double coefNbMisSpe){
@@ -142,6 +151,11 @@ void Population::croisement(Chromosome* parent1, Chromosome* parent2,
 }
 
 void Population::test_croisement(int a, int b){
+
+    for(int i =0; i < taille_pop; i++){
+        this->individus[i].print();
+    }
+
     Chromosome* parent1 = &this->individus[a];
     Chromosome* parent2 = &this->individus[b];
 
