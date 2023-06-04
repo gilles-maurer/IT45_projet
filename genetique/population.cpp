@@ -61,6 +61,8 @@ Chromosome *Population::selection_roulette(){
     for(int i = 0; i < this->taille_pop; i++){
         sumFitness += this->individus[i].getFitness();
     }
+
+    cout << "Somme des fitness: " << sumFitness << endl;
     
     // calcul des probabilités
     vector<double> proba;
@@ -74,7 +76,8 @@ Chromosome *Population::selection_roulette(){
     mt19937 gen(rd());
     discrete_distribution<> dist(proba.begin(), proba.end());
 
-    return &individus[gen() + 1];
+
+    return &(individus[gen() + 1]);
 
 }     
 
@@ -109,9 +112,11 @@ void Population::ajouter(bool** genes, int numIndividu){
 }
 
 void Population::evaluer(double coefNbMisAffecte, double coefDistParcourue, double coefNbMisSpe){
+
     for(int i = 0; i < this->taille_pop; i++){
         this->individus[i].evaluer(coefNbMisAffecte, coefDistParcourue, coefNbMisSpe);
     }
+
 }
 
 

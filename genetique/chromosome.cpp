@@ -72,7 +72,7 @@ int Chromosome::getFitness(){
 
 // METHODES
 void Chromosome::print(){// fonction d'affichage du Chromosome (i.e. de la solution)
-    cout << "Chromosome: " << this->genes[0] << endl;
+    cout << "Chromosome fitness : " << this->genes[0][0] << endl;
 }   
 
 // fonction d'évaluation du Chromosome (c-é-d calcul la fitness)
@@ -84,6 +84,7 @@ void Chromosome::print(){// fonction d'affichage du Chromosome (i.e. de la solut
 //Pour ces 3 critères on pourra attribuer un coefficient qui permettra de faire varier l’importance 
 //de chacun dans la valeur de la fitness, on s’assurera cependant de conserver l’ordre d’importance du sujet.  
 void Chromosome::evaluer(double coefNbMisAffecte, double coefDistParcourue, double coefNbMisSpe){
+
     int nbMissionAffecte = 0; // nombre de mission affecté
     int distanceParcourue = 0; // distance parcourue par les employés dans la solution
     int nbMissionSpe = 0; // nombre de mission ou la spécialité est respectée
@@ -97,12 +98,11 @@ void Chromosome::evaluer(double coefNbMisAffecte, double coefDistParcourue, doub
         }
     }
 
-
     // Calcul de la distance parcourue par les employés dans la solution 
     for (int i = 0; i < this->nb_employes; i++){ // chaque employé
 
-        for (int j = 0; j < 5; j++){ // chaque jour 
-            
+        for (int j = 1; j <= 5; j++){ // chaque jour 
+
             Mission* missions = new Mission[this->nb_missions];
             int count = 0;
 
@@ -120,9 +120,9 @@ void Chromosome::evaluer(double coefNbMisAffecte, double coefDistParcourue, doub
 
             // on calcule la distance parcourue par l'employé pour le jour j
             distanceParcourue += ridelenght(missions, count, i);
+
         }
     }
-
 
     // Calcul du nombre de mission ou la spécialité est respectée
 
@@ -171,7 +171,7 @@ float Chromosome::ridelenght(Mission* missions, int count, int id_employe){
     }
 
     int id_centre = list_employes[id_employe].getCentreId();
-    Centre centre = list_centres[id_centre];
+    Centre centre = list_centres[id_centre - 1];
 
     distance_totale += centre.getDistance(missions[0], this->nb_centres);
     distance_totale += centre.getDistance(missions[count - 1], this->nb_centres);

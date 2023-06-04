@@ -42,20 +42,41 @@ Chromosome* Ag::optimiser() {
 
     // évaluation de la population (appel de la fonction evaluer de chaque individu)
     this->pop->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe); 
+
     // affichage des statistiques de la population
     this->pop->statistiques(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
     // boucle principale de l'algorithme
-    /**for (int i = 0; i < this->nbgenerations; i++) {
+    for (int i = 0; i < this->nbgenerations; i++) {
 
         cout << "Generation " << i << endl;
+
+        cout << taille_pop << endl;
+        for (int i = 0; i < taille_pop; i++) {
+            this->pop->print();
+        }
 
         // sélection de deux parents
         Chromosome* parent1 = this->pop->selection_roulette();
         Chromosome* parent2 = this->pop->selection_roulette();
         // croisement des deux parents
-        Chromosome* enfant1 = new Chromosome(this->nb_missions, this->nb_employes);
-        Chromosome* enfant2 = new Chromosome(this->nb_missions, this->nb_employes);
-        this->croisement(parent1, parent2, enfant1, enfant2);
+
+        Chromosome* enfant1 = new Chromosome(this->nb_missions, this->nb_employes, this->nb_centres, 
+                                                this->list_missions, this->list_employes, this->list_centres);
+        Chromosome* enfant2 = new Chromosome(this->nb_missions, this->nb_employes, this->nb_centres, 
+                                            this->list_missions, this->list_employes, this->list_centres);
+
+
+        parent1->print();
+        parent2->print();
+        enfant1->print();
+        enfant2->print();
+        cin.get();
+
+        cout << "Croisement" << endl;
+
+        this->pop->croisement(parent1, parent2, enfant1, enfant2);
+
+        cout << "Mutation" << endl;
         // mutation des deux enfants
         enfant1->muter(this->taux_mutation);
         enfant2->muter(this->taux_mutation);
@@ -67,7 +88,7 @@ Chromosome* Ag::optimiser() {
         this->pop->remplacement_roulette(enfant2);
         // affichage des statistiques de la population
         this->pop->statistiques(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
-    }**/
+    }
     // affichage des statistiques de la population
     this->pop->statistiques(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
 
@@ -107,27 +128,19 @@ bool Ag::isPlaningValid(bool* planning) { // planning correspond donc à toutes 
 
             mission_jour = sortMission(mission_jour, count); // on trie les missions du jour par heure de début
 
-            cout << "check 1" << endl;
-
             if(areMissionsOverlapping(mission_jour, count)){ // si les missions du jour se chevauchent
                 return false;
             }
 
-            cout << "check 2" << endl;
-
             if(isDayTooLong(mission_jour, count)){ // si l'amplitude horaire de travail est supérieure à 13h
                 return false;
             }
-
-            cout << "check 3" << endl;
 
             float temps_trajet = rideTime(mission_jour, count); // on calcule le temps de trajet entre les missions du jour
             
             if (heures_jour + temps_trajet > 7) { // si l'employé travaille plus de 7h dans la journée
                 return false;
             }
-
-            cout << "check 4" << endl;
         }
     }
 
@@ -185,8 +198,6 @@ bool Ag::areMissionsOverlapping(Mission* missions, int count) {
         return false;
     }
 
-    cout << "check 1.1" << endl;
-
     for (int i = 0; i < count - 1; i++) {
 
         // on calcule le temps pour aller d'une mission à une autre 
@@ -195,15 +206,11 @@ bool Ag::areMissionsOverlapping(Mission* missions, int count) {
         // on calcule le temps de trajet entre les deux missions
         float temps_trajet = distance / 50; // on suppose que les employés se déplacent à 50km/h
 
-        cout << "check 1.2" << endl;
-
         if (missions[i].getEnd() + temps_trajet > missions[i + 1].getStart()) { // si le temps de trajet entre les deux missions fait que la mission i+1 commence avant la fin de la mission i 
             return true;
         }
 
     }
-
-    cout << "check 1.3" << endl;   
 
     return false;
 } 
@@ -297,7 +304,6 @@ void Ag::initialiser(){
                     }
                     
                     // On verifie que l'affectation fournie une solution valide
-                    cout << "Planning valide ? " << this->isPlaningValid(planning) << endl;
                     if(!this->isPlaningValid(planning)){
                         cout << "Planning invalide" << endl;
                         // Si la solution n'est pas valide on recommence
@@ -322,11 +328,11 @@ void Ag::initialiser(){
 
     }
 
-    // TEST fusion
-    cout << endl;
-    cout << "-------------------TEST FUSION---------------" << endl;
-    cout << endl;
+    // // TEST fusion
+    // cout << endl;
+    // cout << "-------------------TEST FUSION---------------" << endl;
+    // cout << endl;
 
-    this->pop->test_croisement(0, 1);
+    // this->pop->test_croisement(0, 1);
 
 }

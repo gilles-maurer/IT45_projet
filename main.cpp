@@ -52,10 +52,6 @@ int main(int argc, char **argv)
 		list_mission[i].setDistance(distance[i + nb_centres], nb_centres, nb_missions);
 	}
 
-	for (int i = 0; i < nb_missions; i++) { 
-		cout << list_mission[i].getDistance(list_mission[0], nb_centres) << endl;
-	}
-
 	// séparer les infos en 2 groupe (par compétence)
 	int nb_employe_lsf = 0;
 
@@ -143,6 +139,7 @@ int main(int argc, char **argv)
 
 	ag.initialiser(); // on initialise la population
 	Chromosome *solution_lsf = ag.optimiser();
+
 
 	ag = Ag(nb_generations, taille_pop, taux_croisement, taux_mutation,
 		coefNbMisAffecte, coefDistParcourue, coefNbMisSpe,

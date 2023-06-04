@@ -54,18 +54,6 @@ string Mission::getSpeciality()
 
 float Mission::getDistance(Mission mission, int nb_centres)
 {
-
-    cout << "distance" << endl;
-
-    cout << "mission.getId() : " << mission.getId() << endl;
-    cout << "nb_centres : " << nb_centres << endl;
-    cout << "mission.getId() + nb_centres - 1 : " << mission.getId() + nb_centres - 1 << endl;
-
-    cout << this->distance[0] << endl;
-
-    float distance = this->distance[0];
-    cout << "distance" << endl;
-
     return this->distance[mission.getId() + nb_centres - 1];
 }
 
@@ -97,15 +85,8 @@ void Mission::setIdSkill(int id_skill)
 
 void Mission::setDistance(float *distance, int nb_centres, int nb_missions)
 {
-
     this->distance = new float[nb_centres + nb_missions];
-
     this->distance = distance;
-    cout << "distance" << endl;
-    for (int i = 0; i < 10; i++)
-    {
-        cout << "distance[" << i << "] : " << this->distance[i] << endl;
-    }
 }
 
 // METHODES
