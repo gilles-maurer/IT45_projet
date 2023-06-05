@@ -16,6 +16,26 @@ Chromosome::Chromosome(){
 
 }
 
+Chromosome::Chromosome(Chromosome* source){ // constructeur de copie
+
+    this->nb_missions = source->nb_missions;
+    this->nb_employes = source->nb_employes;
+    this->nb_centres = source->nb_centres;
+
+    this->list_missions = source->list_missions;
+    this->list_employes = source->list_employes;
+    this->list_centres = source->list_centres;
+
+    this->fitness = source->fitness;
+    this->nb_missions_affecte = source->nb_missions_affecte;
+    this->distance_parcourue = source->distance_parcourue;
+    this->nb_specialite = source->nb_specialite;
+
+    this->genes = source->genes;
+
+
+}
+
 Chromosome::Chromosome(int nb_missions, int nb_employes, int nb_centres, Mission *list_missions, Employe *list_employes, Centre *list_centres){
 
     this->nb_missions = nb_missions;
@@ -27,6 +47,9 @@ Chromosome::Chromosome(int nb_missions, int nb_employes, int nb_centres, Mission
     this->list_centres = list_centres;
 
     this->fitness = 0;
+    this->nb_missions_affecte = 0;
+    this->distance_parcourue = 0;
+    this->nb_specialite = 0;
 
     this->genes = new bool*[nb_missions];
     for (int i = 0; i < nb_missions; i++){
@@ -47,10 +70,19 @@ bool** Chromosome::getGene(){
 
 // retourne le tableau de genes entre deux point
 bool** Chromosome::getGene(int firstPoint, int secondPoint){
+
+    cout << "check 1" << endl;
+
     bool** returnGenes = new bool*[secondPoint - firstPoint];
     for (int i = 0; i < secondPoint - firstPoint; i++){
         returnGenes[i] = new bool[this->nb_employes];
     }
+
+    cout << "check 2" << endl;
+    cout << "firstPoint : " << firstPoint << endl;
+    cout << "secondPoint : " << secondPoint << endl;
+    cout << "secondPoint - firstPoint : " << secondPoint - firstPoint << endl;
+    cout << "this->nb_employes : " << this->nb_employes << endl;
 
     for(int i = 0; i < secondPoint - firstPoint; i++){
         for(int j = 0; j < this->nb_employes; j++){
@@ -58,14 +90,18 @@ bool** Chromosome::getGene(int firstPoint, int secondPoint){
         }
     }
 
+    cout << "check 3" << endl;
 
     for(int i = 0; i < secondPoint - firstPoint; i++){
         for(int j = 0; j < this->nb_employes; j++){
             returnGenes[i][j] = this->genes[firstPoint + i][j];
+            cout << "returnGenes[" << i << "][" << j << "] = " << returnGenes[i][j] << endl;
         }
     }
     
-    return genes;
+    cout << "check 4" << endl;
+
+    return returnGenes;
 }
 
 int Chromosome::getFitness(){
@@ -118,7 +154,7 @@ void Chromosome::print(){// fonction d'affichage du Chromosome (i.e. de la solut
 //de chacun dans la valeur de la fitness, on s’assurera cependant de conserver l’ordre d’importance du sujet.  
 void Chromosome::evaluer(double coefNbMisAffecte, double coefDistParcourue, double coefNbMisSpe){
     int nbMissionAffecte = 0; // nombre de mission affecté
-    int distanceParcourue = 0; // distance parcourue par les employés dans la solution
+    float distanceParcourue = 0; // distance parcourue par les employés dans la solution
     int nbMissionSpe = 0; // nombre de mission ou la spécialité est respectée
 
     // Calcul du nombre de mission affecté
@@ -130,11 +166,10 @@ void Chromosome::evaluer(double coefNbMisAffecte, double coefDistParcourue, doub
         }
     }
 
-
     // Calcul de la distance parcourue par les employés dans la solution 
     for (int i = 0; i < this->nb_employes; i++){ // chaque employé
 
-        for (int j = 0; j < 5; j++){ // chaque jour 
+        for (int j = 1; j <= 5; j++){ // chaque jour 
             
             Mission* missions = new Mission[this->nb_missions];
             int count = 0;
@@ -156,7 +191,6 @@ void Chromosome::evaluer(double coefNbMisAffecte, double coefDistParcourue, doub
         }
     }
 
-
     // Calcul du nombre de mission ou la spécialité est respectée
 
     for(int i = 0; i < this->nb_missions; i++){ // chaque mission
@@ -169,27 +203,42 @@ void Chromosome::evaluer(double coefNbMisAffecte, double coefDistParcourue, doub
         }
     }
 
+    this->nb_missions_affecte = nbMissionAffecte;
+    this->distance_parcourue = distanceParcourue;
+    this->nb_specialite = nbMissionSpe;
 
-    this->fitness = coefNbMisAffecte * nbMissionAffecte - 
-                        coefDistParcourue * distanceParcourue + coefNbMisSpe * nbMissionSpe;
+    this->fitness = (coefNbMisAffecte * nbMissionAffecte) - 
+                        (coefDistParcourue * distanceParcourue) + (coefNbMisSpe * nbMissionSpe);
 
 }   
 
 
+void Chromosome::stats(){ // affiche quelques statistiques sur le Chromosome
+    cout << "STATISTIQUES" << endl;
+    cout << "Fitness: " << this->fitness << endl;
+    cout << "Nombre de missions affectees: " << this->nb_missions_affecte << endl;
+    cout << "Distance parcourue: " << this->distance_parcourue << endl;
+    cout << "Nombre de missions ou la spécialite est respectee: " << this->nb_specialite << endl;
+    cout << endl;
+}
+
+
 float Chromosome::ridelenght(Mission* missions, int count, int id_employe){
-    
+
     float distance_totale = 0;
 
-    for (int i = 0; i < count - 1; i++) {
-        // on calcule le temps pour aller d'une mission à une autre 
-        float distance = missions[i].getDistance(missions[i + 1], this->nb_centres);
+    if (count != 0 && count != 1) {
+        for (int i = 0; i < count - 1; i++) {
+            // on calcule le temps pour aller d'une mission à une autre 
+            float distance = missions[i].getDistance(missions[i + 1], this->nb_centres);
 
-        // on ajoute le temps de trajet à la distance totale
-        distance_totale += distance;
+            // on ajoute le temps de trajet à la distance totale
+            distance_totale += distance;
+        }
     }
 
     int id_centre = list_employes[id_employe].getCentreId();
-    Centre centre = list_centres[id_centre];
+    Centre centre = list_centres[id_centre - 1];
 
     distance_totale += centre.getDistance(missions[0], this->nb_centres);
     distance_totale += centre.getDistance(missions[count - 1], this->nb_centres);
@@ -445,39 +494,47 @@ void Chromosome::muter(int taux){ // Echange deux missions (i.e. deux colomnes d
 // Récupère l'employé affecté à la mission puis verifie son planing
 bool Chromosome::isMissionValide(int mission){
     bool* planning = new bool[this->nb_missions]; // On crée un tableau de booléen pour stocker le planning de l'employé
-    int employéID = -1;
+    int employeID = -1;
         for(int j= 0; j < this->nb_employes; j++){
             if(this->genes[mission][j] == 1){
-                employéID = j;
+                employeID = j;
                 break;
             }
         }
-        if(employéID == -1){
+        if(employeID == -1){
             return true; // Si la mission n'est affecté à aucun employé, on considère qu'elle est valide
         }else{
             for (int j = 0; j < this->nb_missions; j++) {
-                planning[j] = genes[j][employéID];
+                planning[j] = genes[j][employeID];
             }
             if(!this->isPlaningValid(planning)){
                 return false;
             }
         }
+
+    return true;
 }
 
-Chromosome* Chromosome::fusion(Chromosome* chro1, Chromosome* chro2){ // fusionne 2 chromosomes
-    
-
-    return new Chromosome();
-
-}
 
 void Chromosome::fusion(bool** gene1, bool** gene2, int point){ // fusionne 2 genomes
     // taille total = n, taille gene1 = n1, taille gene2 = n2, n1 + n2 = n
     // Il faut fusioner *gene1[0] à *gene2[0] ... *gene1[n1] à *gene2[n2]
 
+    cout << "check 5" << endl;
+    cout << "point : " << point << endl;
+
     // pour chaque employé
     for (int i = 0; i < this->nb_employes; i++){
         for(int j = 0; j < this->nb_missions; j++){
+
+            cout << "check 5.1" << endl;
+            cout << "i : " << i << endl;
+            cout << "j : " << j << endl;   
+
+            cout << "this->genes[" << j << "][" << i << "] : " << this->genes[j][i] << endl;    
+            cout << "gene1[" << j << "][" << i << "] : " << gene1[j][i] << endl;
+
+
             if(j<point){
                 this->genes[j][i] = gene1[j][i];
             }else{
@@ -485,5 +542,7 @@ void Chromosome::fusion(bool** gene1, bool** gene2, int point){ // fusionne 2 ge
             }
         }
     }
+
+    cout << "check 6" << endl;
 }
 

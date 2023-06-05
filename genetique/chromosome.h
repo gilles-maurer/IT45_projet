@@ -26,10 +26,14 @@ private:
 
 
 	int fitness;        // la valeur de la fonction objectif (fitness) de la solution
+	int nb_missions_affecte;
+	float distance_parcourue;
+	int nb_specialite;
 
 public:
 	// CONSTRUCTEURS
 	Chromosome();
+	Chromosome(Chromosome* source);  // constructeur de copie
 	Chromosome(int nb_missions, int nb_employes, int nb_centres, Mission *list_missions, Employe *list_employes, Centre *list_centres);  
 	~Chromosome();      // destructeur de l'objet
 	
@@ -61,10 +65,11 @@ public:
 
     bool identique(Chromosome* chro); // test si 2 chromosome sont identique
 
-	Chromosome* fusion(Chromosome* chro1, Chromosome* chro2); // fusionne 2 chromosomes
 	void fusion(bool** gene1, bool** gene2, int point); // fusionne 2 genomes
 
 	void print(); // fonction d'affichage du Chromosome (i.e. de la solution)
+	void stats(); // affiche quelques statistiques sur le Chromosome
+
 
 	// Verifier que la solution est valide
 	bool isPlaningValid(bool* planning);

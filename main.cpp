@@ -152,10 +152,10 @@ int main(int argc, char **argv)
 
 	// affichage des solutions (part 2)
 	cout << "Resultat pour les missions LSF : " << endl;
-	solution_lsf->print();
+	solution_lsf->stats();
 
 	cout << "Resultat pour les missions LPC : " << endl;
-	solution_lpc->print();
+	solution_lpc->stats();
 
 
 }

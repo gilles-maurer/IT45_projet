@@ -11,7 +11,6 @@
 class Population{
 private:
     // ATTRIBUTS
-	Chromosome *individus;  // liste des individus de la population
 	int taille_pop;          // nombre d'individus de la population
 	int *ordre;              // tableau donnat l'ordre des individus dans la population
 
@@ -25,6 +24,9 @@ private:
 
                              //   du meilleur au plus mauvais en fonction de la fitness	population(int tp, int tc);    // constructeur de l'objet
 public:
+
+	Chromosome *individus;  // liste des individus de la population
+
 	// CONSTRUCTEURS
 	Population(int tp, int nb_missions, int nb_employes, int nb_centres, Mission *list_missions, Employe *list_employes, Centre *list_centres); // constructeur de l'objet
 	
@@ -36,6 +38,8 @@ public:
 	                     // compte le nombre de Chromosomes similaires � 'chro'
 	void similitude();   // affiche les r�sultats du comptage de Chromosomes similaires
 	                     // aux meilleurs individus de la population.
+
+	Chromosome *getMeilleurIndividu(); // renvoie le meilleur individu de la population
 
     // OPERATEURS DE SELECTION ET DE REMPLACEMENT
     Chromosome *selection_roulette();                 // sel�ction par roulette biais�e d'un individu de la population

@@ -45,16 +45,23 @@ Chromosome* Ag::optimiser() {
 
     // affichage des statistiques de la population
     this->pop->statistiques(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
+
     // boucle principale de l'algorithme
     for (int i = 0; i < this->nbgenerations; i++) {
 
-        for (int i = 0; i < taille_pop; i++) {
-            this->pop->print();
-        }
+        cout << "Generation " << i << endl;
 
         // sélection de deux parents
         Chromosome* parent1 = this->pop->selection_roulette();
         Chromosome* parent2 = this->pop->selection_roulette();
+
+        cout << "Parent 1" << endl;
+        cout << parent1->getNbEmployes() << endl;
+
+        cout << "Parent 2" << endl;
+        cout << parent2->getNbEmployes() << endl;
+
+        cin.get();
         // croisement des deux parents
 
         Chromosome* enfant1 = new Chromosome(this->nb_missions, this->nb_employes, this->nb_centres, 
@@ -63,13 +70,8 @@ Chromosome* Ag::optimiser() {
                                             this->list_missions, this->list_employes, this->list_centres);
 
 
-        parent1->print();
-        parent2->print();
-        enfant1->print();
-        enfant2->print();
-        cin.get();
-
         cout << "Croisement" << endl;
+        cin.get();
 
         this->pop->croisement(parent1, parent2, enfant1, enfant2);
 
@@ -90,9 +92,7 @@ Chromosome* Ag::optimiser() {
     this->pop->statistiques(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
 
     // retourne le meilleur individu de la population
-
-    // change this
-    return new Chromosome();
+    return this->pop->getMeilleurIndividu();
 }  
 
 bool Ag::isPlaningValid(bool* planning) { // planning correspond donc à toutes les missions affectées à un employé 
@@ -323,11 +323,11 @@ void Ag::initialiser(){
 
     }
 
-     // TEST fusion
-    cout << endl;
-    cout << "-------------------TEST FUSION---------------" << endl;
-    cout << endl;
+    //  // TEST fusion
+    // cout << endl;
+    // cout << "-------------------TEST FUSION---------------" << endl;
+    // cout << endl;
 
-    this->pop->test_croisement(0, 1);
+    // this->pop->test_croisement(0, 1);
 
 }

@@ -16,6 +16,12 @@ Population::Population(int tp, int nb_missions, int nb_employes, int nb_centres,
             this->individus[i] = Chromosome(nb_missions, nb_employes, nb_centres, list_missions, list_employes, list_centres);
         }
 
+        cout << "Population créée" << endl;
+        for (int i = 0; i < tp; i++){
+            cout << this->individus[i].getNbEmployes() << endl;
+        }
+        cin.get();
+
         this->nb_employes = nb_employes;
         this->nb_missions = nb_missions;
 
@@ -52,6 +58,28 @@ void Population::similitude(){
 
 }
 
+
+// renvoie le meilleur individu de la population
+Chromosome *Population::getMeilleurIndividu(){
+    
+    float maxFitness = 0;  
+    int index = 0;
+
+    for (int i = 0; i < this->taille_pop; i++){
+        if (this->individus[i].getFitness() > maxFitness){
+            maxFitness = this->individus[i].getFitness();
+            index = i;
+        }
+    }
+
+    this->individus[index].print();
+    cin.get();
+
+    return &this->individus[index];
+}
+
+
+
 // OPERATEURS DE SELECTION ET DE REMPLACEMENT
 
 // selection par roulette biaisee d'un individu de la population
@@ -67,7 +95,7 @@ Chromosome *Population::selection_roulette(){
     // On créer un tableau qui garde en mémoire la plage de valeur pour laquel un individu sera selectioné, 
     //plus son fitness est grand, plus il a de chance d'être sélectioné
     int* proba = new int[this->taille_pop];
-    proba[1] = this->individus[1].getFitness();
+    proba[0] = this->individus[0].getFitness();
 
     for(int i = 1; i < this->taille_pop; i++){
         proba[i] = proba[i-1] + this->individus[i].getFitness(); // Plage de selection d'un individu = i-1 - i 
@@ -117,7 +145,6 @@ void Population::ordonner(){
 // Permet d'ajouter un individu à la population
 void Population::ajouter(bool** genes, int numIndividu){    
     this->individus[numIndividu].copier(genes);
-    this->individus[numIndividu].print();
 }
 
 void Population::evaluer(double coefNbMisAffecte, double coefDistParcourue, double coefNbMisSpe){
@@ -135,6 +162,7 @@ void Population::reordonner(){
 
 void Population::print(){
     for(int i = 0; i < this->taille_pop; i++){
+        cout << "Individu " << i << endl;
         this->individus[i].print();
     }
 }
@@ -144,6 +172,11 @@ void Population::croisement(Chromosome* parent1, Chromosome* parent2,
     // tirage aléatoire d'un point de croisement
     int point = rand() % this->nb_missions;
     cout << "Point de croisement: " << point << endl;
+
+    cout << "nb employes: " << this->nb_employes << endl;
+    cout << "parent1: " << parent1->getNbEmployes() << endl;
+    cout << "parent2: " << parent2->getNbEmployes() << endl;
+    cin.get();
 
     // copie des gènes des parents dans les enfants
     enfant1->fusion(parent1->getGene(0, point), parent2->getGene(point+1, this->nb_missions), point); // enfant1 = parent1[0:point] + parent2[point+1:nb_missions]
