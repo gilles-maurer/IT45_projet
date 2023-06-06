@@ -62,21 +62,20 @@ Chromosome* Ag::optimiser() {
         Chromosome* enfant2 = new Chromosome(this->nb_missions, this->nb_employes, this->nb_centres, 
                                             this->list_missions, this->list_employes, this->list_centres);
 
-
-        cout << "Croisement" << endl;
-
         this->pop->croisement(parent1, parent2, enfant1, enfant2);
 
-        cout << "Mutation" << endl;
         // mutation des deux enfants
         enfant1->muter(this->taux_mutation);
         enfant2->muter(this->taux_mutation);
+        
         // évaluation des deux enfants
         enfant1->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
         enfant2->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
+
         // remplacement des deux parents par les deux enfants
         this->pop->remplacement_roulette(enfant1);
         this->pop->remplacement_roulette(enfant2);
+
         // affichage des statistiques de la population
         this->pop->statistiques(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
     }
@@ -230,7 +229,7 @@ void Ag::initialiser(){
     // Tant qu'on a pas trouvé autant de solutions valides que de population
     for(int nbsol = 0; nbsol < this->taille_pop; nbsol++){
 
-        cout << "Solution " << nbsol << endl;
+        // cout << "Solution " << nbsol << endl;
 
         bool** genes = new bool*[this->nb_missions];
         for(int i = 0; i < this->nb_missions; i++){
@@ -259,19 +258,44 @@ void Ag::initialiser(){
             // On récupère le nombre de mission du groupe
             int nb_mission = this->list_group[numGroupe].getNbMissions();
 
-
             for(int numMission = 0; numMission < nb_mission; numMission++){ // Pour chaque mission (du groupe)
                 // on affecte aléatoirement un employé à la mission, pour eviter de tourner indefiniment, on limite le nombre d'essai au nombre d'employés
                 for(int i = 0; i < this->nb_employes; i++){ // POur eviter de boucler indéfiniment, on limite le nombre d'essai au nombre d'employés
                     // nombre aléatoire pour choisir si on va essayer d'affecter un emplouyé du groupe ou non. Permet d'avoir des changements entre les populaitons 
-                    int random = rand() % 3 +1;
+                    int random = rand() % 3 + 1; // On tire un nombre aléatoire entre 1 et 3
                     int employeSelectionned = -1;
                     int idMission = list_missions[numMission].getIdSkill() -1;
-                    if(random <=2){ // On choisi un employé du groupe
+
+                    // on verifie qu'il y a au moins un employé dans le centre du groupe
+                    bool hasEmploye = false;
+                    for (int i = 0; i < this->nb_employes; i++) {
+                        if (this->list_employes[i].getCentreId() == list_group[numGroupe].getCentre().getId()) {
+                            hasEmploye = true;
+                            break;
+                        }
+                    }   
+
+                    // on verifie qu'il y a au moins un employé dans un autre centre que celui du groupe
+                    bool hasAllEmploye = true;
+                    for (int i = 0; i < this->nb_employes; i++) {
+                        if (this->list_employes[i].getCentreId() != list_group[numGroupe].getCentre().getId()) {
+                            hasAllEmploye = false;
+                            break;
+                        }
+                    }
+
+                    if (hasEmploye == 0) { // il n'y a pas d'employé dans le centre du groupe
+                        
+                        employeSelectionned = rand() % (this->nb_employes); // On tire un nombre aléatoire entre 0 et le nombre d'employés
+
+                    } else if (hasAllEmploye == 1) { // il n'y a que des employés dans le centre du groupe
+
+                        employeSelectionned = rand() % (this->nb_employes); // On tire un nombre aléatoire entre 0 et le nombre d'employés
+
+                    } else if(random <=2){ // On choisi un employé du groupe 2 fois sur 3
                         //On choisie un employé au hasard dont le centre est le centre du groupe
                         do{
                             employeSelectionned = rand() % (this->nb_employes); // On tire un nombre aléatoire entre 0 et le nombre d'employés
-
                         } while (this->list_employes[employeSelectionned].getCentreId() != this->list_group[numGroupe].getCentre().getId()); // On recommence tant qu'on a pas trouvé un centre different du centre du groupe
 
                     }else{
@@ -292,7 +316,6 @@ void Ag::initialiser(){
                     
                     // On verifie que l'affectation fournie une solution valide
                     if(!this->isPlaningValid(planning)){
-                        // cout << "Planning invalide" << endl;
                         // Si la solution n'est pas valide on recommence
                         genes[idMission][list_employes[employeSelectionned].getIdSkill()-1] = 0;
                     }else{
@@ -303,23 +326,16 @@ void Ag::initialiser(){
             }
         }
 
-        for(int i = 0; i < this->nb_missions; i++){
-            for(int j = 0; j < this->nb_employes; j++){
-                cout << genes[i][j] << " ";
-            }
-            cout << endl;
-        }
+        // for(int i = 0; i < this->nb_missions; i++){
+        //     for(int j = 0; j < this->nb_employes; j++){
+        //         cout << genes[i][j] << " ";
+        //     }
+        //     cout << endl;
+        // }
 
         //On ajoute la solution à un nouvel individu de la population
         this->pop->ajouter(genes, nbsol);
 
     }
-
-    //  // TEST fusion
-    // cout << endl;
-    // cout << "-------------------TEST FUSION---------------" << endl;
-    // cout << endl;
-
-    // this->pop->test_croisement(0, 1);
 
 }

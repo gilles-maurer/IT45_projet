@@ -43,7 +43,7 @@ void init_parameter(int argc, char **argv, string &file_name, int &nb_generation
 	nb_generations = 10;
 	taille_pop = 10;          
 	taux_croisement = 0.5;  
-	taux_mutation = 0.5;
+	taux_mutation = 1;
 	coefNbMisAffecte = 100;
 	coefDistParcourue = 1;
 	coefNbMisSpe = 5;
@@ -89,6 +89,31 @@ void init_parameter(int argc, char **argv, string &file_name, int &nb_generation
 		cout << "Nombre de parametres incorrect" << endl;
         EXIT_FAILURE;
 	}
+
+
+}
+
+
+void print_stats_lsf_lpc(Chromosome* solution_lsf, Chromosome* solution_lpc) {
+
+	float total_fitness = solution_lsf->getFitness() + solution_lpc->getFitness();
+
+	int total_nb_missions_affecte = solution_lsf->getNbMissionsAffecte() + solution_lpc->getNbMissionsAffecte();
+
+	float total_distance = solution_lsf->getDistance() + solution_lpc->getDistance();
+
+	int total_nb_specialite = solution_lsf->getNbSpecialite() + solution_lpc->getNbSpecialite();
+
+	cout << "RESULTATS" << endl;
+	cout << "Fitness total : " << total_fitness << endl;
+	cout << "Nombre de missions affectees : " << total_nb_missions_affecte << endl;
+	cout << "Distance totale parcourue : " << total_distance << endl;
+	cout << "Nombre de specialites : " << total_nb_specialite << endl;
+
+
+
+
+
 
 
 }

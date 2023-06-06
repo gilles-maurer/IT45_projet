@@ -108,7 +108,7 @@ int Chromosome::getNbCentres(){
 
 }
 
-Mission* Chromosome::getLsitMissions(){
+Mission* Chromosome::getListMissions(){
     return this->list_missions;
 }
 
@@ -118,6 +118,18 @@ Employe* Chromosome::getListEmployes(){
 
 Centre* Chromosome::getListCentres(){
     return this->list_centres;
+}
+
+int Chromosome::getNbMissionsAffecte(){
+    return this->nb_missions_affecte;
+}
+
+float Chromosome::getDistance(){
+    return this->distance_parcourue;
+}
+
+int Chromosome::getNbSpecialite(){
+    return this->nb_specialite;
 }
 
 
@@ -170,7 +182,6 @@ void Chromosome::evaluer(double coefNbMisAffecte, double coefDistParcourue, doub
                 }    
             }
 
-            // on tri les missions par heure de début
             missions = sortMission(missions, count);
 
             // on calcule la distance parcourue par l'employé pour le jour j
@@ -205,16 +216,21 @@ void Chromosome::stats(){ // affiche quelques statistiques sur le Chromosome
     cout << "Fitness: " << this->fitness << endl;
     cout << "Nombre de missions affectees: " << this->nb_missions_affecte << endl;
     cout << "Distance parcourue: " << this->distance_parcourue << endl;
-    cout << "Nombre de missions ou la spécialite est respectee: " << this->nb_specialite << endl;
+    cout << "Nombre de missions ou la specialite est respectee: " << this->nb_specialite << endl;
     cout << endl;
 }
 
 
 float Chromosome::ridelenght(Mission* missions, int count, int id_employe){
 
+
     float distance_totale = 0;
 
-    if (count != 0 && count != 1) {
+    if (count == 0) { // si l'employé n'a pas de mission on renvoie 0
+        return 0;
+    }    
+
+    if (count > 1) { // s'il y a au moins 2 missions on peut calculer la distance entre les missions
         for (int i = 0; i < count - 1; i++) {
             // on calcule le temps pour aller d'une mission à une autre 
             float distance = missions[i].getDistance(missions[i + 1], this->nb_centres);
@@ -406,7 +422,7 @@ bool Chromosome::isDayTooLong(Mission* missions, int count) {
 
 // OPERATEURS DE MUTATION
 void Chromosome::muter(int taux){ // Echange deux missions (i.e. deux colomnes de la matrice)
-    
+    taux = taux * 100; // On multiplie par 100 pour avoir un nombre entre 0 et 100
     //pour chaque mission
     for(int i = 0; i < this->nb_missions; i++){ 
         // Partie 1 : On commence par effectuer une mutation pour swiper deux employés d'une mission

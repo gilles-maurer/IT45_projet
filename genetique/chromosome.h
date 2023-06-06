@@ -41,9 +41,14 @@ public:
 	int getNbMissions();
 	int getNbEmployes();
 	int getNbCentres();
-	Mission* getLsitMissions();
+	Mission* getListMissions();
 	Employe* getListEmployes();
 	Centre* getListCentres();
+
+	int getFitness();	 // retourne la fitness
+	int getNbMissionsAffecte();
+	float getDistance();
+	int getNbSpecialite();
 
 
 	// METHODES
@@ -61,7 +66,6 @@ public:
 	void copier(bool** genes);  // copie le gene 'source'
 	bool** getGene();	 // retourne le tableau de genes
 	bool** getGene(int firstPoint, int lastPoint); // retourne le tableau de genes entre deux point
-	int getFitness();	 // retourne la fitness
 
     bool identique(Chromosome* chro); // test si 2 chromosome sont identique
 

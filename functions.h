@@ -1,6 +1,8 @@
 #ifndef _FUNCTIONS_H_
 #define _FUNCTIONS_H_
 
+#include "./genetique/chromosome.h"
+
 #include <iostream>
 #include <string>
 
@@ -14,6 +16,8 @@ void init_parameter(int argc, char **argv, std::string &file_name, int &nb_gener
                     double &coefDistParcourue, double &coefNbMisSpe); 
 
 
+
+void print_stats_lsf_lpc(Chromosome* solution_lsf, Chromosome* solution_lpc);
 
 
 #endif // _FUNCTIONS_H_    

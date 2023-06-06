@@ -33,9 +33,8 @@ Population::~Population(){}
 
 // affiche quelques statistiques sur la population
 void Population::statistiques(double coefNbMisAffecte, double coefDistParcourue, double coefNbMisSpe){
-    individus[0].evaluer(coefNbMisAffecte, coefDistParcourue, coefNbMisSpe);
-    int fitness = individus[0].getFitness();
-    cout << "Fitness: " << fitness << endl;
+
+    // TODO : voir ce qu'on affiche ici 
 
 } 
 

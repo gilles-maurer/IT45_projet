@@ -157,5 +157,7 @@ int main(int argc, char **argv)
 	cout << "Resultat pour les missions LPC : " << endl;
 	solution_lpc->stats();
 
+	print_stats_lsf_lpc(solution_lsf, solution_lpc);
+
 
 }
