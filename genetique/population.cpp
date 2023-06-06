@@ -16,12 +16,6 @@ Population::Population(int tp, int nb_missions, int nb_employes, int nb_centres,
             this->individus[i] = Chromosome(nb_missions, nb_employes, nb_centres, list_missions, list_employes, list_centres);
         }
 
-        cout << "Population créée" << endl;
-        for (int i = 0; i < tp; i++){
-            cout << this->individus[i].getNbEmployes() << endl;
-        }
-        cin.get();
-
         this->nb_employes = nb_employes;
         this->nb_missions = nb_missions;
 
@@ -72,9 +66,6 @@ Chromosome *Population::getMeilleurIndividu(){
         }
     }
 
-    this->individus[index].print();
-    cin.get();
-
     return &this->individus[index];
 }
 
@@ -104,15 +95,19 @@ Chromosome *Population::selection_roulette(){
     // selection biaisée
     int random = rand() % sumFitness;
 
-    int numIndividu = 0;
+    int numIndividu = 0; 
+
     // tant que le nombre aléatoire est plus petit que la plage superieur de la probabilité de l'individu
-    while(random < proba[numIndividu] || numIndividu < this->taille_pop){
+    while(random > proba[numIndividu] && numIndividu < this->taille_pop){
         numIndividu++; // On incrémente
     }
 
     // On retourn l'individu.
-    // Attention dès que random est supéreieur à la borne superieur de proba on sort, mais l'individu seletionné est l'individu précédent
-    numIndividu--;
+    // Attention dès que random est supérieur à la borne superieur de proba on sort, mais l'individu seletionné est l'individu précédent
+    if (numIndividu == this->taille_pop) {
+        numIndividu--;
+    }
+
     return &this->individus[numIndividu];
 
 }     
@@ -171,16 +166,10 @@ void Population::croisement(Chromosome* parent1, Chromosome* parent2,
                       Chromosome* enfant1, Chromosome* enfant2) {
     // tirage aléatoire d'un point de croisement
     int point = rand() % this->nb_missions;
-    cout << "Point de croisement: " << point << endl;
-
-    cout << "nb employes: " << this->nb_employes << endl;
-    cout << "parent1: " << parent1->getNbEmployes() << endl;
-    cout << "parent2: " << parent2->getNbEmployes() << endl;
-    cin.get();
 
     // copie des gènes des parents dans les enfants
-    enfant1->fusion(parent1->getGene(0, point), parent2->getGene(point+1, this->nb_missions), point); // enfant1 = parent1[0:point] + parent2[point+1:nb_missions]
-    enfant2->fusion(parent2->getGene(0, point), parent1->getGene(point+1, this->nb_missions), point); // enfant2 = parent2[0:point] + parent1[point+1:nb_missions]
+    enfant1->fusion(parent1->getGene(0, point), parent2->getGene(point, this->nb_missions), point); // enfant1 = parent1[0:point] + parent2[point+1:nb_missions]
+    enfant2->fusion(parent2->getGene(0, point), parent1->getGene(point, this->nb_missions), point); // enfant2 = parent2[0:point] + parent1[point+1:nb_missions]
 }
 
 void Population::test_croisement(int a, int b){

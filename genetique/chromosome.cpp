@@ -71,18 +71,10 @@ bool** Chromosome::getGene(){
 // retourne le tableau de genes entre deux point
 bool** Chromosome::getGene(int firstPoint, int secondPoint){
 
-    cout << "check 1" << endl;
-
     bool** returnGenes = new bool*[secondPoint - firstPoint];
     for (int i = 0; i < secondPoint - firstPoint; i++){
         returnGenes[i] = new bool[this->nb_employes];
     }
-
-    cout << "check 2" << endl;
-    cout << "firstPoint : " << firstPoint << endl;
-    cout << "secondPoint : " << secondPoint << endl;
-    cout << "secondPoint - firstPoint : " << secondPoint - firstPoint << endl;
-    cout << "this->nb_employes : " << this->nb_employes << endl;
 
     for(int i = 0; i < secondPoint - firstPoint; i++){
         for(int j = 0; j < this->nb_employes; j++){
@@ -90,17 +82,12 @@ bool** Chromosome::getGene(int firstPoint, int secondPoint){
         }
     }
 
-    cout << "check 3" << endl;
-
     for(int i = 0; i < secondPoint - firstPoint; i++){
         for(int j = 0; j < this->nb_employes; j++){
             returnGenes[i][j] = this->genes[firstPoint + i][j];
-            cout << "returnGenes[" << i << "][" << j << "] = " << returnGenes[i][j] << endl;
         }
     }
     
-    cout << "check 4" << endl;
-
     return returnGenes;
 }
 
@@ -520,29 +507,16 @@ void Chromosome::fusion(bool** gene1, bool** gene2, int point){ // fusionne 2 ge
     // taille total = n, taille gene1 = n1, taille gene2 = n2, n1 + n2 = n
     // Il faut fusioner *gene1[0] à *gene2[0] ... *gene1[n1] à *gene2[n2]
 
-    cout << "check 5" << endl;
-    cout << "point : " << point << endl;
-
     // pour chaque employé
     for (int i = 0; i < this->nb_employes; i++){
         for(int j = 0; j < this->nb_missions; j++){
 
-            cout << "check 5.1" << endl;
-            cout << "i : " << i << endl;
-            cout << "j : " << j << endl;   
-
-            cout << "this->genes[" << j << "][" << i << "] : " << this->genes[j][i] << endl;    
-            cout << "gene1[" << j << "][" << i << "] : " << gene1[j][i] << endl;
-
-
-            if(j<point){
-                this->genes[j][i] = gene1[j][i];
-            }else{
-                this->genes[j][i] = gene2[j][i];
+            if(j<point) {
+               this->genes[j][i] = gene1[j][i];
+            } else {
+                this->genes[j][i] = gene2[j-point][i];
             }
         }
     }
-
-    cout << "check 6" << endl;
 }
 

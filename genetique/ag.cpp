@@ -55,13 +55,6 @@ Chromosome* Ag::optimiser() {
         Chromosome* parent1 = this->pop->selection_roulette();
         Chromosome* parent2 = this->pop->selection_roulette();
 
-        cout << "Parent 1" << endl;
-        cout << parent1->getNbEmployes() << endl;
-
-        cout << "Parent 2" << endl;
-        cout << parent2->getNbEmployes() << endl;
-
-        cin.get();
         // croisement des deux parents
 
         Chromosome* enfant1 = new Chromosome(this->nb_missions, this->nb_employes, this->nb_centres, 
@@ -71,7 +64,6 @@ Chromosome* Ag::optimiser() {
 
 
         cout << "Croisement" << endl;
-        cin.get();
 
         this->pop->croisement(parent1, parent2, enfant1, enfant2);
 
@@ -300,7 +292,7 @@ void Ag::initialiser(){
                     
                     // On verifie que l'affectation fournie une solution valide
                     if(!this->isPlaningValid(planning)){
-                        cout << "Planning invalide" << endl;
+                        // cout << "Planning invalide" << endl;
                         // Si la solution n'est pas valide on recommence
                         genes[idMission][list_employes[employeSelectionned].getIdSkill()-1] = 0;
                     }else{

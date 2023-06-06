@@ -22,10 +22,11 @@ private:
 	Employe *list_employes;
 	Centre *list_centres;
 
+	Chromosome *individus;  // liste des individus de la population
+
                              //   du meilleur au plus mauvais en fonction de la fitness	population(int tp, int tc);    // constructeur de l'objet
 public:
 
-	Chromosome *individus;  // liste des individus de la population
 
 	// CONSTRUCTEURS
 	Population(int tp, int nb_missions, int nb_employes, int nb_centres, Mission *list_missions, Employe *list_employes, Centre *list_centres); // constructeur de l'objet

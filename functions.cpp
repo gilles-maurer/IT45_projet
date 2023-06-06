@@ -44,9 +44,9 @@ void init_parameter(int argc, char **argv, string &file_name, int &nb_generation
 	taille_pop = 10;          
 	taux_croisement = 0.5;  
 	taux_mutation = 0.5;
-	coefNbMisAffecte = 1;
-	coefDistParcourue = 0.1;
-	coefNbMisSpe = 0.5;
+	coefNbMisAffecte = 100;
+	coefDistParcourue = 1;
+	coefNbMisSpe = 5;
 
 
 	if (argc == 1) { // pas de parametres
