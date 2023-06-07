@@ -223,7 +223,6 @@ void Chromosome::stats(){ // affiche quelques statistiques sur le Chromosome
 
 float Chromosome::ridelenght(Mission* missions, int count, int id_employe){
 
-
     float distance_totale = 0;
 
     if (count == 0) { // si l'employé n'a pas de mission on renvoie 0
@@ -243,9 +242,12 @@ float Chromosome::ridelenght(Mission* missions, int count, int id_employe){
     int id_centre = list_employes[id_employe].getCentreId();
     Centre centre = list_centres[id_centre - 1];
 
+    centre.print();
+    cout << missions[0].getId() << endl;
+    cout << missions[count - 1].getId() << endl;
+
     distance_totale += centre.getDistance(missions[0], this->nb_centres);
     distance_totale += centre.getDistance(missions[count - 1], this->nb_centres);
-
     return distance_totale; 
 }
 
@@ -423,6 +425,8 @@ bool Chromosome::isDayTooLong(Mission* missions, int count) {
 // OPERATEURS DE MUTATION
 void Chromosome::muter(int taux){ // Echange deux missions (i.e. deux colomnes de la matrice)
     taux = taux * 100; // On multiplie par 100 pour avoir un nombre entre 0 et 100
+
+
     //pour chaque mission
     for(int i = 0; i < this->nb_missions; i++){ 
         // Partie 1 : On commence par effectuer une mutation pour swiper deux employés d'une mission
@@ -464,7 +468,7 @@ void Chromosome::muter(int taux){ // Echange deux missions (i.e. deux colomnes d
                     if(!hasOnlyZeros){ // Si la mission n'est affecté à aucun employé, on affecte l'employé aléatoire
                         this->genes[i][idEmployee] = 1;
                     }
-                        this->genes[i][randNewEmploye] = 0;       
+                    this->genes[i][randNewEmploye] = 0;       
                 }
             }
         }

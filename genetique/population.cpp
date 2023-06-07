@@ -74,6 +74,7 @@ Chromosome *Population::getMeilleurIndividu(){
 
 // selection par roulette biaisee d'un individu de la population
 Chromosome *Population::selection_roulette(){
+
     // calcul de la somme des fitness
     int sumFitness = 0;
     
@@ -109,11 +110,47 @@ Chromosome *Population::selection_roulette(){
 
     return &this->individus[numIndividu];
 
-}     
+}
+
 
 // rempacement par roulette biaisee d'un individu de la population par un Chromosome donne
-void Population::remplacement_roulette(Chromosome *individu){
+void Population::remplacement_roulette(Chromosome *list_enfants){
+       // calcul de la somme des fitness
+    double sumFitness = 0;
+    
+    for(int i = 0; i < this->taille_pop; i++){
+        sumFitness += ((double)1/this->individus[i].getFitness())*100000;
+    }
 
+    // calcul des probabilités
+    // On créer un tableau qui garde en mémoire la plage de valeur pour laquel un individu sera selectioné, 
+    //plus son fitness est grand, plus il a de chance d'être sélectioné
+    int* proba = new int[this->taille_pop];
+    proba[0] = ((double)1/this->individus[0].getFitness())*100000;
+
+    for(int i = 1; i < this->taille_pop; i++){
+        proba[i] = proba[i-1] + ((double)1/this->individus[i].getFitness())*100000; // Plage de selection d'un individu = i-1 - i 
+    }
+
+    // selection biaisée
+    for(int k = 0; k < this->taille_pop; k++){
+    int random = rand() % (int)sumFitness;
+
+    int numIndividu = 0; 
+
+    // tant que le nombre aléatoire est plus petit que la plage superieur de la probabilité de l'individu
+    while(random > proba[numIndividu] && numIndividu < this->taille_pop){
+        numIndividu++; // On incrémente
+    }
+
+    // On retourn l'individu.
+    // Attention dès que random est supérieur à la borne superieur de proba on sort, mais l'individu seletionné est l'individu précédent
+    if (numIndividu == this->taille_pop) {
+        numIndividu--;
+    }
+
+    this->individus[numIndividu] = list_enfants[k];
+    }
 }
     
 void Population::ordonner(){

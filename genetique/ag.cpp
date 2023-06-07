@@ -48,36 +48,46 @@ Chromosome* Ag::optimiser() {
 
     // boucle principale de l'algorithme
     for (int i = 0; i < this->nbgenerations; i++) {
+        // Création de la liste d'enfants :
+        Chromosome* list_enfants = new Chromosome[this->taille_pop];
 
-        cout << "Generation " << i << endl;
+        // On va créer une liste d'enfants de la même taille que la population
+        for(int j=0; j< this->taille_pop/2; j++){
+            cout << "j = " << j << endl;
+            // sélection de deux parents
+            Chromosome* parent1 = this->pop->selection_roulette();
+            Chromosome* parent2 = this->pop->selection_roulette();
 
-        // sélection de deux parents
-        Chromosome* parent1 = this->pop->selection_roulette();
-        Chromosome* parent2 = this->pop->selection_roulette();
+            // croisement des deux parents
 
-        // croisement des deux parents
-
-        Chromosome* enfant1 = new Chromosome(this->nb_missions, this->nb_employes, this->nb_centres, 
+            Chromosome* enfant1 = new Chromosome(this->nb_missions, this->nb_employes, this->nb_centres, 
+                                                    this->list_missions, this->list_employes, this->list_centres);
+            Chromosome* enfant2 = new Chromosome(this->nb_missions, this->nb_employes, this->nb_centres, 
                                                 this->list_missions, this->list_employes, this->list_centres);
-        Chromosome* enfant2 = new Chromosome(this->nb_missions, this->nb_employes, this->nb_centres, 
-                                            this->list_missions, this->list_employes, this->list_centres);
 
-        this->pop->croisement(parent1, parent2, enfant1, enfant2);
+            this->pop->croisement(parent1, parent2, enfant1, enfant2);
 
-        // mutation des deux enfants
-        enfant1->muter(this->taux_mutation);
-        enfant2->muter(this->taux_mutation);
-        
-        // évaluation des deux enfants
-        enfant1->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
-        enfant2->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
+            // mutation des deux enfants
+            enfant1->muter(this->taux_mutation);
+            enfant2->muter(this->taux_mutation);
 
-        // remplacement des deux parents par les deux enfants
-        this->pop->remplacement_roulette(enfant1);
-        this->pop->remplacement_roulette(enfant2);
+            // évaluation des deux enfants
+            enfant1->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
+            enfant2->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
+
+            cout << enfant1->getFitness() << endl;
+            cout << enfant2->getFitness() << endl;
+            // Affectation des enfants à la liste d'enfants
+            list_enfants[2*j] = *enfant1;
+            list_enfants[2*j+1] = *enfant2;
+        }
+        // Pour remplacement rouletten on passe en argument une liste d'enfant de la même taille qye la population
+        this->pop->remplacement_roulette(list_enfants);
 
         // affichage des statistiques de la population
+        cout << "stat" << endl;
         this->pop->statistiques(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
+        cout << "stat" << endl;
     }
     // affichage des statistiques de la population
     this->pop->statistiques(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
@@ -246,6 +256,7 @@ void Ag::initialiser(){
 
         // Pour chaque groupe 
         for(int numGroupe = 0; numGroupe < this->nb_group; numGroupe++){
+            cout << "Groupe " << numGroupe << endl;
             
             // On récupère le centre du groupe
             // Plus de chance de choisir le centre du groupe mais pas obligatoire
@@ -257,6 +268,11 @@ void Ag::initialiser(){
 
             // On récupère le nombre de mission du groupe
             int nb_mission = this->list_group[numGroupe].getNbMissions();
+
+
+            cout << centreGroupe.getId() << endl;
+            cout << nb_mission << endl;
+            cout << this->nb_centres << endl;
 
             for(int numMission = 0; numMission < nb_mission; numMission++){ // Pour chaque mission (du groupe)
                 // on affecte aléatoirement un employé à la mission, pour eviter de tourner indefiniment, on limite le nombre d'essai au nombre d'employés
@@ -295,12 +311,14 @@ void Ag::initialiser(){
                     } else if(random <=2){ // On choisi un employé du groupe 2 fois sur 3
                         //On choisie un employé au hasard dont le centre est le centre du groupe
                         do{
+                            //cout << "On choisie un employé au hasard dont le centre est le centre du groupe" << endl;
                             employeSelectionned = rand() % (this->nb_employes); // On tire un nombre aléatoire entre 0 et le nombre d'employés
                         } while (this->list_employes[employeSelectionned].getCentreId() != this->list_group[numGroupe].getCentre().getId()); // On recommence tant qu'on a pas trouvé un centre different du centre du groupe
 
                     }else{
                         //On choisie un employé au hasard dont le centre n'est pas le centre du groupe
                         do{
+                            //cout << "On choisie un employé au hasard" << endl;
                             employeSelectionned = rand() % (this->nb_employes); // On tire un nombre aléatoire entre 0 et le nombre d'employés
                         } while (this->list_employes[employeSelectionned].getCentreId() == this->list_group[numGroupe].getCentre().getId()); // On recommence tant qu'on a pas trouvé un centre different du centre du groupe   
                     }
@@ -325,13 +343,6 @@ void Ag::initialiser(){
                 }
             }
         }
-
-        // for(int i = 0; i < this->nb_missions; i++){
-        //     for(int j = 0; j < this->nb_employes; j++){
-        //         cout << genes[i][j] << " ";
-        //     }
-        //     cout << endl;
-        // }
 
         //On ajoute la solution à un nouvel individu de la population
         this->pop->ajouter(genes, nbsol);
