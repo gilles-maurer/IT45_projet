@@ -134,22 +134,22 @@ void Population::remplacement_roulette(Chromosome *list_enfants){
 
     // selection biaisée
     for(int k = 0; k < this->taille_pop; k++){
-    int random = rand() % (int)sumFitness;
+        int random = rand() % (int)sumFitness;
 
-    int numIndividu = 0; 
+        int numIndividu = 0; 
 
-    // tant que le nombre aléatoire est plus petit que la plage superieur de la probabilité de l'individu
-    while(random > proba[numIndividu] && numIndividu < this->taille_pop){
-        numIndividu++; // On incrémente
-    }
+        // tant que le nombre aléatoire est plus petit que la plage superieur de la probabilité de l'individu
+        while(random > proba[numIndividu] && numIndividu < this->taille_pop){
+            numIndividu++; // On incrémente
+        }
 
-    // On retourn l'individu.
-    // Attention dès que random est supérieur à la borne superieur de proba on sort, mais l'individu seletionné est l'individu précédent
-    if (numIndividu == this->taille_pop) {
-        numIndividu--;
-    }
+        // On retourn l'individu.
+        // Attention dès que random est supérieur à la borne superieur de proba on sort, mais l'individu seletionné est l'individu précédent
+        if (numIndividu == this->taille_pop) {
+            numIndividu--;
+        }
 
-    this->individus[numIndividu] = list_enfants[k];
+        this->individus[numIndividu] = list_enfants[k];
     }
 }
     
@@ -206,6 +206,24 @@ void Population::croisement(Chromosome* parent1, Chromosome* parent2,
     // copie des gènes des parents dans les enfants
     enfant1->fusion(parent1->getGene(0, point), parent2->getGene(point, this->nb_missions), point); // enfant1 = parent1[0:point] + parent2[point+1:nb_missions]
     enfant2->fusion(parent2->getGene(0, point), parent1->getGene(point, this->nb_missions), point); // enfant2 = parent2[0:point] + parent1[point+1:nb_missions]
+
+    // check si les enfants sont valides
+
+    for (int i = 0; i < this->nb_employes; i++) {
+        bool* planning1 = new bool[this->nb_missions];
+        bool* planning2 = new bool[this->nb_missions];
+        for (int j = 0; j < this->nb_missions; j++) {
+            planning1[j] = enfant1->getGene()[j][i]; // on récupère le planning de l'employé i
+            planning2[j] = enfant2->getGene()[j][i];
+        }
+
+        if (!enfant1->isPlaningValid(planning1)) {
+            enfant1 = parent1;
+        }        
+        if (!enfant2->isPlaningValid(planning2)) {
+            enfant2 = parent2;
+        }
+    }
 }
 
 void Population::test_croisement(int a, int b){

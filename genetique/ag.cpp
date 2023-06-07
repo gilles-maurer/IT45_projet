@@ -53,7 +53,7 @@ Chromosome* Ag::optimiser() {
 
         // On va créer une liste d'enfants de la même taille que la population
         for(int j=0; j< this->taille_pop/2; j++){
-            cout << "j = " << j << endl;
+            // cout << "j = " << j << endl;
             // sélection de deux parents
             Chromosome* parent1 = this->pop->selection_roulette();
             Chromosome* parent2 = this->pop->selection_roulette();
@@ -71,6 +71,22 @@ Chromosome* Ag::optimiser() {
             enfant1->muter(this->taux_mutation);
             enfant2->muter(this->taux_mutation);
 
+                for (int i = 0; i < this->nb_employes; i++) {
+                    bool* planning1 = new bool[this->nb_missions];
+                    bool* planning2 = new bool[this->nb_missions];
+                    for (int j = 0; j < this->nb_missions; j++) {
+                        planning1[j] = enfant1->getGene()[j][i]; // on récupère le planning de l'employé i
+                        planning2[j] = enfant2->getGene()[j][i];
+                    }
+
+                    if (!enfant1->isPlaningValid(planning1)) {
+                        enfant1 = parent1;
+                    }        
+                    if (!enfant2->isPlaningValid(planning2)) {
+                        enfant2 = parent2;
+                    }
+                }
+
             // évaluation des deux enfants
             enfant1->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
             enfant2->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
@@ -85,9 +101,8 @@ Chromosome* Ag::optimiser() {
         this->pop->remplacement_roulette(list_enfants);
 
         // affichage des statistiques de la population
-        cout << "stat" << endl;
-        this->pop->statistiques(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
-        cout << "stat" << endl;
+        // cout << "stat" << endl;
+        // this->pop->statistiques(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
     }
     // affichage des statistiques de la population
     this->pop->statistiques(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
@@ -256,7 +271,7 @@ void Ag::initialiser(){
 
         // Pour chaque groupe 
         for(int numGroupe = 0; numGroupe < this->nb_group; numGroupe++){
-            cout << "Groupe " << numGroupe << endl;
+            // cout << "Groupe " << numGroupe << endl;
             
             // On récupère le centre du groupe
             // Plus de chance de choisir le centre du groupe mais pas obligatoire
@@ -270,9 +285,9 @@ void Ag::initialiser(){
             int nb_mission = this->list_group[numGroupe].getNbMissions();
 
 
-            cout << centreGroupe.getId() << endl;
-            cout << nb_mission << endl;
-            cout << this->nb_centres << endl;
+            // cout << centreGroupe.getId() << endl;
+            // cout << nb_mission << endl;
+            // cout << this->nb_centres << endl;
 
             for(int numMission = 0; numMission < nb_mission; numMission++){ // Pour chaque mission (du groupe)
                 // on affecte aléatoirement un employé à la mission, pour eviter de tourner indefiniment, on limite le nombre d'essai au nombre d'employés

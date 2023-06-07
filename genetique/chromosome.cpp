@@ -136,6 +136,7 @@ int Chromosome::getNbSpecialite(){
 // METHODES
 void Chromosome::print(){// fonction d'affichage du Chromosome (i.e. de la solution)
     for(int i = 0; i < this->nb_missions; i++){
+        cout << list_missions[i].getId() << " ";
         for(int j = 0; j < this->nb_employes; j++){
             cout << this->genes[i][j] << " ";
         }
@@ -242,9 +243,9 @@ float Chromosome::ridelenght(Mission* missions, int count, int id_employe){
     int id_centre = list_employes[id_employe].getCentreId();
     Centre centre = list_centres[id_centre - 1];
 
-    centre.print();
-    cout << missions[0].getId() << endl;
-    cout << missions[count - 1].getId() << endl;
+    // centre.print();
+    // cout << missions[0].getId() << endl;
+    // cout << missions[count - 1].getId() << endl;
 
     distance_totale += centre.getDistance(missions[0], this->nb_centres);
     distance_totale += centre.getDistance(missions[count - 1], this->nb_centres);
@@ -315,24 +316,34 @@ bool Chromosome::isPlaningValid(bool* planning) { // planning correspond donc à
             mission_jour = sortMission(mission_jour, count); // on trie les missions du jour par heure de début
 
             if(areMissionsOverlapping(mission_jour, count)){ // si les missions du jour se chevauchent
+                // cout << "missions se chevauchent" << endl;
                 return false;
             }
 
             if(isDayTooLong(mission_jour, count)){ // si l'amplitude horaire de travail est supérieure à 13h
+                // cout << "amplitude horaire trop longue" << endl;
                 return false;
             }
 
             float temps_trajet = rideTime(mission_jour, count); // on calcule le temps de trajet entre les missions du jour
             
             if (heures_jour + temps_trajet > 7) { // si l'employé travaille plus de 7h dans la journée
+                // cout << "heures jour : " << heures_jour << endl;
                 return false;
             }
         }
     }
 
     if (heures_semaine > 35) { // si l'employé travaille plus de 35h dans la semaine
+        // cout << "heures semaine : " << heures_semaine << endl;
         return false;
     }
+
+
+    // cout << "Planning valide" << endl;
+    // cout << "heures semaine : " << heures_semaine << endl;
+    // cout << "heures jour : " << endl;
+
 
     return true;
 }

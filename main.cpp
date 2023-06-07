@@ -154,10 +154,31 @@ int main(int argc, char **argv)
 	cout << "Resultat pour les missions LSF : " << endl;
 	solution_lsf->stats();
 
+	// solution_lsf->print();
+
 	cout << "Resultat pour les missions LPC : " << endl;
 	solution_lpc->stats();
 
+	// solution_lpc->print();
+
 	print_stats_lsf_lpc(solution_lsf, solution_lpc);
 
+	// cout << "check 1" << endl;
+
+	// for (int i = 0; i < nb_employe_lsf; i++) {
+    //     bool* planning1 = new bool[nb_missions_lsf];
+    //     for (int j = 0; j < nb_missions_lsf; j++) {
+	// 		cout << "i : " << i << " j : " << j << endl;
+    //         planning1[j] = solution_lsf->getGene()[j][i]; // on récupère le planning de l'employé i
+    //     }
+
+	// 	cout << "check 2" << endl;
+
+    //     if (!solution_lsf->isPlaningValid(planning1)) {
+	// 		cout << "Planning invalide pour l'employe " << i << endl;
+    //     } else {
+	// 		cout << "Planning valide pour l'employe " << i << endl;
+	// 	}
+    // }
 
 }
