@@ -40,6 +40,7 @@ Ag::~Ag() {
 // fonction principale qui décit le déroulement de l'algorithme évolusionniste
 Chromosome* Ag::optimiser() {
 
+
     Chromosome* meilleurIndividu = new Chromosome(this->nb_missions, this->nb_employes, this->nb_centres, 
                                                     this->list_missions, this->list_employes, this->list_centres);
 
@@ -82,6 +83,10 @@ Chromosome* Ag::optimiser() {
 
             this->pop->croisement(parent1, parent2, enfant1, enfant2);
 
+            // mutation des deux enfants
+            enfant1->muter(this->taux_mutation);
+            enfant2->muter(this->taux_mutation);
+            
             for (int i = 0; i < this->nb_employes; i++) {
                     bool* planning1 = new bool[this->nb_missions];
                     bool* planning2 = new bool[this->nb_missions];
@@ -91,19 +96,15 @@ Chromosome* Ag::optimiser() {
                     }
 
                     if (!enfant1->isPlaningValid(planning1)) {
-                        enfant1 = parent1;
+                        cout << "Planning 1 invalide" << endl;
+                        *enfant1 = *parent1;
                     }        
                     if (!enfant2->isPlaningValid(planning2)) {
-                        enfant2 = parent2;
+                        cout << "Planning 2 invalide" << endl;
+                        *enfant2 = *parent2;
                     }
-                    //delete planning1;
-                    //delete planning2;
             }
 
-
-            // mutation des deux enfants
-            enfant1->muter(this->taux_mutation);
-            enfant2->muter(this->taux_mutation);
 
             // évaluation des deux enfants
             enfant1->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
@@ -371,6 +372,9 @@ void Ag::initialiser(){
                 }
             }
         }
+        
+
+        
 
         //On ajoute la solution à un nouvel individu de la population
         this->pop->ajouter(genes, nbsol);

@@ -140,10 +140,10 @@ Chromosome *Population::selection_roulette(){
 
 // rempacement par roulette biaisee d'un individu de la population par un Chromosome donne
 void Population::remplacement_roulette(Chromosome *list_enfants){
-       // calcul de la somme des fitness
        
-    // selection biaisée
+    // Pour chaque enfant
     for(int k = 0; k < this->taille_pop; k++){
+        // calcul de la somme des fitness
         double sumFitness = 0;
         
         for(int i = 0; i < this->taille_pop; i++){
@@ -152,13 +152,14 @@ void Population::remplacement_roulette(Chromosome *list_enfants){
 
         // calcul des probabilités
         // On créer un tableau qui garde en mémoire la plage de valeur pour laquel un individu sera selectioné, 
-        //plus son fitness est grand, plus il a de chance d'être sélectioné
+        //plus son fitness est grand, moins il a de chance d'être sélectioné
         int* proba = new int[this->taille_pop];
         proba[0] = ((double)1/this->individus[0].getFitness())*100000;
 
         for(int i = 1; i < this->taille_pop; i++){
             proba[i] = proba[i-1] + ((double)1/this->individus[i].getFitness())*100000; // Plage de selection d'un individu = i-1 - i 
         }
+        // selection biaisée
         int random = rand() % (int)sumFitness;
 
         int numIndividu = 0; 
@@ -169,11 +170,6 @@ void Population::remplacement_roulette(Chromosome *list_enfants){
         }
 
         // On retourn l'individu.
-        // Attention dès que random est supérieur à la borne superieur de proba on sort, mais l'individu seletionné est l'individu précédent
-        if (numIndividu == this->taille_pop) {
-            numIndividu--;
-        }
-       
         this->individus[numIndividu] = list_enfants[k];
     }
 }
@@ -225,29 +221,46 @@ void Population::print(){
 
 void Population::croisement(Chromosome* parent1, Chromosome* parent2,
                       Chromosome* enfant1, Chromosome* enfant2) {
-    // tirage aléatoire d'un point de croisement
-    int point = rand() % this->nb_missions;
+    bool valide = true;
+    // Tirage aléatoire 5 fois max
+    for(int k = 0; k < 5; k++){
+        valide = true;
+        // tirage aléatoire d'un point de croisement
+        int point = rand() % this->nb_missions;
 
-    // copie des gènes des parents dans les enfants
-    enfant1->fusion(parent1->getGene(0, point), parent2->getGene(point, this->nb_missions), point); // enfant1 = parent1[0:point] + parent2[point+1:nb_missions]
-    enfant2->fusion(parent2->getGene(0, point), parent1->getGene(point, this->nb_missions), point); // enfant2 = parent2[0:point] + parent1[point+1:nb_missions]
+        // copie des gènes des parents dans les enfants
+        enfant1->fusion(parent1->getGene(0, point), parent2->getGene(point, this->nb_missions), point); // enfant1 = parent1[0:point] + parent2[point+1:nb_missions]
+        enfant2->fusion(parent2->getGene(0, point), parent1->getGene(point, this->nb_missions), point); // enfant2 = parent2[0:point] + parent1[point+1:nb_missions]
 
-    // check si les enfants sont valides
+        // check si les enfants sont valides
 
-    for (int i = 0; i < this->nb_employes; i++) {
-        bool* planning1 = new bool[this->nb_missions];
-        bool* planning2 = new bool[this->nb_missions];
-        for (int j = 0; j < this->nb_missions; j++) {
-            planning1[j] = enfant1->getGene()[j][i]; // on récupère le planning de l'employé i
-            planning2[j] = enfant2->getGene()[j][i];
+        for (int i = 0; i < this->nb_employes; i++) {
+            bool* planning1 = new bool[this->nb_missions];
+            bool* planning2 = new bool[this->nb_missions];
+            for (int j = 0; j < this->nb_missions; j++) {
+                planning1[j] = enfant1->getGene()[j][i]; // on récupère le planning de l'employé i
+                planning2[j] = enfant2->getGene()[j][i];
+            }
+
+            if (!enfant1->isPlaningValid(planning1)) {
+                valide = false;
+                break;
+            }        
+            if (!enfant2->isPlaningValid(planning2)) {
+                valide = false;
+                break;
+            }
         }
-
-        if (!enfant1->isPlaningValid(planning1)) {
-            enfant1 = parent1;
-        }        
-        if (!enfant2->isPlaningValid(planning2)) {
-            enfant2 = parent2;
+        // Si les enfants sont valides, on sort de la boucle
+        if (valide) {
+            break;
         }
+    }
+
+    // Si les enfants ne sont pas valides, on les remplace par les parents
+    if (!valide) {
+        enfant1->copier(parent1->getGene());
+        enfant2->copier(parent2->getGene());
     }
 }
 
