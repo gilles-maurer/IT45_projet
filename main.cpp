@@ -27,8 +27,12 @@ int main(int argc, char **argv)
 	double coefDistParcourue;
 	double coefNbMisSpe;
 
-	init_parameter(argc, argv, file_name, nb_generations, taille_pop, taux_croisement, 
+	bool valid = init_parameter(argc, argv, file_name, nb_generations, taille_pop, taux_croisement, 
 					taux_mutation, coefNbMisAffecte, coefDistParcourue, coefNbMisSpe);
+
+	if (!valid) {
+		return 0;
+	}
 
 
 	// lecture des données
@@ -44,15 +48,20 @@ int main(int argc, char **argv)
 
 	float **distance = data.read_distance(nb_missions, nb_centres);
 
-	for (int i = 0; i < nb_centres; i++) { // on ajoute les distances aux centres
+	// on ajoute les distances aux centres
+	for (int i = 0; i < nb_centres; i++) { 
 
 		list_centre[i].setDistance(distance[i]);
 	}
-	for (int i = 0; i < nb_missions; i++) { // on ajoute les distances aux missions
+
+	// on ajoute les distances aux missions
+	for (int i = 0; i < nb_missions; i++) { 
 		list_mission[i].setDistance(distance[i + nb_centres], nb_centres, nb_missions);
 	}
 
 	// séparer les infos en 2 groupe (par compétence)
+
+	// on compte le nombre d'employés LSF
 	int nb_employe_lsf = 0;
 
 	for (int i = 0; i < nb_employes; i++) {
@@ -61,11 +70,14 @@ int main(int argc, char **argv)
 		}
 	}
 
+	// on déduit le nombre d'employés LPC
 	int nb_employe_lpc = nb_employes - nb_employe_lsf;
 
+	// on crée les listes d'employés LSF et LPC
 	Employe *list_employe_lsf = new Employe[nb_employe_lsf];
 	Employe *list_employe_lpc = new Employe[nb_employe_lpc];
 
+	// on remplit les listes d'employés LSF et LPC
 	int i_lsf = 0;
 	int i_lpc = 0;
 
@@ -82,6 +94,7 @@ int main(int argc, char **argv)
 		}
 	}
 
+	// on compte le nombre de missions LSF
 	int nb_missions_lsf = 0;
 
 	for (int i = 0; i < nb_missions; i++) {
@@ -90,11 +103,14 @@ int main(int argc, char **argv)
 		}
 	}
 
+	// on déduit le nombre de missions LPC
 	int nb_missions_lpc = nb_missions - nb_missions_lsf;
 
+	// on crée les listes de missions LSF et LPC
 	Mission *list_mission_lsf = new Mission[nb_missions_lsf];
 	Mission *list_mission_lpc = new Mission[nb_missions_lpc];
 
+	// on remplit les listes de missions LSF et LPC
 	i_lsf = 0;
 	i_lpc = 0;
 
@@ -120,11 +136,11 @@ int main(int argc, char **argv)
 
 
 	// affichage des groupes (part 1)
-	cout << "Groupes pour les missions LSF : " << endl;
-	group_maker_lsf.printGroups();
+	// cout << "Groupes pour les missions LSF : " << endl;
+	// group_maker_lsf.printGroups();
 
-	cout << "Groupes pour les missions LPC : " << endl;
-	group_maker_lpc.printGroups();
+	// cout << "Groupes pour les missions LPC : " << endl;
+	// group_maker_lpc.printGroups();
 
 
     // algo genetique (part 2)
@@ -132,53 +148,35 @@ int main(int argc, char **argv)
 	cout << ("Algorithme genetique") << endl;
 	cout << ("----------------") << endl;
 
+	// résolution du problème pour les missions LSF
 	Ag ag = Ag(nb_generations, taille_pop, taux_croisement, taux_mutation,
 		coefNbMisAffecte, coefDistParcourue, coefNbMisSpe,
 		list_mission_lsf, nb_missions_lsf, list_employe_lsf, nb_employe_lsf, list_centre, nb_centres,
 		group_maker_lsf.getListGroups(), nb_centres);
 
 	ag.initialiser(); // on initialise la population
-	Chromosome *solution_lsf = ag.optimiser();
+	Chromosome *solution_lsf = ag.optimiser(); // on optimise la population
 
-
+	// résolution du problème pour les missions LPC
 	ag = Ag(nb_generations, taille_pop, taux_croisement, taux_mutation,
 		coefNbMisAffecte, coefDistParcourue, coefNbMisSpe,
 		list_mission_lpc, nb_missions_lpc, list_employe_lpc, nb_employe_lpc, list_centre, nb_centres,
 		group_maker_lpc.getListGroups(), nb_centres);
 
 	ag.initialiser(); // on initialise la population
-	Chromosome *solution_lpc = ag.optimiser();
+	Chromosome *solution_lpc = ag.optimiser(); // on optimise la population
 
 
 	// affichage des solutions (part 2)
+	// stats de la solution lsf
 	cout << "Resultat pour les missions LSF : " << endl;
 	solution_lsf->stats();
 
-	// solution_lsf->print();
-
+	// stats de la solution lpc 
 	cout << "Resultat pour les missions LPC : " << endl;
 	solution_lpc->stats();
 
-	// solution_lpc->print();
-
+	// stats de la solution globale
 	print_stats_lsf_lpc(solution_lsf, solution_lpc);
-
-	// cout << "check 1" << endl;
-
-	// for (int i = 0; i < nb_employe_lsf; i++) {
-    //     bool* planning1 = new bool[nb_missions_lsf];
-    //     for (int j = 0; j < nb_missions_lsf; j++) {
-	// 		cout << "i : " << i << " j : " << j << endl;
-    //         planning1[j] = solution_lsf->getGene()[j][i]; // on récupère le planning de l'employé i
-    //     }
-
-	// 	cout << "check 2" << endl;
-
-    //     if (!solution_lsf->isPlaningValid(planning1)) {
-	// 		cout << "Planning invalide pour l'employe " << i << endl;
-    //     } else {
-	// 		cout << "Planning valide pour l'employe " << i << endl;
-	// 	}
-    // }
 
 }

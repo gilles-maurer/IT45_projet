@@ -34,7 +34,7 @@ public:
 	~Population();              // destructeur de l'objet
 
 	// METHODES
-	void statistiques(double coefNbMisAffecte, double coefDistParcourue, double coefNbMisSpe); // affiche quelques statistiques sur la population
+	void statistiques(); // affiche quelques statistiques sur la population
 	int nb_Chromosomes_similaires(Chromosome* chro);
 	                     // compte le nombre de Chromosomes similaires � 'chro'
 	void similitude();   // affiche les r�sultats du comptage de Chromosomes similaires

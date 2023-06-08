@@ -40,23 +40,35 @@ Ag::~Ag() {
 // fonction principale qui décit le déroulement de l'algorithme évolusionniste
 Chromosome* Ag::optimiser() {
 
+    Chromosome* meilleurIndividu = new Chromosome(this->nb_missions, this->nb_employes, this->nb_centres, 
+                                                    this->list_missions, this->list_employes, this->list_centres);
+
     // évaluation de la population (appel de la fonction evaluer de chaque individu)
     this->pop->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe); 
 
-    // affichage des statistiques de la population
-    this->pop->statistiques(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
-
-    // boucle principale de l'algorithme
+    // on démarre le chronomètre
+    clock_t start = clock();
+    
+    // on lance la boucle principale de l'algorithme
     for (int i = 0; i < this->nbgenerations; i++) {
 
-        cout << "Generations :" << i << endl;
+        // on vérifie si on a atteint le temps limite
+        clock_t end = clock();
+        double elapsed_secs = double(end - start) / CLOCKS_PER_SEC;
+        if (elapsed_secs > 60) {
+            cout << "Temps limite atteint" << endl;
+            break;
+        }
 
+
+        cout << "Generations :" << i << endl;
+        
         // Création de la liste d'enfants :
         Chromosome* list_enfants = new Chromosome[this->taille_pop];
 
         // On va créer une liste d'enfants de la même taille que la population
         for(int j=0; j< this->taille_pop/2; j++){
-            // cout << "j = " << j << endl;
+
             // sélection de deux parents
             Chromosome* parent1 = this->pop->selection_roulette();
             Chromosome* parent2 = this->pop->selection_roulette();
@@ -94,8 +106,6 @@ Chromosome* Ag::optimiser() {
             enfant1->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
             enfant2->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
 
-            // cout << enfant1->getFitness() << endl;
-            // cout << enfant2->getFitness() << endl;
             // Affectation des enfants à la liste d'enfants
             list_enfants[2*j] = *enfant1;
             list_enfants[2*j+1] = *enfant2;
@@ -103,19 +113,20 @@ Chromosome* Ag::optimiser() {
         // Pour remplacement rouletten on passe en argument une liste d'enfant de la même taille qye la population
         this->pop->remplacement_roulette(list_enfants);
 
-        delete[] list_enfants;
+        if (this->pop->getMeilleurIndividu()->getFitness() > meilleurIndividu->getFitness()) {
+            meilleurIndividu = this->pop->getMeilleurIndividu();
 
-        this->pop->getMeilleurIndividu()->stats();
+            cout << "Nouveau meilleur individu" << endl;
+            meilleurIndividu->stats();
+            
+        }
 
         // affichage des statistiques de la population
-        // cout << "stat" << endl;
-        // this->pop->statistiques(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
+        this->pop->statistiques();
     }
-    // affichage des statistiques de la population
-    this->pop->statistiques(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
 
     // retourne le meilleur individu de la population
-    return this->pop->getMeilleurIndividu();
+    return meilleurIndividu;
 }  
 
 bool Ag::isPlaningValid(bool* planning) { // planning correspond donc à toutes les missions affectées à un employé 
@@ -261,8 +272,6 @@ void Ag::initialiser(){
     // Tant qu'on a pas trouvé autant de solutions valides que de population
     for(int nbsol = 0; nbsol < this->taille_pop; nbsol++){
 
-        // cout << "Solution " << nbsol << endl;
-
         bool** genes = new bool*[this->nb_missions];
         for(int i = 0; i < this->nb_missions; i++){
             genes[i] = new bool[this->nb_employes];
@@ -278,7 +287,6 @@ void Ag::initialiser(){
 
         // Pour chaque groupe 
         for(int numGroupe = 0; numGroupe < this->nb_group; numGroupe++){
-            // cout << "Groupe " << numGroupe << endl;
             
             // On récupère le centre du groupe
             // Plus de chance de choisir le centre du groupe mais pas obligatoire
@@ -290,11 +298,6 @@ void Ag::initialiser(){
 
             // On récupère le nombre de mission du groupe
             int nb_mission = this->list_group[numGroupe].getNbMissions();
-
-
-            // cout << centreGroupe.getId() << endl;
-            // cout << nb_mission << endl;
-            // cout << this->nb_centres << endl;
 
             for(int numMission = 0; numMission < nb_mission; numMission++){ // Pour chaque mission (du groupe)
                 // on affecte aléatoirement un employé à la mission, pour eviter de tourner indefiniment, on limite le nombre d'essai au nombre d'employés

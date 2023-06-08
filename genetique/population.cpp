@@ -27,14 +27,39 @@ Population::Population(int tp, int nb_missions, int nb_employes, int nb_centres,
     }
 
 // destructeur de l'objet
-Population::~Population(){}        
+Population::~Population(){
+
+    delete[] this->individus;
+    delete[] this->ordre;
+
+}        
 
 // METHODES
 
 // affiche quelques statistiques sur la population
-void Population::statistiques(double coefNbMisAffecte, double coefDistParcourue, double coefNbMisSpe){
+void Population::statistiques(){
 
-    // TODO : voir ce qu'on affiche ici 
+    cout << "Statistiques de la population" << endl;
+
+    // on calcule l'écart type de la fitness
+    float moyenne = 0;
+    float ecart_type = 0;
+
+    for (int i = 0; i < this->taille_pop; i++){
+        moyenne += this->individus[i].getFitness();
+    }
+
+    moyenne = moyenne / this->taille_pop;
+
+    for (int i = 0; i < this->taille_pop; i++){
+        ecart_type += pow(this->individus[i].getFitness() - moyenne, 2);
+    }
+
+    ecart_type = sqrt(ecart_type / this->taille_pop);
+
+    cout << "Moyenne : " << moyenne << endl;
+    cout << "Ecart type : " << ecart_type << endl;
+    cout << endl;
 
 } 
 

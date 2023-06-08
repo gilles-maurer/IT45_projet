@@ -33,7 +33,7 @@ string get_file_name(int file_number)
 }
 
 
-void init_parameter(int argc, char **argv, string &file_name, int &nb_generations, int &taille_pop, 
+bool init_parameter(int argc, char **argv, string &file_name, int &nb_generations, int &taille_pop, 
                     double &taux_croisement, double &taux_mutation, double &coefNbMisAffecte, 
                     double &coefDistParcourue, double &coefNbMisSpe) {
 
@@ -42,8 +42,8 @@ void init_parameter(int argc, char **argv, string &file_name, int &nb_generation
 	file_name = "instances/30Missions-2centres/";
 	nb_generations = 10;
 	taille_pop = 10;          
-	taux_croisement = 0.5;  
-	taux_mutation = 1;
+	taux_croisement = 0.8;  
+	taux_mutation = 0.8;
 	coefNbMisAffecte = 10;
 	coefDistParcourue = 0.1;
 	coefNbMisSpe = 0.5;
@@ -87,10 +87,10 @@ void init_parameter(int argc, char **argv, string &file_name, int &nb_generation
 	
 	} else {
 		cout << "Nombre de parametres incorrect" << endl;
-        EXIT_FAILURE;
+        return false;
 	}
 
-
+	return true;
 }
 
 
