@@ -82,11 +82,7 @@ Chromosome* Ag::optimiser() {
 
             this->pop->croisement(parent1, parent2, enfant1, enfant2);
 
-            // mutation des deux enfants
-            enfant1->muter(this->taux_mutation);
-            enfant2->muter(this->taux_mutation);
-
-                for (int i = 0; i < this->nb_employes; i++) {
+            for (int i = 0; i < this->nb_employes; i++) {
                     bool* planning1 = new bool[this->nb_missions];
                     bool* planning2 = new bool[this->nb_missions];
                     for (int j = 0; j < this->nb_missions; j++) {
@@ -100,7 +96,14 @@ Chromosome* Ag::optimiser() {
                     if (!enfant2->isPlaningValid(planning2)) {
                         enfant2 = parent2;
                     }
-                }
+                    //delete planning1;
+                    //delete planning2;
+            }
+
+
+            // mutation des deux enfants
+            enfant1->muter(this->taux_mutation);
+            enfant2->muter(this->taux_mutation);
 
             // évaluation des deux enfants
             enfant1->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);

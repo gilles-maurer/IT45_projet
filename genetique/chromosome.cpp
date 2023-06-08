@@ -454,8 +454,12 @@ void Chromosome::muter(int taux){ // Echange deux missions (i.e. deux colomnes d
             }
 
             if(randNewEmploye != idEmployee){// On n'effectue pas la mutation si le nouvelle employé est le même que le précédent
+                //this->print();
                 if(hasOnlyZeros){ // Si la mission n'est affecté à aucun employé, on affecte l'employé aléatoire
                     this->genes[i][randNewEmploye] = 1;
+                }else{
+                    // Si la mission est affecté à un employé, on l'a supprime et on affecte l'employé aléatoire
+                    this->genes[i][idEmployee] = 0;
                 }
 
                 // Verification que la solution est valide
@@ -466,11 +470,18 @@ void Chromosome::muter(int taux){ // Echange deux missions (i.e. deux colomnes d
                 }
 
                 if(!this->isPlaningValid(planning)){
-                    // Si la solution n'est pas valide, on annule la mutation            
-                    if(!hasOnlyZeros){ // Si la mission n'est affecté à aucun employé, on affecte l'employé aléatoire
+                    //cout << "mutation invalide" << endl;
+                    // Si la solution n'est pas valide, on annule la mutation      
+                    //cout << "planing invalide" << endl;
+                    //this->print();
+                    if(!hasOnlyZeros){ // Si la mission n'était pas affecté à aucun employé, on affecte l'employé du départ
                         this->genes[i][idEmployee] = 1;
                     }
-                    this->genes[i][randNewEmploye] = 0;       
+                    this->genes[i][randNewEmploye] = 0;
+                    //this->print();
+                    //getchar();
+                }else{
+                    //cout << "mutation valide" << endl;
                 }
             }
         }
@@ -492,9 +503,12 @@ void Chromosome::muter(int taux){ // Echange deux missions (i.e. deux colomnes d
 
             // Verification que la solution est valide, sinon on annule la mutation
             if(!isMissionValide(i) || !isMissionValide(randOtherMission)){
+                //cout << "mutation invalide" << endl;
                 bool* temp = genes[i];
                 this->genes[i] = this->genes[randOtherMission];
                 this->genes[randOtherMission] = temp;
+            }else{
+                //cout << "mutation valide" << endl;
             }
         }
     }

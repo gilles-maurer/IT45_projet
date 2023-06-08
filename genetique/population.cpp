@@ -141,24 +141,24 @@ Chromosome *Population::selection_roulette(){
 // rempacement par roulette biaisee d'un individu de la population par un Chromosome donne
 void Population::remplacement_roulette(Chromosome *list_enfants){
        // calcul de la somme des fitness
-    double sumFitness = 0;
-    
-    for(int i = 0; i < this->taille_pop; i++){
-        sumFitness += ((double)1/this->individus[i].getFitness())*100000;
-    }
-
-    // calcul des probabilités
-    // On créer un tableau qui garde en mémoire la plage de valeur pour laquel un individu sera selectioné, 
-    //plus son fitness est grand, plus il a de chance d'être sélectioné
-    int* proba = new int[this->taille_pop];
-    proba[0] = ((double)1/this->individus[0].getFitness())*100000;
-
-    for(int i = 1; i < this->taille_pop; i++){
-        proba[i] = proba[i-1] + ((double)1/this->individus[i].getFitness())*100000; // Plage de selection d'un individu = i-1 - i 
-    }
-
+       
     // selection biaisée
     for(int k = 0; k < this->taille_pop; k++){
+        double sumFitness = 0;
+        
+        for(int i = 0; i < this->taille_pop; i++){
+            sumFitness += ((double)1/this->individus[i].getFitness())*100000;
+        }
+
+        // calcul des probabilités
+        // On créer un tableau qui garde en mémoire la plage de valeur pour laquel un individu sera selectioné, 
+        //plus son fitness est grand, plus il a de chance d'être sélectioné
+        int* proba = new int[this->taille_pop];
+        proba[0] = ((double)1/this->individus[0].getFitness())*100000;
+
+        for(int i = 1; i < this->taille_pop; i++){
+            proba[i] = proba[i-1] + ((double)1/this->individus[i].getFitness())*100000; // Plage de selection d'un individu = i-1 - i 
+        }
         int random = rand() % (int)sumFitness;
 
         int numIndividu = 0; 
@@ -173,7 +173,7 @@ void Population::remplacement_roulette(Chromosome *list_enfants){
         if (numIndividu == this->taille_pop) {
             numIndividu--;
         }
-
+       
         this->individus[numIndividu] = list_enfants[k];
     }
 }
