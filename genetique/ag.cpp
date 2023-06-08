@@ -48,6 +48,9 @@ Chromosome* Ag::optimiser() {
 
     // boucle principale de l'algorithme
     for (int i = 0; i < this->nbgenerations; i++) {
+
+        cout << "Generations :" << i << endl;
+
         // Création de la liste d'enfants :
         Chromosome* list_enfants = new Chromosome[this->taille_pop];
 
@@ -91,14 +94,18 @@ Chromosome* Ag::optimiser() {
             enfant1->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
             enfant2->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
 
-            cout << enfant1->getFitness() << endl;
-            cout << enfant2->getFitness() << endl;
+            // cout << enfant1->getFitness() << endl;
+            // cout << enfant2->getFitness() << endl;
             // Affectation des enfants à la liste d'enfants
             list_enfants[2*j] = *enfant1;
             list_enfants[2*j+1] = *enfant2;
         }
         // Pour remplacement rouletten on passe en argument une liste d'enfant de la même taille qye la population
         this->pop->remplacement_roulette(list_enfants);
+
+        delete[] list_enfants;
+
+        this->pop->getMeilleurIndividu()->stats();
 
         // affichage des statistiques de la population
         // cout << "stat" << endl;

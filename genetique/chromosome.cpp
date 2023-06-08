@@ -327,7 +327,7 @@ bool Chromosome::isPlaningValid(bool* planning) { // planning correspond donc à
 
             float temps_trajet = rideTime(mission_jour, count); // on calcule le temps de trajet entre les missions du jour
             
-            if (heures_jour + temps_trajet > 7) { // si l'employé travaille plus de 7h dans la journée
+            if (heures_jour + temps_trajet > 9) { // si l'employé travaille plus de 7h dans la journée
                 // cout << "heures jour : " << heures_jour << endl;
                 return false;
             }
