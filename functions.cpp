@@ -47,9 +47,10 @@ bool init_parameter(int argc, char **argv, string &file_name, int &nb_generation
 	taille_pop = 10;          
 	taux_croisement = 0.8;  
 	taux_mutation = 0.8;
-	coefNbMisAffecte = 10;
-	coefDistParcourue = 0.1;
-	coefNbMisSpe = 0.5;
+	coefDistParcourue = 0.2;
+
+	int kilByMis = 200; 
+	int kilBySpe = 5;
 
 
 	if (argc == 1) { // pas de parametres
@@ -76,7 +77,7 @@ bool init_parameter(int argc, char **argv, string &file_name, int &nb_generation
 		taux_croisement = atof(argv[4]);
 		taux_mutation = atof(argv[5]);
 
-	} else if (argc == 9) { // tous les parametres
+	} else if (argc == 8) { // tous les parametres
 
 		file_name = get_file_name(atoi(argv[1]));
 
@@ -84,14 +85,16 @@ bool init_parameter(int argc, char **argv, string &file_name, int &nb_generation
 		taille_pop = atoi(argv[3]);          
 		taux_croisement = atof(argv[4]);
 		taux_mutation = atof(argv[5]);
-		coefNbMisAffecte = atof(argv[6]);
-		coefDistParcourue = atof(argv[7]);
-		coefNbMisSpe = atof(argv[8]);
+		kilByMis = atoi(argv[6]);
+		kilBySpe = atoi(argv[7]);
 	
 	} else {
 		cout << "Nombre de parametres incorrect" << endl;
         return false;
 	}
+
+	coefNbMisAffecte = kilByMis * coefDistParcourue;
+	coefNbMisSpe = kilBySpe * coefDistParcourue;
 
 	return true;
 }

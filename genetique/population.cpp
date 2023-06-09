@@ -118,7 +118,8 @@ Chromosome *Population::selection_roulette(){
     }
 
     // selection biaisée
-    int random = rand() % sumFitness;
+    int random = rand();
+    random = random * (sumFitness / RAND_MAX); // on obtient un nombre aléatoire entre 0 et la somme des fitness
 
     int numIndividu = 0; 
 
@@ -160,7 +161,8 @@ void Population::remplacement_roulette(Chromosome *list_enfants){
             proba[i] = proba[i-1] + ((double)1/this->individus[i].getFitness())*100000; // Plage de selection d'un individu = i-1 - i 
         }
         // selection biaisée
-        int random = rand() % (int)sumFitness;
+        int random = rand();
+        random = random * (sumFitness / RAND_MAX); // on obtient un nombre aléatoire entre 0 et la somme des fitness
 
         int numIndividu = 0; 
 
