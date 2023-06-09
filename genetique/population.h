@@ -48,8 +48,6 @@ public:
 	void evaluer(double coefNbMisAffecte, double coefDistParcourue, double coefNbMisSpe);
 	                     
 	void ajouter(bool** genes, int numIndividu);
-    void ordonner();
-    void reordonner();
     void print();
 
 	// opérateur de croisement de deux Chromosomes

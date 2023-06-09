@@ -174,25 +174,6 @@ void Population::remplacement_roulette(Chromosome *list_enfants){
     }
 }
     
-void Population::ordonner(){
-    int fitness;
-    int fitness2;
-    int index;
-    int index2;
-    for(int i = 0; i < this->taille_pop; i++){
-        fitness = this->individus[i].getFitness();
-        index = i;
-        for(int j = i+1; j < this->taille_pop; j++){
-            fitness2 = this->individus[j].getFitness();
-            index2 = j;
-            if(fitness2 < fitness){
-                fitness = fitness2;
-                index = index2;
-            }
-        }
-        this->ordre[i] = index;
-    }
-}
 
 // Permet d'ajouter un individu à la population
 void Population::ajouter(bool** genes, int numIndividu){    
@@ -204,11 +185,6 @@ void Population::evaluer(double coefNbMisAffecte, double coefDistParcourue, doub
     for(int i = 0; i < this->taille_pop; i++){
         this->individus[i].evaluer(coefNbMisAffecte, coefDistParcourue, coefNbMisSpe);
     }
-
-}
-
-
-void Population::reordonner(){
 
 }
 
@@ -253,14 +229,12 @@ void Population::croisement(Chromosome* parent1, Chromosome* parent2,
         }
         // Si les enfants sont valides, on sort de la boucle
         if (valide) {
-            // cout << "Enfants valides!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
             break;
         }
     }
 
     // Si les enfants ne sont pas valides, on les remplace par les parents
     if (!valide) {
-        // cout << "Enfants non valides" << endl;
         *enfant1 = *parent1;
         *enfant2 = *parent2;
     }

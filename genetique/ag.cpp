@@ -1,6 +1,5 @@
 #include "ag.h"
 
-
 using namespace std;
 
 
@@ -60,7 +59,7 @@ Chromosome* Ag::optimiser() {
             cout << "Temps limite atteint" << endl;
             break;
         }
-        
+
         cout << "Generations :" << i << endl;
         
         // Création de la liste d'enfants :
@@ -86,25 +85,6 @@ Chromosome* Ag::optimiser() {
             enfant1->muter(this->taux_mutation);
             enfant2->muter(this->taux_mutation);
             
-            for (int i = 0; i < this->nb_employes; i++) {
-                    bool* planning1 = new bool[this->nb_missions];
-                    bool* planning2 = new bool[this->nb_missions];
-                    for (int j = 0; j < this->nb_missions; j++) {
-                        planning1[j] = enfant1->getGene()[j][i]; // on récupère le planning de l'employé i
-                        planning2[j] = enfant2->getGene()[j][i];
-                    }
-
-                    if (!enfant1->isPlaningValid(planning1)) {
-                        cout << "Planning 1 invalide" << endl;
-                        *enfant1 = *parent1;
-                    }        
-                    if (!enfant2->isPlaningValid(planning2)) {
-                        cout << "Planning 2 invalide" << endl;
-                        *enfant2 = *parent2;
-                    }
-            }
-
-
             // évaluation des deux enfants
             enfant1->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
             enfant2->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);

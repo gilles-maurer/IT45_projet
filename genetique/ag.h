@@ -16,13 +16,13 @@
 
 
 using namespace std;
-// La classe Ag d�finie les param�tres d'une ex�cution d'un algorithme
-//    �volutionniste ainsi que la proc�dure principale de recherche
+// La classe Ag définie les paramétres d'une exécution d'un algorithme
+//    évolutionniste ainsi que la procédure principale de recherche
 class Ag{
 
 private:
     // ATTRIBUTS
-	int nbgenerations;       // nombre de g�n�rations apr�s quoi la recherche est arr�t�e
+	int nbgenerations;       // nombre de générations aprés quoi la recherche est arrétée
 	int taille_pop;          // nombre d'individus dans la population
 	double taux_croisement;  // taux de croisement : valeur entre 0 et 1
 	double taux_mutation;    // taux de mutation : valeur entre 0 et 1
@@ -63,7 +63,7 @@ public:
 	~Ag();                   // destructeur de l'objet Ag
 
 	// METHODES
-	Chromosome* optimiser(); // fonction principale qui d�cit le d�roulement de l'algorithme �volusionniste
+	Chromosome* optimiser(); // fonction principale qui décrit le déroulement de l'algorithme évolusionniste
 
 	// OPERATEURS DE CROISEMENT
 

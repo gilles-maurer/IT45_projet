@@ -68,7 +68,7 @@ Chromosome::~Chromosome(){
 
 }
 
-// Geters 
+// GETTERS 
 bool** Chromosome::getGene(){
     return this->genes;
 }
@@ -218,7 +218,6 @@ void Chromosome::evaluer(double coefNbMisAffecte, double coefDistParcourue, doub
 
 
 void Chromosome::stats(){ // affiche quelques statistiques sur le Chromosome
-    cout << "STATISTIQUES" << endl;
     cout << "Fitness: " << this->fitness << endl;
     cout << "Nombre de missions affectees: " << this->nb_missions_affecte << endl;
     cout << "Distance parcourue: " << this->distance_parcourue << endl;
@@ -253,37 +252,12 @@ float Chromosome::ridelenght(Mission* missions, int count, int id_employe){
     return distance_totale; 
 }
 
-void Chromosome::ordonner(){  // ordonne le sens de la tournée si gene[1] > gene[taille-1]
-    if(this->genes[0][0] > this->genes[this->nb_missions-1][this->nb_employes-1]){
-        for(int i = 0; i < this->nb_missions; i++){
-            for(int j = 0; j < this->nb_employes; j++){
-                if(this->genes[i][j] == 1){
-                    this->genes[i][j] = 0;
-                    this->genes[j][i] = 1;
-                }
-            }
-        }
-    }
-} 
-
 // OPERATEURS DE COPIE
-
-
-void Chromosome::copier(Chromosome* source){ // copie le Chromosome 'source'
-    //
-
-}
 
 void Chromosome::copier(bool** genes){ // copie le gene 'source'
     this->genes = genes;
 }
 
-bool Chromosome::identique(Chromosome* chro){ // test si 2 chromosome sont identique
-    if(this->genes != chro->getGene()){
-        return false;
-    }
-    return true;
-}
 
 // Verifier que le planing est valide
 bool Chromosome::isPlaningValid(bool* planning) { // planning correspond donc à toutes les missions affectées à un employé 
@@ -454,7 +428,6 @@ void Chromosome::muter(int taux){ // Echange deux missions (i.e. deux colomnes d
             }
 
             if(randNewEmploye != idEmployee){// On n'effectue pas la mutation si le nouvelle employé est le même que le précédent
-                //this->print();
                 if(hasOnlyZeros){ // Si la mission n'est affecté à aucun employé, on affecte l'employé aléatoire
                     this->genes[i][randNewEmploye] = 1;
                 }else{
@@ -470,18 +443,11 @@ void Chromosome::muter(int taux){ // Echange deux missions (i.e. deux colomnes d
                 }
 
                 if(!this->isPlaningValid(planning)){
-                    //cout << "mutation invalide" << endl;
                     // Si la solution n'est pas valide, on annule la mutation      
-                    //cout << "planing invalide" << endl;
-                    //this->print();
                     if(!hasOnlyZeros){ // Si la mission n'était pas affecté à aucun employé, on affecte l'employé du départ
                         this->genes[i][idEmployee] = 1;
                     }
                     this->genes[i][randNewEmploye] = 0;
-                    //this->print();
-                    //getchar();
-                }else{
-                    //cout << "mutation valide" << endl;
                 }
             }
         }
@@ -503,12 +469,9 @@ void Chromosome::muter(int taux){ // Echange deux missions (i.e. deux colomnes d
 
             // Verification que la solution est valide, sinon on annule la mutation
             if(!isMissionValide(i) || !isMissionValide(randOtherMission)){
-                //cout << "mutation invalide" << endl;
                 bool* temp = genes[i];
                 this->genes[i] = this->genes[randOtherMission];
                 this->genes[randOtherMission] = temp;
-            }else{
-                //cout << "mutation valide" << endl;
             }
         }
     }

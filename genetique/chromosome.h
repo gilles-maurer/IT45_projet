@@ -61,13 +61,9 @@ public:
 	float ridelenght(Mission* missions, int count, int id_employe);
 
 
-    void ordonner();    // ordonne le sens de la tournée si gene[1] > gene[taille-1]
-    void copier(Chromosome* source);  // copie le Chromosome 'source'
 	void copier(bool** genes);  // copie le gene 'source'
 	bool** getGene();	 // retourne le tableau de genes
 	bool** getGene(int firstPoint, int lastPoint); // retourne le tableau de genes entre deux point
-
-    bool identique(Chromosome* chro); // test si 2 chromosome sont identique
 
 	void fusion(bool** gene1, bool** gene2, int point); // fusionne 2 genomes
 
