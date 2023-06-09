@@ -25,6 +25,9 @@ string get_file_name(int file_number)
 			file_name = "instances/100Missions-2centres/";
 			break;
 		case 6:
+			file_name = "instances/150Missions-2centres/";
+			break;
+		case 7:
 			file_name = "instances/200Missions-2centres/";
 			break;
     }

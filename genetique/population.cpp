@@ -253,14 +253,14 @@ void Population::croisement(Chromosome* parent1, Chromosome* parent2,
         }
         // Si les enfants sont valides, on sort de la boucle
         if (valide) {
-            cout << "Enfants valides!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+            // cout << "Enfants valides!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
             break;
         }
     }
 
     // Si les enfants ne sont pas valides, on les remplace par les parents
     if (!valide) {
-        cout << "Enfants non valides" << endl;
+        // cout << "Enfants non valides" << endl;
         *enfant1 = *parent1;
         *enfant2 = *parent2;
     }

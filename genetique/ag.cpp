@@ -60,8 +60,7 @@ Chromosome* Ag::optimiser() {
             cout << "Temps limite atteint" << endl;
             break;
         }
-
-
+        
         cout << "Generations :" << i << endl;
         
         // Création de la liste d'enfants :
