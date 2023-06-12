@@ -24,29 +24,28 @@ Ensuite il a plusieurs possibilité pour lancer le projet :
     - ./algo_sessad : lance l'algorithme avec les paramètres par défaut.
 
     - ./algo_sessad %d :
-        -> %d est un entier compris entre 1 et 6 qui correspond à l'instance à utiliser.
+        -> %d est un entier compris entre 1 et 7 qui correspond à l'instance à utiliser.
 
     - ./algo_sessad %d %d %d :
-        -> %d est un entier compris entre 1 et 6 qui correspond à l'instance à utiliser. 
+        -> %d est un entier compris entre 1 et 7 qui correspond à l'instance à utiliser. 
         -> %d est un entier qui correspond au nombre de génération. 
         -> %d est un entier qui correspond à la taille de la population initiale. 
 
     - ./algo_sessad %d %d %d %f %f : 
-        -> %d est un entier compris entre 1 et 6 qui correspond à l'instance à utiliser. 
+        -> %d est un entier compris entre 1 et 7 qui correspond à l'instance à utiliser. 
         -> %d est un entier qui correspond au nombre de génération. 
         -> %d est un entier qui correspond à la taille de la population initiale. 
         -> %f est un double qui correspond à la probabilité de croisement. 
         -> %f est un double qui correspond à la probabilité de mutation.
 
-    - ./algo_sessad %d %d %d %f %f %f %f %f 
-        -> %d est un entier compris entre 1 et 6 qui correspond à l'instance à utiliser.
+    - ./algo_sessad %d %d %d %f %f %d %d 
+        -> %d est un entier compris entre 1 et 7 qui correspond à l'instance à utiliser.
         -> %d est un entier qui correspond au nombre de génération.
         -> %d est un entier qui correspond à la taille de la population initiale.
         -> %f est un double qui correspond à la probabilité de croisement.
         -> %f est un double qui correspond à la probabilité de mutation.
-        -> %f est un double qui correspond au coefficient du nombre de missions affecté pour la fitness.
-        -> %f est un double qui correspond au coefficient de la distance parcourue pour la fitness.
-        -> %f est un double qui correspond au coefficient du nombre de spécialité respectée pour la fitness.
+        -> %d est un entier qui correspond au nombre de kilomètres équivalent à 1 affectation.
+        -> %d est un entier qui correspond au nombre de kilomètres équivalent à 1 spécialité respectée.
 
 
 

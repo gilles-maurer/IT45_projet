@@ -43,10 +43,10 @@ bool init_parameter(int argc, char **argv, string &file_name, int &nb_generation
     
     // valeurs par défaut
 	file_name = "instances/30Missions-2centres/";
-	nb_generations = 10;
-	taille_pop = 10;          
-	taux_croisement = 0.8;  
-	taux_mutation = 0.8;
+	nb_generations = 100;
+	taille_pop = 100;          
+	taux_croisement = 0.5;  
+	taux_mutation = 1;
 	coefDistParcourue = 0.2;
 
 	int kilByMis = 200; 
