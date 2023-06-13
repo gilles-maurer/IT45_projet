@@ -1,0 +1,16 @@
+{
+    "files.associations": {
+        "new": "cpp",
+        "string": "cpp",
+        "ostream": "cpp",
+        "iostream": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "enabled",
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "d:\\Documents\\UTBM\\INFO2\\IT45\\IT45_projet",
+            "binaryPath": "d:\\Documents\\UTBM\\INFO2\\IT45\\IT45_projet\\algo_sessad",
+            "binaryArgs": []
+        }
+    ]
+}

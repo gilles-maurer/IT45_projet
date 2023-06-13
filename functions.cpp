@@ -30,6 +30,9 @@ string get_file_name(int file_number)
 		case 7:
 			file_name = "instances/200Missions-2centres/";
 			break;
+		case 8: // prêt pour la soutenance
+			//file_name = put your file name here;
+			break;
     }
 
     return file_name;
@@ -43,8 +46,8 @@ bool init_parameter(int argc, char **argv, string &file_name, int &nb_generation
     
     // valeurs par défaut
 	file_name = "instances/30Missions-2centres/";
-	nb_generations = 100;
-	taille_pop = 100;          
+	nb_generations = 40;
+	taille_pop = 30;          
 	taux_croisement = 0.5;  
 	taux_mutation = 1;
 	coefDistParcourue = 0.2;
