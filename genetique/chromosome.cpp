@@ -419,8 +419,6 @@ void Chromosome::muter(int taux){ // Echange deux missions (i.e. deux colomnes d
             //On parcours le tableau pour trouver l'employé affecté à la misison
             for(int j = 0; j < this->nb_employes; j++){
                 if(this->genes[i][j] == 1){ //Une fois qu'on l'a trouvé, on effectue la modification
-                    this->genes[i][j] = 0;
-                    this->genes[i][randNewEmploye] = 1;
                     hasOnlyZeros = false;
                     idEmployee = j;
                     break; // On arrete l'exploration du tableau
@@ -432,6 +430,7 @@ void Chromosome::muter(int taux){ // Echange deux missions (i.e. deux colomnes d
                     this->genes[i][randNewEmploye] = 1;
                 }else{
                     // Si la mission est affecté à un employé, on l'a supprime et on affecte l'employé aléatoire
+                    this->genes[i][randNewEmploye] = 1;
                     this->genes[i][idEmployee] = 0;
                 }
 

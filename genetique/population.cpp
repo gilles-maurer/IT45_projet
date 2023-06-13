@@ -114,7 +114,7 @@ Chromosome *Population::selection_roulette(){
     proba[0] = this->individus[0].getFitness();
 
     for(int i = 1; i < this->taille_pop; i++){
-        proba[i] = proba[i-1] + this->individus[i].getFitness(); // Plage de selection d'un individu = i-1 - i 
+        proba[i] = proba[i-1] + this->individus[i].getFitness(); // Plage de selection d'un individu = i-1 - i
     }
 
     // selection biaisée
