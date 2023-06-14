@@ -38,7 +38,6 @@ Ag::~Ag() {
 
 // fonction principale qui décit le déroulement de l'algorithme évolusionniste
 Chromosome* Ag::optimiser() {
-    srand(time(NULL));
 
 
     Chromosome* meilleurIndividu = new Chromosome(this->nb_missions, this->nb_employes, this->nb_centres, 

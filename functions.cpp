@@ -48,7 +48,7 @@ bool init_parameter(int argc, char **argv, string &file_name, int &nb_generation
 	file_name = "instances/30Missions-2centres/";
 	nb_generations = 40;
 	taille_pop = 30;          
-	taux_croisement = 0.5;  
+	taux_croisement = 0.2;  
 	taux_mutation = 1;
 	coefDistParcourue = 0.2;
 
