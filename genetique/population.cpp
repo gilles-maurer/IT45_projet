@@ -103,18 +103,27 @@ Chromosome *Population::selection_roulette(){
     // calcul de la somme des fitness
     int sumFitness = 0;
     
+    // Normalisation des fitness, recherche du min 
+    int minFitness = 100000;
     for(int i = 0; i < this->taille_pop; i++){
-        sumFitness += this->individus[i].getFitness();
+        if(this->individus[i].getFitness() < minFitness){
+            minFitness = this->individus[i].getFitness();
+        }
+    }
+
+    for(int i = 0; i < this->taille_pop; i++){
+        sumFitness += this->individus[i].getFitness() - minFitness;
+
     }
 
     // calcul des probabilités
     // On créer un tableau qui garde en mémoire la plage de valeur pour laquel un individu sera selectioné, 
     //plus son fitness est grand, plus il a de chance d'être sélectioné
     int* proba = new int[this->taille_pop];
-    proba[0] = this->individus[0].getFitness();
+    proba[0] = this->individus[0].getFitness() - minFitness;
 
     for(int i = 1; i < this->taille_pop; i++){
-        proba[i] = proba[i-1] + this->individus[i].getFitness(); // Plage de selection d'un individu = i-1 - i
+        proba[i] = proba[i-1] + this->individus[i].getFitness() - minFitness; // Plage de selection d'un individu = i-1 - i
     }
 
     // selection biaisée
@@ -146,19 +155,27 @@ void Population::remplacement_roulette(Chromosome *list_enfants){
     for(int k = 0; k < this->taille_pop; k++){
         // calcul de la somme des fitness
         double sumFitness = 0;
+
+        // Normalisation des fitness, recherche du min
+        int minFitness = 1000000;
+        for(int i = 0; i < this->taille_pop; i++){
+            if(this->individus[i].getFitness() < minFitness){
+                minFitness = ((double)1/this->individus[i].getFitness())*100000;
+            }
+        }
         
         for(int i = 0; i < this->taille_pop; i++){
-            sumFitness += ((double)1/this->individus[i].getFitness())*100000;
+            sumFitness += ((double)1/this->individus[i].getFitness())*100000 - minFitness;
         }
 
         // calcul des probabilités
         // On créer un tableau qui garde en mémoire la plage de valeur pour laquel un individu sera selectioné, 
         //plus son fitness est grand, moins il a de chance d'être sélectioné
         int* proba = new int[this->taille_pop];
-        proba[0] = ((double)1/this->individus[0].getFitness())*100000;
+        proba[0] = ((double)1/this->individus[0].getFitness())*100000 - minFitness;
 
         for(int i = 1; i < this->taille_pop; i++){
-            proba[i] = proba[i-1] + ((double)1/this->individus[i].getFitness())*100000; // Plage de selection d'un individu = i-1 - i 
+            proba[i] = proba[i-1] + ((double)1/this->individus[i].getFitness())*100000 - minFitness; // Plage de selection d'un individu = i-1 - i 
         }
         // selection biaisée
         int random = rand();

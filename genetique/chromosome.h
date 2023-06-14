@@ -81,7 +81,7 @@ public:
 
 
     // OPERATEURS DE MUTATION
-    void muter(int taux);    // opérateur de mutation
+    void muter();    // opérateur de mutation
 
 };
 

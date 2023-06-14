@@ -399,18 +399,12 @@ bool Chromosome::isDayTooLong(Mission* missions, int count) {
 
 
 // OPERATEURS DE MUTATION
-void Chromosome::muter(int taux){ // Echange deux missions (i.e. deux colomnes de la matrice)
-    taux = taux * 100; // On multiplie par 100 pour avoir un nombre entre 0 et 100
-
+void Chromosome::muter(){ // Echange deux missions (i.e. deux colomnes de la matrice)
 
     //pour chaque mission
     for(int i = 0; i < this->nb_missions; i++){ 
         // Partie 1 : On commence par effectuer une mutation pour swiper deux employés d'une mission
 
-        // On tire un nombre aléatoire entre 0 et 100
-        int randHasMutation = rand() % 100;
-        // Si le nombre est inférieur au taux de mutation
-        if(randHasMutation < taux){
             //On effectue une mutation
             int randNewEmploye = rand() % nb_employes;;
             bool hasOnlyZeros = true;
@@ -449,13 +443,11 @@ void Chromosome::muter(int taux){ // Echange deux missions (i.e. deux colomnes d
                     this->genes[i][randNewEmploye] = 0;
                 }
             }
-        }
+        
 
         //Partie 2 : On effectue maintenant une mutation sur le swip de deux missions
         // On tire un nombre aléatoire entre 0 et 100
-        randHasMutation = rand() % 100;
-        // Si le nombre est inférieur au taux de mutation
-        if(randHasMutation < taux){
+
             //On effectue une mutation
             int randOtherMission;
             do{
@@ -472,7 +464,7 @@ void Chromosome::muter(int taux){ // Echange deux missions (i.e. deux colomnes d
                 this->genes[i] = this->genes[randOtherMission];
                 this->genes[randOtherMission] = temp;
             }
-        }
+        
     }
 } 
 

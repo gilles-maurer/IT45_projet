@@ -38,6 +38,7 @@ Ag::~Ag() {
 
 // fonction principale qui décit le déroulement de l'algorithme évolusionniste
 Chromosome* Ag::optimiser() {
+    srand(time(NULL));
 
 
     Chromosome* meilleurIndividu = new Chromosome(this->nb_missions, this->nb_employes, this->nb_centres, 
@@ -67,31 +68,59 @@ Chromosome* Ag::optimiser() {
 
         // On va créer une liste d'enfants de la même taille que la population
         for(int j=0; j< this->taille_pop/2; j++){
+            // croisement des deux parents
 
+            // On tire aléatoirement un nombre entre 0 et 100 pour savoir si on croise ou non
+            int random = rand() % 100;
+            // Si le nombre est inférieur au taux de croisement*100 (taux de croisement entre 0 et 1) alors on croise
             // sélection de deux parents
             Chromosome* parent1 = this->pop->selection_roulette();
             Chromosome* parent2 = this->pop->selection_roulette();
 
-            // croisement des deux parents
+            if (random < this->taux_croisement*100){
 
-            Chromosome* enfant1 = new Chromosome(this->nb_missions, this->nb_employes, this->nb_centres, 
+                // sélection des enfants
+                Chromosome* enfant1 = new Chromosome(this->nb_missions, this->nb_employes, this->nb_centres, 
+                                                        this->list_missions, this->list_employes, this->list_centres);
+                Chromosome* enfant2 = new Chromosome(this->nb_missions, this->nb_employes, this->nb_centres, 
                                                     this->list_missions, this->list_employes, this->list_centres);
-            Chromosome* enfant2 = new Chromosome(this->nb_missions, this->nb_employes, this->nb_centres, 
-                                                this->list_missions, this->list_employes, this->list_centres);
 
-            this->pop->croisement(parent1, parent2, enfant1, enfant2);
+                // croisement des deux parents
+                this->pop->croisement(parent1, parent2, enfant1, enfant2);
 
-            // mutation des deux enfants
-            enfant1->muter(this->taux_mutation);
-            enfant2->muter(this->taux_mutation);
+                // mutation des deux enfants
+                // On tire aléatoirement un nombre entre 0 et 100 pour savoir si on croise ou non
+                int random = rand() % 100;
+                // Si le nombre est inférieur au taux de mutation*100 (taux de mutation entre 0 et 1) alors on mute
+                if (random < this->taux_mutation*100){
+                    enfant1->muter();
+                    enfant2->muter();
+                }
+                // évaluation des deux enfants
+                enfant1->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
+                enfant2->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
+
+                // Affectation des enfants à la liste d'enfants
+                list_enfants[2*j] = *enfant1;
+                list_enfants[2*j+1] = *enfant2;
+            }else{
+                // On tire aléatoirement un nombre entre 0 et 100 pour savoir si on croise ou non
+                int random = rand() % 100;
+                // Si le nombre est inférieur au taux de mutation*100 (taux de mutation entre 0 et 1) alors on mute
+                if (random < this->taux_mutation*100){
+                    parent1->muter();
+                    parent2->muter();
+                }
+                // évaluation des deux nouveaux parents
+                parent1->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
+                parent2->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
+
+                // Affectation des parents à la liste d'enfants
+                list_enfants[2*j] = *parent1;
+                list_enfants[2*j+1] = *parent2;
+            }
             
-            // évaluation des deux enfants
-            enfant1->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
-            enfant2->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
 
-            // Affectation des enfants à la liste d'enfants
-            list_enfants[2*j] = *enfant1;
-            list_enfants[2*j+1] = *enfant2;
         }
         // Pour remplacement rouletten on passe en argument une liste d'enfant de la même taille qye la population
         this->pop->remplacement_roulette(list_enfants);
@@ -351,9 +380,7 @@ void Ag::initialiser(){
                 }
             }
         }
-        
-
-        
+               
 
         //On ajoute la solution à un nouvel individu de la population
         this->pop->ajouter(genes, nbsol);
