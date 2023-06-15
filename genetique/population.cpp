@@ -161,6 +161,9 @@ void Population::remplacement_roulette(Chromosome *list_enfants){
                 minFitness = ((double)1/this->individus[i].getFitness());
             }
         }
+
+        minFitness = minFitness - 1;
+
         for(int i = 0; i < this->taille_pop; i++){
             sumFitness += (((double)1/this->individus[i].getFitness()) - minFitness)*10000000;
             }
@@ -174,6 +177,7 @@ void Population::remplacement_roulette(Chromosome *list_enfants){
         for(int i = 1; i < this->taille_pop; i++){
             proba[i] = proba[i-1] + (((double)1/this->individus[i].getFitness()) - minFitness)*10000000; // Plage de selection d'un individu = i-1 - i
         }
+
         // selection biaisée
         int random = rand() % (int)sumFitness;
 
