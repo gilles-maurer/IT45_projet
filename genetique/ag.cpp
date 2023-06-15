@@ -113,7 +113,6 @@ Chromosome* Ag::optimiser() {
                 // évaluation des deux nouveaux parents
                 parent1->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
                 parent2->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
-
                 // Affectation des parents à la liste d'enfants
                 list_enfants[2*j] = *parent1;
                 list_enfants[2*j+1] = *parent2;
@@ -121,8 +120,10 @@ Chromosome* Ag::optimiser() {
             
 
         }
-        // Pour remplacement rouletten on passe en argument une liste d'enfant de la même taille qye la population
+
+
         this->pop->remplacement_roulette(list_enfants);
+        
 
         if (this->pop->getMeilleurIndividu()->getFitness() > meilleurIndividu->getFitness()) {
             meilleurIndividu = this->pop->getMeilleurIndividu();

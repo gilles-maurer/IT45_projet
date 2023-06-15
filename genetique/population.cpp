@@ -150,6 +150,7 @@ Chromosome *Population::selection_roulette(){
 
 // rempacement par roulette biaisee d'un individu de la population par un Chromosome donne
 void Population::remplacement_roulette(Chromosome *list_enfants){
+    cout << "Remplacement par roulette biaisee" << endl;
        
     // Pour chaque enfant
     for(int k = 0; k < this->taille_pop; k++){
@@ -165,7 +166,7 @@ void Population::remplacement_roulette(Chromosome *list_enfants){
         }
         for(int i = 0; i < this->taille_pop; i++){
             sumFitness += (((double)1/this->individus[i].getFitness()) - minFitness)*10000000;
-        }
+            }
 
         // calcul des probabilités
         // On créer un tableau qui garde en mémoire la plage de valeur pour laquel un individu sera selectioné, 
@@ -185,6 +186,11 @@ void Population::remplacement_roulette(Chromosome *list_enfants){
         // tant que le nombre aléatoire est plus petit que la plage superieur de la probabilité de l'individu
         while(random > proba[numIndividu] && numIndividu < this->taille_pop){
             numIndividu++; // On incrémente
+        }
+
+        // Attention, dès que random est supérieur à la borne superieur de proba on sort, mais l'individu seletionné est l'individu précédent
+        if(numIndividu == this->taille_pop){
+            numIndividu--;
         }
 
         // On retourn l'individu.
