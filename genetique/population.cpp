@@ -128,7 +128,6 @@ Chromosome *Population::selection_roulette(){
 
     // selection biaisée
     int random = rand() % sumFitness;
-    cout << "Random : " << random << endl;
     int numIndividu = 0; 
 
     // tant que le nombre aléatoire est plus petit que la plage superieur de la probabilité de l'individu
@@ -141,7 +140,6 @@ Chromosome *Population::selection_roulette(){
     if (numIndividu == this->taille_pop) {
         numIndividu--;
     }
-    cout << "Selection roulette biaisee : individu " << numIndividu << endl;
 
     return &this->individus[numIndividu];
 
@@ -150,7 +148,6 @@ Chromosome *Population::selection_roulette(){
 
 // rempacement par roulette biaisee d'un individu de la population par un Chromosome donne
 void Population::remplacement_roulette(Chromosome *list_enfants){
-    cout << "Remplacement par roulette biaisee" << endl;
        
     // Pour chaque enfant
     for(int k = 0; k < this->taille_pop; k++){
@@ -240,7 +237,6 @@ void Population::croisement(Chromosome* parent1, Chromosome* parent2,
                 planning1[j] = enfant1->getGene()[j][i]; // on récupère le planning de l'employé i
                 planning2[j] = enfant2->getGene()[j][i];
             }
-            cout << "2" << endl;
 
             if (!enfant1->isPlaningValid(planning1)) {
                 valide = false;
@@ -260,7 +256,6 @@ void Population::croisement(Chromosome* parent1, Chromosome* parent2,
 
     // Si les enfants ne sont pas valides, on les remplace par les parents
     if (!valide) {
-        cout << "balbla" << endl;
         *enfant1 = *parent1;
         *enfant2 = *parent2;
     }
