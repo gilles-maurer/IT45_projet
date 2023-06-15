@@ -53,7 +53,6 @@ public:
 	// opérateur de croisement de deux Chromosomes
     void croisement(Chromosome* parent1, Chromosome* parent2,
                       Chromosome* enfant1, Chromosome* enfant2);
-	void test_croisement(int a, int b);
 };
 
 

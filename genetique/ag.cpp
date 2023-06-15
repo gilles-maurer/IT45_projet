@@ -71,6 +71,7 @@ Chromosome* Ag::optimiser() {
 
             // On tire aléatoirement un nombre entre 0 et 100 pour savoir si on croise ou non
             int random = rand() % 100;
+
             // Si le nombre est inférieur au taux de croisement*100 (taux de croisement entre 0 et 1) alors on croise
             // sélection de deux parents
             Chromosome* parent1 = this->pop->selection_roulette();
@@ -98,7 +99,6 @@ Chromosome* Ag::optimiser() {
                 // évaluation des deux enfants
                 enfant1->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
                 enfant2->evaluer(this->coefNbMisAffecte, this->coefDistParcourue, this->coefNbMisSpe);
-
                 // Affectation des enfants à la liste d'enfants
                 list_enfants[2*j] = *enfant1;
                 list_enfants[2*j+1] = *enfant2;

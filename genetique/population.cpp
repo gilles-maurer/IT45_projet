@@ -127,9 +127,8 @@ Chromosome *Population::selection_roulette(){
     }
 
     // selection biaisée
-    int random = rand();
-    random = random * (sumFitness / RAND_MAX); // on obtient un nombre aléatoire entre 0 et la somme des fitness
-
+    int random = rand() % sumFitness;
+    cout << "Random : " << random << endl;
     int numIndividu = 0; 
 
     // tant que le nombre aléatoire est plus petit que la plage superieur de la probabilité de l'individu
@@ -142,6 +141,7 @@ Chromosome *Population::selection_roulette(){
     if (numIndividu == this->taille_pop) {
         numIndividu--;
     }
+    cout << "Selection roulette biaisee : individu " << numIndividu << endl;
 
     return &this->individus[numIndividu];
 
@@ -178,8 +178,7 @@ void Population::remplacement_roulette(Chromosome *list_enfants){
             proba[i] = proba[i-1] + (((double)1/this->individus[i].getFitness()) - minFitness)*10000000; // Plage de selection d'un individu = i-1 - i
         }
         // selection biaisée
-        int random = rand();
-        random = random * (sumFitness / RAND_MAX); // on obtient un nombre aléatoire entre 0 et la somme des fitness
+        int random = rand() % (int)sumFitness;
 
         int numIndividu = 0; 
 
@@ -221,6 +220,7 @@ void Population::print(){
 
 void Population::croisement(Chromosome* parent1, Chromosome* parent2,
                       Chromosome* enfant1, Chromosome* enfant2) {
+  
     bool valide = true;
     // Tirage aléatoire 5 fois max
     for(int k = 0; k < 5; k++){
@@ -231,7 +231,6 @@ void Population::croisement(Chromosome* parent1, Chromosome* parent2,
         // copie des gènes des parents dans les enfants
         enfant1->fusion(parent1->getGene(0, point), parent2->getGene(point, this->nb_missions), point); // enfant1 = parent1[0:point] + parent2[point+1:nb_missions]
         enfant2->fusion(parent2->getGene(0, point), parent1->getGene(point, this->nb_missions), point); // enfant2 = parent2[0:point] + parent1[point+1:nb_missions]
-
         // check si les enfants sont valides
 
         for (int i = 0; i < this->nb_employes; i++) {
@@ -241,6 +240,7 @@ void Population::croisement(Chromosome* parent1, Chromosome* parent2,
                 planning1[j] = enfant1->getGene()[j][i]; // on récupère le planning de l'employé i
                 planning2[j] = enfant2->getGene()[j][i];
             }
+            cout << "2" << endl;
 
             if (!enfant1->isPlaningValid(planning1)) {
                 valide = false;
@@ -260,33 +260,10 @@ void Population::croisement(Chromosome* parent1, Chromosome* parent2,
 
     // Si les enfants ne sont pas valides, on les remplace par les parents
     if (!valide) {
+        cout << "balbla" << endl;
         *enfant1 = *parent1;
         *enfant2 = *parent2;
     }
 }
 
-void Population::test_croisement(int a, int b){
-
-    for(int i =0; i < taille_pop; i++){
-        this->individus[i].print();
-    }
-
-    Chromosome* parent1 = &this->individus[a];
-    Chromosome* parent2 = &this->individus[b];
-
-    cout << "Parent 1" << endl;
-    parent1->print();
-    cout << "Parent 2" << endl;
-    parent2->print();
-    // croisement des deux parents
-    Chromosome* enfant1 = new Chromosome(this->nb_missions, this->nb_employes, this->nb_centres, this->list_missions, this->list_employes, this->list_centres);
-    Chromosome* enfant2 = new Chromosome(this->nb_missions, this->nb_employes, this->nb_centres, this->list_missions, this->list_employes, this->list_centres);
-    this->croisement(parent1, parent2, enfant1, enfant2);
-
-    cout << "Enfant 1" << endl;
-    enfant1->print();
-    cout << "Enfant 2" << endl;
-    enfant2->print();
-
-}
 
